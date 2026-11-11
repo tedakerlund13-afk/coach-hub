@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -27,91 +28,331 @@ nav h2{font-size:18px;text-transform:capitalize}
 .match{background:#e2a439}
 .analysis{background:#648bce}
 .meeting{background:#9b7ac7}
-article{background:white;border-radius:12px;padding:14px;margin:9px 0;border-left:5px solid #379366}
+article{background:white;border-radius:12px;padding:14px;margin:9px 0;border-left:5px solid #379366;cursor:pointer}
 article h3{margin:5px 0}
 small{color:#718076}
 section{margin-top:22px}
-.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:12px}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:12px;z-index:10}
 .modal.open{display:flex}
 form{background:white;border-radius:16px;padding:20px;width:100%;max-width:500px;max-height:92vh;overflow:auto}
 label{display:block;margin-top:12px;margin-bottom:5px;font-weight:600}
 input,select,textarea{width:100%;padding:11px;border:1px solid #ccd6ce;border-radius:9px;font:inherit}
+.time-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .actions{display:flex;justify-content:space-between;gap:8px;margin-top:20px}
 #delete{background:#a83b3b}
 </style>
 </head>
 <body>
 <main>
-<header><div><h1>⚽ Coach Hub</h1><small>Din tränarkalender</small></div><button onclick="openForm()">+ Aktivitet</button></header>
-<nav><button class="alt" onclick="changeMonth(-1)">‹</button><h2 id="month"></h2><button class="alt" onclick="changeMonth(1)">›</button></nav>
+<header>
+<div>
+<h1>⚽ Coach Hub</h1>
+<small>Din tränarkalender</small>
+</div>
+<button onclick="openForm()">+ Aktivitet</button>
+</header>
+
+<nav>
+<button class="alt" onclick="changeMonth(-1)">‹</button>
+<h2 id="month"></h2>
+<button class="alt" onclick="changeMonth(1)">›</button>
+</nav>
+
 <div class="calendar" id="calendar"></div>
-<section><h2 id="dateTitle"></h2><div id="activities"></div><button onclick="openForm()">+ Lägg till aktivitet</button></section>
+
+<section>
+<h2 id="dateTitle"></h2>
+<div id="activities"></div>
+<button onclick="openForm()">+ Lägg till aktivitet</button>
+</section>
 </main>
+
 <div class="modal" id="modal">
 <form id="form">
 <h2 id="formTitle">Ny aktivitet</h2>
-<label>Rubrik</label><input id="title" required placeholder="Ex. Anfallsspel">
-<label>Datum</label><input id="date" type="date" required>
-<label>Tid</label><input id="time" type="time" value="16:30" required>
-<label>Typ</label><select id="type"><option>Träning</option><option>Match</option><option>Matchanalys</option><option>Motståndaranalys</option><option>Träningsanalys</option><option>Möte</option><option>Övrigt</option></select>
-<label>Plats</label><input id="place" placeholder="Ex. D-plan">
-<label>Anteckningar</label><textarea id="notes" rows="4"></textarea>
-<label>Dokumentlänk</label><input id="link" type="url" placeholder="https://...">
-<div class="actions"><button type="button" class="alt" onclick="closeForm()">Avbryt</button><button type="button" id="delete" onclick="removeActivity()">Radera</button><button type="submit">Spara</button></div>
+
+<label for="title">Rubrik</label>
+<input id="title" required placeholder="Ex. Anfallsspel">
+
+<label for="date">Datum</label>
+<input id="date" type="date" required>
+
+<div class="time-row">
+<div>
+<label for="time">Starttid</label>
+<input id="time" type="time" value="16:30" required>
+</div>
+<div>
+<label for="endTime">Sluttid</label>
+<input id="endTime" type="time" value="18:00" required>
+</div>
+</div>
+
+<label for="type">Typ</label>
+<select id="type">
+<option>Träning</option>
+<option>Match</option>
+<option>Matchanalys</option>
+<option>Motståndaranalys</option>
+<option>Träningsanalys</option>
+<option>Möte</option>
+<option>Övrigt</option>
+</select>
+
+<label for="place">Plats</label>
+<input id="place" placeholder="Ex. D-plan">
+
+<label for="notes">Anteckningar</label>
+<textarea id="notes" rows="4"></textarea>
+
+<label for="link">Dokumentlänk</label>
+<input id="link" type="url" placeholder="https://...">
+
+<div class="actions">
+<button type="button" class="alt" onclick="closeForm()">Avbryt</button>
+<button type="button" id="delete" onclick="removeActivity()">Radera</button>
+<button type="submit">Spara</button>
+</div>
 </form>
 </div>
+
 <script>
 const $=id=>document.getElementById(id);
+
+// Samma lagringsnyckel som tidigare.
+// Därmed behålls redan sparade aktiviteter.
 const key="coachhub-calendar-v1";
 let events=[];
-try{events=JSON.parse(localStorage.getItem(key)||"[]");if(!Array.isArray(events))events=[]}catch{events=[]}
-let view=new Date(),selected=localDate(view),editing=null;
-function localDate(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function category(t){return t==="Match"?"match":t==="Möte"?"meeting":t.includes("analys")?"analysis":""}
-function save(){localStorage.setItem(key,JSON.stringify(events));render()}
-function changeMonth(n){view=new Date(view.getFullYear(),view.getMonth()+n,1);selected=localDate(view);render()}
+
+try{
+  events=JSON.parse(localStorage.getItem(key)||"[]");
+  if(!Array.isArray(events))events=[];
+}catch{
+  events=[];
+}
+
+let view=new Date();
+let selected=localDate(view);
+let editing=null;
+
+function localDate(d){
+  return d.getFullYear()+"-"+
+    String(d.getMonth()+1).padStart(2,"0")+"-"+
+    String(d.getDate()).padStart(2,"0");
+}
+
+function category(t){
+  return t==="Match"?"match":
+    t==="Möte"?"meeting":
+    t.includes("analys")?"analysis":"";
+}
+
+function save(){
+  localStorage.setItem(key,JSON.stringify(events));
+  render();
+}
+
+function changeMonth(n){
+  view=new Date(view.getFullYear(),view.getMonth()+n,1);
+  selected=localDate(view);
+  render();
+}
+
 function render(){
-const y=view.getFullYear(),m=view.getMonth();
-$("month").textContent=new Date(y,m,1).toLocaleDateString("sv-SE",{month:"long",year:"numeric"});
-const cal=$("calendar");cal.replaceChildren();
-["Mån","Tis","Ons","Tor","Fre","Lör","Sön"].forEach(w=>{const el=document.createElement("div");el.className="weekday";el.textContent=w;cal.append(el)});
-const offset=(new Date(y,m,1).getDay()+6)%7;
-for(let i=0;i<offset;i++)cal.append(document.createElement("div"));
-for(let d=1;d<=new Date(y,m+1,0).getDate();d++){
-const date=localDate(new Date(y,m,d)),b=document.createElement("button");
-b.className="day"+(date===selected?" selected":"")+(date===localDate(new Date())?" today":"");
-const num=document.createElement("span");num.textContent=d;b.append(num);
-const dots=document.createElement("div");dots.className="dots";
-events.filter(e=>e.date===date).forEach(e=>{const dot=document.createElement("span");dot.className="dot "+category(e.type);dots.append(dot)});
-b.append(dots);b.onclick=()=>{selected=date;render()};cal.append(b)}
-$("dateTitle").textContent=new Date(selected+"T12:00:00").toLocaleDateString("sv-SE",{weekday:"long",day:"numeric",month:"long"});
-const list=$("activities");list.replaceChildren();
-const dayEvents=events.filter(e=>e.date===selected).sort((a,b)=>a.time.localeCompare(b.time));
-if(!dayEvents.length){const p=document.createElement("p");p.textContent="Inget planerat den här dagen.";list.append(p)}
-dayEvents.forEach(e=>{const a=document.createElement("article");a.className=category(e.type);
-const top=document.createElement("small");top.textContent=e.time+" · "+e.type;
-const h=document.createElement("h3");h.textContent=e.title;
-const p=document.createElement("p");p.textContent=e.place||"";
-a.append(top,h,p);
-if(e.notes){const n=document.createElement("p");n.textContent=e.notes;a.append(n)}
-if(e.link&&/^https?:\/\//i.test(e.link)){const link=document.createElement("a");link.href=e.link;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Öppna dokument";a.append(link)}
-a.onclick=ev=>{if(ev.target.tagName!=="A")openForm(e.id)};list.append(a)})
+  const y=view.getFullYear();
+  const m=view.getMonth();
+
+  $("month").textContent=
+    new Date(y,m,1).toLocaleDateString("sv-SE",{
+      month:"long",year:"numeric"
+    });
+
+  const cal=$("calendar");
+  cal.replaceChildren();
+
+  ["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
+    .forEach(w=>{
+      const el=document.createElement("div");
+      el.className="weekday";
+      el.textContent=w;
+      cal.append(el);
+    });
+
+  const offset=(new Date(y,m,1).getDay()+6)%7;
+
+  for(let i=0;i<offset;i++){
+    cal.append(document.createElement("div"));
+  }
+
+  for(let d=1;d<=new Date(y,m+1,0).getDate();d++){
+    const date=localDate(new Date(y,m,d));
+    const b=document.createElement("button");
+
+    b.className="day"+
+      (date===selected?" selected":"")+
+      (date===localDate(new Date())?" today":"");
+
+    const num=document.createElement("span");
+    num.textContent=d;
+    b.append(num);
+
+    const dots=document.createElement("div");
+    dots.className="dots";
+
+    events.filter(e=>e.date===date).forEach(e=>{
+      const dot=document.createElement("span");
+      dot.className="dot "+category(e.type);
+      dots.append(dot);
+    });
+
+    b.append(dots);
+    b.onclick=()=>{
+      selected=date;
+      render();
+    };
+    cal.append(b);
+  }
+
+  $("dateTitle").textContent=
+    new Date(selected+"T12:00:00")
+      .toLocaleDateString("sv-SE",{
+        weekday:"long",day:"numeric",month:"long"
+      });
+
+  const list=$("activities");
+  list.replaceChildren();
+
+  const dayEvents=events
+    .filter(e=>e.date===selected)
+    .sort((a,b)=>
+      (a.time||"").localeCompare(b.time||"")
+    );
+
+  if(!dayEvents.length){
+    const p=document.createElement("p");
+    p.textContent="Inget planerat den här dagen.";
+    list.append(p);
+  }
+
+  dayEvents.forEach(e=>{
+    const a=document.createElement("article");
+    a.className=category(e.type);
+
+    const top=document.createElement("small");
+    const times=e.endTime
+      ? e.time+"–"+e.endTime
+      : e.time;
+
+    top.textContent=times+" · "+e.type;
+
+    const h=document.createElement("h3");
+    h.textContent=e.title;
+
+    const p=document.createElement("p");
+    p.textContent=e.place||"";
+
+    a.append(top,h,p);
+
+    if(e.notes){
+      const n=document.createElement("p");
+      n.textContent=e.notes;
+      a.append(n);
+    }
+
+    if(e.link&&/^https?:\/\//i.test(e.link)){
+      const link=document.createElement("a");
+      link.href=e.link;
+      link.target="_blank";
+      link.rel="noopener noreferrer";
+      link.textContent="Öppna dokument";
+      a.append(link);
+    }
+
+    a.onclick=ev=>{
+      if(ev.target.tagName!=="A"){
+        openForm(e.id);
+      }
+    };
+
+    list.append(a);
+  });
 }
+
 function openForm(id){
-const e=events.find(x=>x.id===id);editing=e?.id||null;$("form").reset();
-["title","date","time","type","place","notes","link"].forEach(k=>$(k).value=e?.[k]||"");
-if(!e){$("date").value=selected;$("time").value="16:30"}
-$("formTitle").textContent=e?"Redigera aktivitet":"Ny aktivitet";
-$("delete").style.display=e?"block":"none";$("modal").classList.add("open")
+  const e=events.find(x=>x.id===id);
+  editing=e?.id||null;
+
+  $("form").reset();
+
+  ["title","date","time","type","place","notes","link"]
+    .forEach(k=>$(k).value=e?.[k]||"");
+
+  if(e){
+    // Gamla aktiviteter saknar sluttid.
+    // De får ett förslag som kan ändras vid redigering.
+    $("endTime").value=e.endTime||
+      suggestEnd(e.time||"16:30");
+  }else{
+    $("date").value=selected;
+    $("time").value="16:30";
+    $("endTime").value="18:00";
+  }
+
+  $("formTitle").textContent=
+    e?"Redigera aktivitet":"Ny aktivitet";
+
+  $("delete").style.display=e?"block":"none";
+  $("modal").classList.add("open");
 }
-function closeForm(){$("modal").classList.remove("open")}
+
+function suggestEnd(start){
+  const parts=start.split(":").map(Number);
+  if(parts.length!==2||parts.some(Number.isNaN)){
+    return "18:00";
+  }
+  const total=parts[0]*60+parts[1]+90;
+  return String(Math.floor(total/60)%24).padStart(2,"0")+
+    ":"+String(total%60).padStart(2,"0");
+}
+
+function closeForm(){
+  $("modal").classList.remove("open");
+}
+
 $("form").onsubmit=ev=>{
-ev.preventDefault();const e={id:editing||String(Date.now())};
-["title","date","time","type","place","notes","link"].forEach(k=>e[k]=$(k).value);
-events=events.filter(x=>x.id!==e.id);events.push(e);
-selected=e.date;view=new Date(e.date+"T12:00:00");save();closeForm()
+  ev.preventDefault();
+
+  if($("endTime").value<=$("time").value){
+    alert("Sluttiden måste vara senare än starttiden.");
+    return;
+  }
+
+  const e={
+    id:editing||String(Date.now())
+  };
+
+  ["title","date","time","endTime","type",
+   "place","notes","link"]
+    .forEach(k=>e[k]=$(k).value);
+
+  events=events.filter(x=>x.id!==e.id);
+  events.push(e);
+
+  selected=e.date;
+  view=new Date(e.date+"T12:00:00");
+
+  save();
+  closeForm();
 };
-function removeActivity(){if(editing&&confirm("Radera aktiviteten?")){events=events.filter(e=>e.id!==editing);save();closeForm()}}
+
+function removeActivity(){
+  if(editing&&confirm("Radera aktiviteten?")){
+    events=events.filter(e=>e.id!==editing);
+    save();
+    closeForm();
+  }
+}
+
 render();
 </script>
 </body>
