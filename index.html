@@ -8,6 +8,655 @@
 <title>Coach Hub</title>
 
 <style>
+  
+/* COACH HUB – RESPONSIV DESIGNUPPGRADERING */
+
+:root {
+  --ink: #17352b;
+  --forest: #1b4938;
+  --forest-dark: #103426;
+  --accent: #2d805d;
+  --paper: #f5f7f5;
+  --surface: #ffffff;
+  --line: #e1e9e3;
+  --muted: #64766c;
+  --shadow: 0 8px 28px rgba(22,53,39,.065);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 1380px;
+  padding: 26px clamp(16px,3vw,44px) 90px;
+}
+
+header {
+  padding: 22px 26px;
+  background: linear-gradient(125deg,#173c2c,#286b4d);
+  color: white;
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  align-items: center;
+}
+
+header h1 {
+  font-size: clamp(24px,2.6vw,32px);
+  letter-spacing: -.7px;
+  font-weight: 800;
+}
+
+header .muted {
+  color: #d1e6d7;
+  font-size: 14px;
+}
+
+header #logout {
+  background: #ffffff20;
+  color: white;
+  border: 1px solid #ffffff50;
+}
+
+h2 {
+  letter-spacing: -.4px;
+  font-weight: 750;
+}
+
+button {
+  min-height: 43px;
+  border-radius: 12px;
+  transition: background .15s, transform .15s,
+    box-shadow .15s;
+  background: var(--forest);
+  font-weight: 700;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #5cb28b;
+  outline-offset: 3px;
+}
+
+@media (hover:hover) {
+  button:not(:disabled):hover {
+    filter: brightness(1.07);
+  }
+
+  .day:hover {
+    border-color: #9dcdb1;
+  }
+
+  .block:hover {
+    filter: brightness(.96);
+  }
+
+  article:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px #17352b15;
+  }
+}
+
+.alt {
+  background: #eaf0eb;
+  color: var(--forest);
+}
+
+.muted,
+.status {
+  color: var(--muted);
+}
+
+.bar {
+  gap: 14px;
+  margin: 22px 0 16px;
+}
+
+.bar h2 {
+  font-size: clamp(19px,2.1vw,26px);
+  text-transform: capitalize;
+}
+
+#syncStatus {
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#syncStatus:before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #39a26c;
+  flex: none;
+}
+
+#newEvent,
+#addBottom {
+  background: var(--forest);
+  box-shadow: 0 5px 14px #173c2c1c;
+}
+
+.tabs {
+  margin: 22px auto;
+  max-width: 400px;
+  background: #e8efea;
+  border: 1px solid #dce8df;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+.tabs button {
+  border-radius: 11px;
+  min-height: 42px;
+}
+
+.tabs .active {
+  background: white;
+  color: var(--forest);
+  box-shadow: 0 2px 8px #193f2b19;
+}
+
+#prev,
+#next {
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  font-size: 25px;
+  flex: none;
+}
+
+/* MÅNADSVY */
+
+.month {
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.weekday {
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 10px 0;
+}
+
+.day {
+  min-height: 108px;
+  padding: 11px 9px;
+  border: 1px solid #e9efeb;
+  border-radius: 12px;
+  background: #fafcfb;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.day.today {
+  background: #e9f5ec;
+  border-color: #b7dec3;
+}
+
+.day.sel {
+  border: 2px solid var(--accent);
+  background: #f0f8f2;
+  box-shadow: 0 0 0 2px #2d805d13;
+}
+
+.dots {
+  margin-top: 10px;
+  gap: 5px;
+  max-width: 100%;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+}
+
+/* VECKOVY */
+
+.week-scroll {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.week-board {
+  min-width: 800px;
+}
+
+.week-head {
+  border-bottom: 1px solid var(--line);
+}
+
+.week-head button {
+  font-weight: 750;
+  font-size: 12px;
+  min-height: 49px;
+}
+
+.block {
+  border-radius: 7px;
+  font-size: 12px;
+  padding: 5px;
+  box-shadow: 0 2px 5px #0000000d;
+}
+
+.block span {
+  font-size: 10px;
+}
+
+/* AKTIVITETER */
+
+section {
+  margin-top: 30px;
+}
+
+section > h2 {
+  font-size: 21px;
+  margin-bottom: 14px;
+  text-transform: capitalize;
+}
+
+article {
+  background: #eaf6ed;
+  border: 1px solid #d3e9d8;
+  border-left: 5px solid #379366;
+  border-radius: 16px;
+  padding: 17px 19px;
+  margin: 11px 0;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 2px 8px #00000007;
+  overflow-wrap: anywhere;
+}
+
+article.match {
+  background: #fff4da;
+  border-color: #f1e1bb;
+  border-left-color: #e2a439;
+}
+
+article.analysis {
+  background: #eaf2ff;
+  border-color: #d3e2f7;
+  border-left-color: #648bce;
+}
+
+article.meeting {
+  background: #f3eafb;
+  border-color: #e7d7f4;
+  border-left-color: #9b7ac7;
+}
+
+article h3 {
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 10px 0;
+}
+
+article p {
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.eventtop {
+  align-items: flex-start;
+}
+
+.eventtop > b {
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.timebox {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.timebox div {
+  background: #ffffffba;
+  border: 1px solid #ffffffc9;
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+.timebox strong {
+  font-size: 16px;
+}
+
+/* INLOGGNING OCH FORMULÄR */
+
+.panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 19px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+#loginPanel {
+  max-width: 520px;
+  margin: 32px auto;
+  padding: clamp(22px,4vw,38px);
+}
+
+#loginPanel > button {
+  width: 100%;
+  margin-top: 20px;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #cddbd1;
+  border-radius: 11px;
+  padding: 12px 13px;
+  background: white;
+  color: var(--ink);
+  font-size: 16px;
+  min-height: 44px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+}
+
+label {
+  font-size: 14px;
+}
+
+.modal {
+  padding: 20px;
+  backdrop-filter: blur(5px);
+  background: #0c2518a8;
+}
+
+form {
+  border-radius: 22px;
+  max-width: 550px;
+  padding: clamp(20px,3vw,32px);
+  box-shadow: 0 25px 70px #0d281e3d;
+}
+
+form h2 {
+  margin-top: 0;
+}
+
+.actions {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  flex: 1;
+  min-width: 85px;
+}
+
+.account {
+  margin-top: 26px;
+}
+
+summary {
+  padding: 4px 0;
+}
+
+/* STÖRRE DATORSKÄRMAR */
+
+@media (min-width:1000px) {
+  main {
+    padding-top: 30px;
+  }
+
+  .month {
+    gap: 8px;
+    padding: 18px;
+  }
+
+  .day {
+    min-height: 125px;
+    padding: 13px;
+  }
+
+  .week-board {
+    min-width: 0;
+  }
+
+  .week-head,
+  .week-grid {
+    grid-template-columns:
+      60px repeat(7,minmax(0,1fr));
+  }
+
+  .block {
+    padding: 6px;
+  }
+}
+
+/* MOBIL OCH SURFPLATTA */
+
+@media (max-width:700px) {
+  main {
+    padding: 12px 11px 100px;
+  }
+
+  header {
+    padding: 17px 16px;
+    border-radius: 17px;
+    gap: 8px;
+  }
+
+  header h1 {
+    font-size: 23px;
+  }
+
+  header .muted {
+    font-size: 12px;
+  }
+
+  header #logout {
+    font-size: 12px;
+    padding: 9px 10px;
+    min-height: 38px;
+  }
+
+  .bar {
+    margin: 18px 1px 12px;
+  }
+
+  .bar h2 {
+    font-size: 19px;
+  }
+
+  .tabs {
+    margin: 16px auto;
+    max-width: none;
+  }
+
+  .month {
+    gap: 3px;
+    padding: 6px;
+    border-radius: 15px;
+  }
+
+  .weekday {
+    font-size: 10px;
+    letter-spacing: 0;
+    padding: 9px 0;
+  }
+
+  .day {
+    min-height: 67px;
+    padding: 6px 4px;
+    border-radius: 8px;
+    font-size: 13px;
+    border-width: 1px;
+  }
+
+  .day.sel {
+    border-width: 2px;
+  }
+
+  .dots {
+    gap: 3px;
+    margin-top: 7px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .week-board {
+    min-width: 760px;
+  }
+
+  .week-scroll {
+    border-radius: 15px;
+  }
+
+  section {
+    margin-top: 23px;
+  }
+
+  section > h2 {
+    font-size: 19px;
+  }
+
+  article {
+    padding: 14px 13px;
+    border-radius: 13px;
+  }
+
+  .eventtop {
+    gap: 5px;
+  }
+
+  .timebox div {
+    padding: 5px 7px;
+  }
+
+  .timebox strong {
+    font-size: 14px;
+  }
+
+  .timebox small {
+    font-size: 9px;
+  }
+
+  article h3 {
+    font-size: 17px;
+  }
+
+  .modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  form {
+    border-radius: 22px 22px 0 0;
+    max-width: none;
+    max-height: 94dvh;
+    padding: 23px 17px
+      max(23px,env(safe-area-inset-bottom));
+  }
+
+  .actions {
+    position: sticky;
+    bottom: -23px;
+    background: white;
+    padding: 12px 0 3px;
+    margin-top: 14px;
+  }
+
+  .panel {
+    padding: 17px;
+    border-radius: 15px;
+  }
+
+  #newEvent {
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+
+  #syncStatus {
+    font-size: 11px;
+    max-width: 50%;
+    line-height: 1.25;
+  }
+}
+
+/* EXTRA SMÅ MOBILER */
+
+@media (max-width:380px) {
+  .day {
+    min-height: 61px;
+    padding: 5px 3px;
+  }
+
+  .weekday {
+    font-size: 9px;
+  }
+
+  .timebox div {
+    padding: 4px 5px;
+  }
+
+  .timebox strong {
+    font-size: 12px;
+  }
+
+  .bar h2 {
+    font-size: 17px;
+  }
+
+  #prev,
+  #next {
+    width: 39px;
+    height: 39px;
+  }
+}
+
+/* TILLGÄNGLIGHET */
+
+@media (prefers-reduced-motion:reduce) {
+  *,
+  *:before,
+  *:after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
+
 *{box-sizing:border-box}
 body{margin:0;background:#f4f6f3;color:#183b2b;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
 main{max-width:1100px;margin:auto;padding:16px 12px 60px}
