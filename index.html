@@ -1,1142 +1,534 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#183b2b">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Coach Hub">
 <title>Coach Hub</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #f4f6f3;
-  color: #183b2b;
-  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-}
-
-main {
-  max-width: 1100px;
-  margin: auto;
-  padding: 18px 14px 70px;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
-}
-
-h1 {
-  font-size: 25px;
-  margin: 0;
-}
-
-button {
-  border: 0;
-  background: #183b2b;
-  color: white;
-  padding: 11px 14px;
-  border-radius: 12px;
-  font: inherit;
-  font-weight: 650;
-  cursor: pointer;
-}
-
-.alt {
-  background: #e1e8e1;
-  color: #183b2b;
-}
-
-/* VÄXLA MÅNAD / VECKA */
-
-.switch {
-  display: flex;
-  background: #e4ebe5;
-  padding: 4px;
-  border-radius: 15px;
-  max-width: 330px;
-  margin: 0 auto 18px;
-}
-
-.switch button {
-  flex: 1;
-  background: transparent;
-  color: #183b2b;
-}
-
-.switch button.active {
-  background: #183b2b;
-  color: white;
-}
-
-/* NAVIGERING */
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.nav h2 {
-  font-size: 19px;
-  text-align: center;
-  margin: 0;
-  text-transform: capitalize;
-}
-
-/* MÅNADSVY */
-
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 5px;
-  background: white;
-  padding: 10px;
-  border-radius: 20px;
-}
-
-.weekday {
-  text-align: center;
-  font-size: 12px;
-  color: #718076;
-  padding: 9px 0;
-}
-
-.day {
-  min-height: 75px;
-  background: #f4f6f3;
-  color: #183b2b;
-  border: 2px solid transparent;
-  text-align: left;
-  padding: 8px 5px;
-  border-radius: 12px;
-}
-
-.day.selected {
-  border-color: #379366;
-}
-
-.day.today {
-  background: #e0eee2;
-}
-
-.dots {
-  display: flex;
-  gap: 4px;
-  margin-top: 9px;
-  flex-wrap: wrap;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #379366;
-}
-
-/* AKTIVITETSFÄRGER */
-
-.match {
-  --event: #e2a439;
-  --event-bg: #f9e4b4;
-}
-
-.analysis {
-  --event: #648bce;
-  --event-bg: #bfd7fa;
-}
-
-.meeting {
-  --event: #9b7ac7;
-  --event-bg: #e0cafa;
-}
-
-.training {
-  --event: #379366;
-  --event-bg: #ccebd4;
-}
-
-.dot.match { background: #e2a439; }
-.dot.analysis { background: #648bce; }
-.dot.meeting { background: #9b7ac7; }
-.dot.training { background: #379366; }
-
-/* AKTIVITETSKORT */
-
-section {
-  margin-top: 25px;
-}
-
-section h2 {
-  font-size: 23px;
-}
-
-article {
-  background: var(--event-bg, white);
-  border-radius: 15px;
-  padding: 15px;
-  margin: 10px 0;
-  border-left: 6px solid var(--event, #379366);
-  cursor: pointer;
-}
-
-article h3 {
-  margin: 8px 0;
-}
-
-article p {
-  margin: 8px 0;
-}
-
-article a {
-  display: inline-block;
-  margin-top: 7px;
-  color: #153f8b;
-  font-weight: 700;
-}
-
-small {
-  color: #718076;
-}
-
-.event-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.event-type {
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.times {
-  display: flex;
-  gap: 6px;
-}
-
-.time-box {
-  background: #ffffffb8;
-  border-radius: 9px;
-  padding: 5px 9px;
-  text-align: center;
-  min-width: 66px;
-}
-
-.time-box small {
-  display: block;
-  font-size: 11px;
-}
-
-.time-box strong {
-  font-size: 17px;
-  font-variant-numeric: tabular-nums;
-}
-
-/* VECKOVY */
-
-.week-scroll {
-  overflow-x: auto;
-  overflow-y: hidden;
-  background: white;
-  border-radius: 17px;
-  border: 1px solid #e3e9e3;
-  -webkit-overflow-scrolling: touch;
-}
-
-.week-board {
-  min-width: 740px;
-}
-
-.week-header {
-  display: grid;
-  grid-template-columns: 54px repeat(7, minmax(0, 1fr));
-  background: white;
-  border-bottom: 1px solid #dce5df;
-}
-
-.week-label {
-  text-align: center;
-  font-size: 12px;
-  padding: 11px 2px;
-  border-left: 1px solid #e3e9e3;
-}
-
-.week-label.current {
-  background: #e0eee2;
-  font-weight: 800;
-}
-
-.week-label.selected {
-  box-shadow: inset 0 -3px #379366;
-}
-
-.week-label button {
-  padding: 0;
-  background: transparent;
-  color: #183b2b;
-  font-size: 12px;
-}
-
-.week-body {
-  position: relative;
-  height: 960px;
-  display: grid;
-  grid-template-columns: 54px repeat(7, minmax(0, 1fr));
-}
-
-.hour-col {
-  position: relative;
-}
-
-.hour {
-  position: absolute;
-  left: 0;
-  right: 3px;
-  transform: translateY(-8px);
-  text-align: right;
-  font-size: 12px;
-  color: #66776a;
-  font-variant-numeric: tabular-nums;
-}
-
-.hour:first-child {
-  transform: none;
-}
-
-.day-col {
-  position: relative;
-  border-left: 1px solid #e0e6e0;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 29px,
-    #edf1ed 29px,
-    #edf1ed 30px,
-    transparent 30px,
-    transparent 59px,
-    #dce5dc 59px,
-    #dce5dc 60px
-  );
-}
-
-.day-col.current {
-  background-color: #f3faf4;
-}
-
-.week-event {
-  position: absolute;
-  left: 3px;
-  right: 3px;
-  background: var(--event-bg, #ccebd4);
-  border-left: 4px solid var(--event, #379366);
-  border-radius: 7px;
-  padding: 4px;
-  overflow: hidden;
-  text-align: left;
-  color: #183b2b;
-  font-size: 11px;
-  line-height: 1.2;
-  z-index: 1;
-  min-height: 17px;
-}
-
-.week-event strong {
-  display: block;
-  font-size: 11px;
-  margin-top: 2px;
-  overflow-wrap: anywhere;
-}
-
-.week-event span {
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.week-event.overlap {
-  right: 45%;
-}
-
-.week-event.overlap.second {
-  left: 55%;
-  right: 2px;
-}
-
-.week-note {
-  font-size: 12px;
-  color: #718076;
-  margin: 9px 0;
-}
-
-/* FORMULÄR */
-
-.modal {
-  position: fixed;
-  inset: 0;
-  background: #0008;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  z-index: 10;
-}
-
-.modal.open {
-  display: flex;
-}
-
-form {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  width: 100%;
-  max-width: 500px;
-  max-height: 92vh;
-  overflow: auto;
-}
-
-label {
-  display: block;
-  margin-top: 12px;
-  margin-bottom: 5px;
-  font-weight: 650;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid #ccd6ce;
-  border-radius: 9px;
-  font: inherit;
-}
-
-.time-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-#delete {
-  background: #a83b3b;
-}
-
-@media (min-width: 800px) {
-  .day {
-    min-height: 100px;
-  }
-
-  .week-board {
-    min-width: 0;
-  }
-}
-
-@media (max-width: 420px) {
-  main {
-    padding: 15px 10px 60px;
-  }
-
-  header h1 {
-    font-size: 22px;
-  }
-
-  .day {
-    min-height: 65px;
-    padding: 6px 3px;
-  }
-
-  .calendar {
-    gap: 3px;
-    padding: 7px;
-  }
-
-  section h2 {
-    font-size: 21px;
-  }
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6f3;color:#183b2b;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+main{max-width:1100px;margin:auto;padding:16px 12px 60px}
+header,.bar,.eventtop,.actions{display:flex;justify-content:space-between;align-items:center;gap:10px}
+h1{font-size:24px;margin:0}
+h2{font-size:20px}
+button{border:0;border-radius:10px;background:#183b2b;color:white;padding:11px 13px;font:inherit;font-weight:650;cursor:pointer}
+.alt{background:#e1e8e1;color:#183b2b}
+.muted{color:#6b796f;font-size:13px}
+.tabs{display:flex;background:#e1e8e1;border-radius:12px;padding:4px;max-width:340px;margin:18px auto}
+.tabs button{flex:1;background:transparent;color:#183b2b}
+.tabs .active{background:#183b2b;color:white}
+.bar{margin:15px 0}
+.bar h2{text-align:center;margin:0}
+.month{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;background:white;padding:8px;border-radius:14px}
+.weekday{text-align:center;color:#6b796f;font-size:12px;padding:8px 0}
+.day{min-height:72px;text-align:left;padding:6px 4px;background:#f4f6f3;color:#183b2b;border:2px solid transparent}
+.day.sel{border-color:#379366}
+.day.today{background:#e0eee2}
+.dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px}
+.dot{width:7px;height:7px;border-radius:50%;background:#379366}
+.dot.match{background:#e2a439}
+.dot.analysis{background:#648bce}
+.dot.meeting{background:#9b7ac7}
+.week-scroll{overflow:auto;background:white;border-radius:14px;border:1px solid #e1e8e1}
+.week-board{min-width:740px}
+.week-head,.week-grid{display:grid;grid-template-columns:54px repeat(7,minmax(0,1fr))}
+.week-head{position:sticky;top:0;background:white;z-index:2}
+.week-head button{background:transparent;color:#183b2b;font-size:12px;padding:10px 1px;border-radius:0;border-left:1px solid #e1e8e1}
+.week-grid{height:960px}
+.hours,.daycol{position:relative}
+.hour{position:absolute;right:4px;transform:translateY(-7px);font-size:11px;color:#64756a}
+.daycol{border-left:1px solid #dfe7df;background:repeating-linear-gradient(to bottom,transparent 0,transparent 29px,#edf1ed 29px,#edf1ed 30px,transparent 30px,transparent 59px,#dce5dc 59px,#dce5dc 60px)}
+.daycol.today{background-color:#f0faf2}
+.block{position:absolute;left:2px;right:2px;overflow:hidden;padding:4px 3px;background:#ccebd4;color:#183b2b;border-left:4px solid #379366;border-radius:6px;text-align:left;font-size:11px;line-height:1.2;min-height:18px}
+.block.match{background:#f9e4b4;border-color:#e2a439}
+.block.analysis{background:#bfd7fa;border-color:#648bce}
+.block.meeting{background:#e0cafa;border-color:#9b7ac7}
+.block strong{display:block;overflow-wrap:anywhere}
+.block span{font-size:10px}
+article{background:#e5f3e8;border-left:5px solid #379366;border-radius:13px;padding:14px;margin:10px 0;cursor:pointer}
+article.match{background:#f9e4b4;border-color:#e2a439}
+article.analysis{background:#bfd7fa;border-color:#648bce}
+article.meeting{background:#e0cafa;border-color:#9b7ac7}
+article h3{margin:8px 0}
+article p{margin:8px 0}
+.timebox{display:flex;gap:5px}
+.timebox div{background:#ffffffad;border-radius:8px;padding:5px 8px;text-align:center}
+.timebox small{display:block;font-size:10px;color:#5f7165}
+.timebox strong{font-size:17px}
+section{margin-top:20px}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:12px;z-index:10}
+.modal.open{display:flex}
+form{background:white;padding:20px;border-radius:16px;width:100%;max-width:500px;max-height:92vh;overflow:auto}
+label{display:block;margin:12px 0 5px;font-weight:650}
+input,select,textarea{width:100%;padding:11px;border:1px solid #ccd6ce;border-radius:9px;font:inherit}
+.time-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.actions{margin-top:20px}
+#delete{background:#a83b3b}
+.panel{background:white;padding:18px;border-radius:15px;margin:14px 0}
+.panel input{margin:8px 0}
+.status{font-size:13px;color:#64756a;margin:8px 0}
+.hidden,[hidden]{display:none!important}
+a{color:#164b9b}
+@media(max-width:420px){
+.day{min-height:62px}
+.month{gap:3px;padding:6px}
+h1{font-size:22px}
 }
 </style>
 </head>
 
 <body>
-
 <main>
-
 <header>
-  <div>
-    <h1>⚽ Coach Hub</h1>
-    <small>Din tränarkalender</small>
-  </div>
-
-  <button onclick="openForm()">+ Aktivitet</button>
+<div>
+<h1>⚽ Coach Hub</h1>
+<div class="muted">Gemensam tränarkalender</div>
+</div>
+<button id="logout" class="alt hidden">Logga ut</button>
 </header>
 
-<div class="switch">
-  <button id="monthTab" class="active"
-    onclick="setMode('month')">Månad</button>
-
-  <button id="weekTab"
-    onclick="setMode('week')">Vecka</button>
+<div id="loginPanel" class="panel">
+<h2>Logga in</h2>
+<p>Logga in med den e-postadress som tränarstaben har bjudit in.</p>
+<label for="email">E-postadress</label>
+<input id="email" type="email" placeholder="namn@exempel.se">
+<button id="sendLogin">Skicka inloggningslänk</button>
+<p id="loginStatus" class="status"></p>
 </div>
 
-<div class="nav">
-  <button class="alt" onclick="navigate(-1)">‹</button>
-  <h2 id="period"></h2>
-  <button class="alt" onclick="navigate(1)">›</button>
+<div id="app" hidden>
+<div class="bar">
+<span id="syncStatus" class="muted">Ansluter…</span>
+<button id="newEvent">+ Aktivitet</button>
 </div>
 
-<div id="monthView">
-  <div class="calendar" id="calendar"></div>
+<div class="tabs">
+<button id="monthTab" class="active">Månad</button>
+<button id="weekTab">Vecka</button>
 </div>
+
+<div class="bar">
+<button id="prev" class="alt">‹</button>
+<h2 id="period"></h2>
+<button id="next" class="alt">›</button>
+</div>
+
+<div id="monthView" class="month"></div>
 
 <div id="weekView" hidden>
-  <div class="week-scroll">
-    <div class="week-board">
-      <div class="week-header" id="weekHeader"></div>
-      <div class="week-body" id="weekBody"></div>
-    </div>
-  </div>
-
-  <p class="week-note">
-    Svep åt sidan för att se hela veckan.
-    Tryck på en aktivitet för att redigera.
-  </p>
+<div class="week-scroll">
+<div class="week-board">
+<div class="week-head" id="weekHead"></div>
+<div class="week-grid" id="weekGrid"></div>
+</div>
+</div>
+<p class="muted">Svep i sidled för att se hela veckan. Tryck på ett block för att redigera.</p>
 </div>
 
 <section>
-  <h2 id="dateTitle"></h2>
-  <div id="activities"></div>
-
-  <button onclick="openForm()">
-    + Lägg till aktivitet
-  </button>
+<h2 id="dateTitle"></h2>
+<div id="activities"></div>
+<button id="addBottom">+ Lägg till aktivitet</button>
 </section>
 
+<div class="panel" id="importPanel" hidden>
+<h3>Flytta över dina tidigare aktiviteter</h3>
+<p class="muted" id="importDescription"></p>
+<button id="importButton">Importera till gemensam kalender</button>
+<p id="importStatus" class="status"></p>
+</div>
+</div>
 </main>
 
 <div class="modal" id="modal">
 <form id="form">
-
 <h2 id="formTitle">Ny aktivitet</h2>
-
-<label for="title">Rubrik</label>
-<input id="title" required placeholder="Ex. Anfallsspel">
-
-<label for="date">Datum</label>
-<input id="date" type="date" required>
-
+<label>Rubrik<input id="title" required></label>
+<label>Datum<input id="date" type="date" required></label>
 <div class="time-row">
-  <div>
-    <label for="time">Starttid</label>
-    <input id="time" type="time" value="16:30" required>
-  </div>
-
-  <div>
-    <label for="endTime">Sluttid</label>
-    <input id="endTime" type="time" value="18:00" required>
-  </div>
+<label>Starttid<input id="time" type="time" required></label>
+<label>Sluttid<input id="endTime" type="time" required></label>
 </div>
-
-<label for="type">Typ</label>
+<label>Typ
 <select id="type">
-  <option>Träning</option>
-  <option>Match</option>
-  <option>Matchanalys</option>
-  <option>Motståndaranalys</option>
-  <option>Träningsanalys</option>
-  <option>Möte</option>
-  <option>Övrigt</option>
+<option>Träning</option>
+<option>Match</option>
+<option>Matchanalys</option>
+<option>Motståndaranalys</option>
+<option>Träningsanalys</option>
+<option>Möte</option>
+<option>Övrigt</option>
 </select>
-
-<label for="place">Plats</label>
-<input id="place" placeholder="Ex. D-plan">
-
-<label for="notes">Anteckningar</label>
-<textarea id="notes" rows="4"></textarea>
-
-<label for="link">Dokumentlänk</label>
-<input id="link" type="url" placeholder="https://...">
-
+</label>
+<label>Plats<input id="place"></label>
+<label>Anteckningar<textarea id="notes" rows="4"></textarea></label>
+<label>Dokumentlänk<input id="link" type="url" placeholder="https://..."></label>
 <div class="actions">
-  <button type="button" class="alt"
-    onclick="closeForm()">Avbryt</button>
-
-  <button type="button" id="delete"
-    onclick="removeActivity()">Radera</button>
-
-  <button type="submit">Spara</button>
+<button type="button" class="alt" id="cancel">Avbryt</button>
+<button type="button" id="delete">Radera</button>
+<button type="submit">Spara</button>
 </div>
-
 </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script>
 <script>
+const $=id=>document.getElementById(id);
+const SUPABASE_URL='https://vrzgwqygzftzjwnhhdxt.supabase.co';
+const SUPABASE_KEY='sb_publishable_xks7gBla4x8TVxbcr0Bnzw_h-USANI5';
+const db=window.supabase?.createClient(SUPABASE_URL,SUPABASE_KEY);
+const localKey='coachhub-calendar-v1';
 
-const $ = id => document.getElementById(id);
+let events=[],selected=localDate(new Date()),view=new Date(),mode='month',editing=null,user=null;
+const weekdays=['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
 
-// Samma lagringsnyckel som tidigare.
-const key = "coachhub-calendar-v1";
+function localDate(d){
+return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')
+}
+function dateFrom(s){return new Date(s+'T12:00:00')}
+function monday(d){const a=new Date(d);a.setDate(a.getDate()-(a.getDay()+6)%7);return a}
+function addDays(d,n){const a=new Date(d);a.setDate(a.getDate()+n);return a}
+function cat(t){return t==='Match'?'match':t==='Möte'?'meeting':(t||'').toLowerCase().includes('analys')?'analysis':''}
+function min(t){const m=/^(\d\d?):(\d\d)$/.exec(t||'');return m?+m[1]*60 + +m[2]:null}
+function end(e){
+if(e.endTime)return e.endTime;
+const n=min(e.time);
+const v=(n??990)+90;
+return String(Math.floor(v/60)%24).padStart(2,'0')+':'+String(v%60).padStart(2,'0')
+}
+function setStatus(s){$('syncStatus').textContent=s}
 
-let events = [];
-
-try {
-  events = JSON.parse(localStorage.getItem(key) || "[]");
-  if (!Array.isArray(events)) events = [];
-} catch {
-  events = [];
+async function loadEvents(){
+setStatus('Uppdaterar…');
+const {data,error}=await db.from('coachhub_events').select('*').order('date',{ascending:true});
+if(error){setStatus('Fel vid hämtning: '+error.message);return}
+events=data||[];
+setStatus('Gemensam kalender · uppdaterad');
+render();
+showImport()
 }
 
-let view = new Date();
-let selected = localDate(view);
-let editing = null;
-let mode = "month";
-
-const days = [
-  "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"
-];
-
-function localDate(d) {
-  return d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0") + "-" +
-    String(d.getDate()).padStart(2, "0");
+async function startSession(){
+if(!db){
+$('loginStatus').textContent='Kunde inte ladda Supabase. Kontrollera internetanslutningen.';
+return
+}
+const {data:{user:current}}=await db.auth.getUser();
+user=current;
+if(!user){
+$('loginPanel').hidden=false;
+$('app').hidden=true;
+$('logout').classList.add('hidden');
+return
+}
+const {data,error}=await db.from('coachhub_members').select('user_id').eq('user_id',user.id).maybeSingle();
+if(error||!data){
+$('loginPanel').hidden=false;
+$('app').hidden=true;
+$('loginStatus').textContent='Kontot är inloggat men ännu inte godkänt som medlem i Coach Hub.';
+$('logout').classList.remove('hidden');
+return
+}
+$('loginPanel').hidden=true;
+$('app').hidden=false;
+$('logout').classList.remove('hidden');
+await loadEvents()
 }
 
-function dateFrom(s) {
-  return new Date(s + "T12:00:00");
+$('sendLogin').onclick=async()=>{
+if(!db)return alert('Kunde inte ansluta till Supabase.');
+const email=$('email').value.trim();
+if(!email)return alert('Skriv din e-postadress.');
+$('loginStatus').textContent='Skickar…';
+const {error}=await db.auth.signInWithOtp({
+email,
+options:{
+shouldCreateUser:false,
+emailRedirectTo:location.origin+location.pathname
 }
-
-function monday(d) {
-  const a = new Date(
-    d.getFullYear(), d.getMonth(), d.getDate(), 12
-  );
-
-  a.setDate(a.getDate() - (a.getDay() + 6) % 7);
-  return a;
-}
-
-function plusDays(d, n) {
-  const a = new Date(d);
-  a.setDate(a.getDate() + n);
-  return a;
-}
-
-function category(t) {
-  return t === "Match" ? "match" :
-    t === "Möte" ? "meeting" :
-    (t || "").toLowerCase().includes("analys") ? "analysis" :
-    t === "Träning" ? "training" : "";
-}
-
-function mins(t) {
-  const m = /^(\d{1,2}):(\d{2})$/.exec(t || "");
-
-  return m
-    ? Number(m[1]) * 60 + Number(m[2])
-    : null;
-}
-
-function suggestEnd(start) {
-  const n = mins(start);
-  if (n === null) return "18:00";
-
-  const total = n + 90;
-
-  return String(Math.floor(total / 60) % 24)
-    .padStart(2, "0") +
-    ":" +
-    String(total % 60).padStart(2, "0");
-}
-
-function eventEnd(e) {
-  return e.endTime || suggestEnd(e.time || "16:30");
-}
-
-function save() {
-  localStorage.setItem(key, JSON.stringify(events));
-  render();
-}
-
-function setMode(next) {
-  mode = next;
-  render();
-}
-
-function navigate(n) {
-  if (mode === "month") {
-    view = new Date(
-      view.getFullYear(),
-      view.getMonth() + n,
-      1
-    );
-
-    selected = localDate(view);
-  } else {
-    selected = localDate(
-      plusDays(dateFrom(selected), 7 * n)
-    );
-
-    view = dateFrom(selected);
-  }
-
-  render();
-}
-
-function chooseDate(date) {
-  selected = date;
-  view = dateFrom(date);
-  render();
-}
-
-function render() {
-  $("monthTab").classList.toggle(
-    "active", mode === "month"
-  );
-
-  $("weekTab").classList.toggle(
-    "active", mode === "week"
-  );
-
-  $("monthView").hidden = mode !== "month";
-  $("weekView").hidden = mode !== "week";
-
-  if (mode === "month") {
-    renderMonth();
-  } else {
-    renderWeek();
-  }
-
-  renderDetails();
-}
-
-/* MÅNADSVY */
-
-function renderMonth() {
-  const y = view.getFullYear();
-  const m = view.getMonth();
-
-  $("period").textContent =
-    new Date(y, m, 1).toLocaleDateString("sv-SE", {
-      month: "long",
-      year: "numeric"
-    });
-
-  const cal = $("calendar");
-  cal.replaceChildren();
-
-  days.forEach(w => {
-    const el = document.createElement("div");
-    el.className = "weekday";
-    el.textContent = w;
-    cal.append(el);
-  });
-
-  const offset =
-    (new Date(y, m, 1).getDay() + 6) % 7;
-
-  for (let i = 0; i < offset; i++) {
-    cal.append(document.createElement("div"));
-  }
-
-  const numberOfDays =
-    new Date(y, m + 1, 0).getDate();
-
-  for (let d = 1; d <= numberOfDays; d++) {
-    const date = localDate(new Date(y, m, d));
-    const b = document.createElement("button");
-
-    b.className = "day" +
-      (date === selected ? " selected" : "") +
-      (date === localDate(new Date()) ? " today" : "");
-
-    const num = document.createElement("span");
-    num.textContent = d;
-    b.append(num);
-
-    const dots = document.createElement("div");
-    dots.className = "dots";
-
-    events
-      .filter(e => e.date === date)
-      .forEach(e => {
-        const dot = document.createElement("span");
-        dot.className = "dot " + category(e.type);
-        dots.append(dot);
-      });
-
-    b.append(dots);
-    b.onclick = () => chooseDate(date);
-
-    cal.append(b);
-  }
-}
-
-/* VECKONUMMER */
-
-function isoWeek(date) {
-  const d = new Date(Date.UTC(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate()
-  ));
-
-  d.setUTCDate(
-    d.getUTCDate() + 4 - (d.getUTCDay() || 7)
-  );
-
-  const yearStart =
-    new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-
-  return Math.ceil(
-    (((d - yearStart) / 86400000) + 1) / 7
-  );
-}
-
-/* VECKOVY 07:00–23:00 */
-
-function renderWeek() {
-  const start = monday(dateFrom(selected));
-  const end = plusDays(start, 6);
-  const weekNum = isoWeek(dateFrom(selected));
-
-  $("period").textContent =
-    "Vecka " + weekNum + " · " +
-    start.toLocaleDateString("sv-SE", {
-      day: "numeric",
-      month: "short"
-    }) +
-    "–" +
-    end.toLocaleDateString("sv-SE", {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
-    });
-
-  const header = $("weekHeader");
-  const body = $("weekBody");
-
-  header.replaceChildren();
-  body.replaceChildren();
-
-  header.append(document.createElement("div"));
-
-  const times = document.createElement("div");
-  times.className = "hour-col";
-
-  for (let h = 7; h <= 23; h++) {
-    const label = document.createElement("div");
-
-    label.className = "hour";
-    label.style.top = ((h - 7) * 60) + "px";
-
-    label.textContent =
-      String(h).padStart(2, "0") + ":00";
-
-    times.append(label);
-  }
-
-  body.append(times);
-
-  for (let i = 0; i < 7; i++) {
-    const date = localDate(plusDays(start, i));
-
-    const label = document.createElement("div");
-
-    label.className = "week-label" +
-      (date === localDate(new Date()) ? " current" : "") +
-      (date === selected ? " selected" : "");
-
-    const b = document.createElement("button");
-
-    b.textContent =
-      days[i] + " " +
-      dateFrom(date).getDate() + "/" +
-      (dateFrom(date).getMonth() + 1);
-
-    b.onclick = () => chooseDate(date);
-
-    label.append(b);
-    header.append(label);
-
-    const col = document.createElement("div");
-
-    col.className = "day-col" +
-      (date === localDate(new Date()) ? " current" : "");
-
-    col.onclick = ev => {
-      if (ev.target === col) {
-        chooseDate(date);
-      }
-    };
-
-    const todays = events
-      .filter(e => e.date === date)
-      .sort((a, b) =>
-        (a.time || "").localeCompare(b.time || "")
-      );
-
-    const rendered = [];
-
-    todays.forEach(e => {
-      const st = mins(e.time);
-      const en = mins(eventEnd(e));
-
-      if (
-        st === null ||
-        en === null ||
-        en <= 420 ||
-        st >= 1380
-      ) {
-        return;
-      }
-
-      const startMin = Math.max(420, st);
-      const endMin = Math.min(
-        1380,
-        Math.max(en, st + 15)
-      );
-
-      const block = document.createElement("button");
-
-      block.className =
-        "week-event " + category(e.type);
-
-      block.style.top =
-        (startMin - 420) + "px";
-
-      block.style.height =
-        Math.max(18, endMin - startMin - 2) + "px";
-
-      const time = document.createElement("span");
-
-      time.textContent =
-        (e.time || "") + "–" + eventEnd(e);
-
-      const title = document.createElement("strong");
-      title.textContent = e.title || "Aktivitet";
-
-      block.append(time, title);
-
-      block.title =
-        (e.title || "") + " " +
-        (e.time || "") + "–" + eventEnd(e);
-
-      block.onclick = ev => {
-        ev.stopPropagation();
-        chooseDate(date);
-        openForm(e.id);
-      };
-
-      const overlapping = rendered.find(x =>
-        startMin < x.end && endMin > x.start
-      );
-
-      if (overlapping) {
-        block.classList.add("overlap", "second");
-        overlapping.el.classList.add("overlap");
-      }
-
-      rendered.push({
-        start: startMin,
-        end: endMin,
-        el: block
-      });
-
-      col.append(block);
-    });
-
-    body.append(col);
-  }
-}
-
-/* AKTIVITETER FÖR VALD DAG */
-
-function renderDetails() {
-  $("dateTitle").textContent =
-    dateFrom(selected).toLocaleDateString("sv-SE", {
-      weekday: "long",
-      day: "numeric",
-      month: "long"
-    });
-
-  const list = $("activities");
-  list.replaceChildren();
-
-  const dayEvents = events
-    .filter(e => e.date === selected)
-    .sort((a, b) =>
-      (a.time || "").localeCompare(b.time || "")
-    );
-
-  if (!dayEvents.length) {
-    const p = document.createElement("p");
-    p.textContent = "Inget planerat den här dagen.";
-    list.append(p);
-  }
-
-  dayEvents.forEach(e => {
-    const a = document.createElement("article");
-    a.className = category(e.type);
-
-    const head = document.createElement("div");
-    head.className = "event-head";
-
-    const type = document.createElement("span");
-    type.className = "event-type";
-    type.textContent = e.type || "Aktivitet";
-
-    const times = document.createElement("div");
-    times.className = "times";
-
-    [
-      ["Start", e.time || "–"],
-      ["Slut", e.endTime || "–"]
-    ].forEach(([label, value]) => {
-      const box = document.createElement("div");
-      box.className = "time-box";
-
-      const sm = document.createElement("small");
-      sm.textContent = label;
-
-      const strong = document.createElement("strong");
-      strong.textContent = value;
-
-      box.append(sm, strong);
-      times.append(box);
-    });
-
-    head.append(type, times);
-
-    const h = document.createElement("h3");
-    h.textContent = e.title;
-
-    const p = document.createElement("p");
-    p.textContent = e.place
-      ? "📍 " + e.place
-      : "";
-
-    a.append(head, h, p);
-
-    if (e.notes) {
-      const n = document.createElement("p");
-      n.textContent = e.notes;
-      a.append(n);
-    }
-
-    if (e.link && /^https?:\/\//i.test(e.link)) {
-      const link = document.createElement("a");
-
-      link.href = e.link;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = "Öppna dokument";
-
-      a.append(link);
-    }
-
-    a.onclick = ev => {
-      if (ev.target.tagName !== "A") {
-        openForm(e.id);
-      }
-    };
-
-    list.append(a);
-  });
-}
-
-/* SKAPA OCH REDIGERA */
-
-function openForm(id) {
-  const e = events.find(x => x.id === id);
-  editing = e?.id || null;
-
-  $("form").reset();
-
-  [
-    "title", "date", "time", "type",
-    "place", "notes", "link"
-  ].forEach(k => {
-    $(k).value = e?.[k] || "";
-  });
-
-  if (e) {
-    $("endTime").value =
-      e.endTime || suggestEnd(e.time || "16:30");
-  } else {
-    $("date").value = selected;
-    $("time").value = "16:30";
-    $("endTime").value = "18:00";
-  }
-
-  $("formTitle").textContent =
-    e ? "Redigera aktivitet" : "Ny aktivitet";
-
-  $("delete").style.display =
-    e ? "block" : "none";
-
-  $("modal").classList.add("open");
-}
-
-function closeForm() {
-  $("modal").classList.remove("open");
-}
-
-$("form").onsubmit = ev => {
-  ev.preventDefault();
-
-  if ($("endTime").value <= $("time").value) {
-    alert("Sluttiden måste vara senare än starttiden.");
-    return;
-  }
-
-  const e = {
-    id: editing || String(Date.now())
-  };
-
-  [
-    "title", "date", "time", "endTime",
-    "type", "place", "notes", "link"
-  ].forEach(k => {
-    e[k] = $(k).value;
-  });
-
-  events = events.filter(x => x.id !== e.id);
-  events.push(e);
-
-  selected = e.date;
-  view = dateFrom(e.date);
-
-  save();
-  closeForm();
+});
+$('loginStatus').textContent=error?'Fel: '+error.message:'Kontrollera din e-post och öppna inloggningslänken på samma enhet.'
 };
 
-function removeActivity() {
-  if (editing && confirm("Radera aktiviteten?")) {
-    events = events.filter(e => e.id !== editing);
-    save();
-    closeForm();
-  }
+$('logout').onclick=async()=>{
+await db.auth.signOut();
+user=null;
+events=[];
+await startSession()
+};
+
+if(db){
+db.auth.onAuthStateChange(()=>{setTimeout(startSession,0)});
+startSession()
 }
 
-render();
+$('monthTab').onclick=()=>{mode='month';render()};
+$('weekTab').onclick=()=>{mode='week';render()};
+$('prev').onclick=()=>navigate(-1);
+$('next').onclick=()=>navigate(1);
 
+function navigate(n){
+if(mode==='month'){
+view=new Date(view.getFullYear(),view.getMonth()+n,1);
+selected=localDate(view)
+}else{
+selected=localDate(addDays(dateFrom(selected),7*n));
+view=dateFrom(selected)
+}
+render()
+}
+
+function chooseDate(d){
+selected=d;
+view=dateFrom(d);
+render()
+}
+
+function render(){
+$('monthTab').classList.toggle('active',mode==='month');
+$('weekTab').classList.toggle('active',mode==='week');
+$('monthView').hidden=mode!=='month';
+$('weekView').hidden=mode!=='week';
+if(mode==='month')renderMonth();
+else renderWeek();
+renderDetails()
+}
+
+function renderMonth(){
+const y=view.getFullYear(),m=view.getMonth(),cal=$('monthView');
+$('period').textContent=new Date(y,m,1).toLocaleDateString('sv-SE',{month:'long',year:'numeric'});
+cal.replaceChildren();
+weekdays.forEach(w=>{
+const e=document.createElement('div');
+e.className='weekday';
+e.textContent=w;
+cal.append(e)
+});
+for(let i=0;i<(new Date(y,m,1).getDay()+6)%7;i++)
+cal.append(document.createElement('div'));
+for(let d=1;d<=new Date(y,m+1,0).getDate();d++){
+const date=localDate(new Date(y,m,d)),b=document.createElement('button');
+b.className='day'+(date===selected?' sel':'')+(date===localDate(new Date())?' today':'');
+b.textContent=d;
+const dots=document.createElement('div');
+dots.className='dots';
+events.filter(e=>e.date===date).forEach(e=>{
+const dot=document.createElement('span');
+dot.className='dot '+cat(e.type);
+dots.append(dot)
+});
+b.append(dots);
+b.onclick=()=>chooseDate(date);
+cal.append(b)
+}
+}
+
+function isoWeek(d){
+const a=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+a.setUTCDate(a.getUTCDate()+4-(a.getUTCDay()||7));
+const y=new Date(Date.UTC(a.getUTCFullYear(),0,1));
+return Math.ceil((((a-y)/86400000)+1)/7)
+}
+
+function renderWeek(){
+const start=monday(dateFrom(selected)),last=addDays(start,6);
+$('period').textContent='Vecka '+isoWeek(dateFrom(selected))+' · '+start.toLocaleDateString('sv-SE',{day:'numeric',month:'short'})+'–'+last.toLocaleDateString('sv-SE',{day:'numeric',month:'short',year:'numeric'});
+const head=$('weekHead'),grid=$('weekGrid');
+head.replaceChildren();
+grid.replaceChildren();
+head.append(document.createElement('div'));
+const hours=document.createElement('div');
+hours.className='hours';
+for(let h=7;h<=23;h++){
+const el=document.createElement('div');
+el.className='hour';
+el.style.top=((h-7)*60)+'px';
+el.textContent=String(h).padStart(2,'0')+':00';
+hours.append(el)
+}
+grid.append(hours);
+
+for(let i=0;i<7;i++){
+const date=localDate(addDays(start,i)),b=document.createElement('button');
+b.textContent=weekdays[i]+' '+dateFrom(date).getDate()+'/'+(dateFrom(date).getMonth()+1);
+b.onclick=()=>chooseDate(date);
+head.append(b);
+const col=document.createElement('div');
+col.className='daycol'+(date===localDate(new Date())?' today':'');
+const occupied=[];
+
+events.filter(e=>e.date===date).sort((a,b)=>(a.time||'').localeCompare(b.time||'')).forEach(e=>{
+const st=min(e.time),en=min(end(e));
+if(st===null||en===null||en<=420||st>=1380)return;
+const a=Math.max(st,420),z=Math.min(en,1380),block=document.createElement('button');
+block.className='block '+cat(e.type);
+block.style.top=(a-420)+'px';
+block.style.height=Math.max(18,z-a-2)+'px';
+const t=document.createElement('span');
+t.textContent=(e.time||'')+'–'+end(e);
+const title=document.createElement('strong');
+title.textContent=e.title;
+block.append(t,title);
+block.onclick=()=>{chooseDate(date);openForm(e.id)};
+const conflicts=occupied.filter(o=>a<o.end&&z>o.start);
+if(conflicts.length){
+const width=100/(conflicts.length+1);
+conflicts.forEach((o,j)=>{
+o.el.style.left=(j*width)+'%';
+o.el.style.width=width+'%';
+o.el.style.right='auto'
+});
+block.style.left=(conflicts.length*width)+'%';
+block.style.width=width+'%';
+block.style.right='auto'
+}
+occupied.push({start:a,end:z,el:block});
+col.append(block)
+});
+grid.append(col)
+}
+}
+
+function renderDetails(){
+$('dateTitle').textContent=dateFrom(selected).toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long'});
+const list=$('activities');
+list.replaceChildren();
+const items=events.filter(e=>e.date===selected).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+if(!items.length){
+const p=document.createElement('p');
+p.textContent='Inget planerat den här dagen.';
+list.append(p)
+}
+items.forEach(e=>{
+const a=document.createElement('article');
+a.className=cat(e.type);
+const top=document.createElement('div');
+top.className='eventtop';
+const type=document.createElement('b');
+type.textContent=e.type;
+const times=document.createElement('div');
+times.className='timebox';
+[['Start',e.time],['Slut',e.endTime||'–']].forEach(([label,val])=>{
+const box=document.createElement('div'),small=document.createElement('small'),strong=document.createElement('strong');
+small.textContent=label;
+strong.textContent=val;
+box.append(small,strong);
+times.append(box)
+});
+top.append(type,times);
+const h=document.createElement('h3');
+h.textContent=e.title;
+a.append(top,h);
+if(e.place){
+const p=document.createElement('p');
+p.textContent='📍 '+e.place;
+a.append(p)
+}
+if(e.notes){
+const p=document.createElement('p');
+p.textContent=e.notes;
+a.append(p)
+}
+if(e.link&&/^https?:\/\//i.test(e.link)){
+const link=document.createElement('a');
+link.href=e.link;
+link.target='_blank';
+link.rel='noopener noreferrer';
+link.textContent='Öppna dokument';
+a.append(link)
+}
+a.onclick=ev=>{if(ev.target.tagName!=='A')openForm(e.id)};
+list.append(a)
+})
+}
+
+function openForm(id){
+const e=events.find(x=>x.id===id);
+editing=e?.id||null;
+$('form').reset();
+['title','date','time','type','place','notes','link'].forEach(k=>$(k).value=e?.[k]||'');
+$('date').value=e?.date||selected;
+$('time').value=e?.time||'16:30';
+$('endTime').value=e?end(e):'18:00';
+$('formTitle').textContent=e?'Redigera aktivitet':'Ny aktivitet';
+$('delete').hidden=!e;
+$('modal').classList.add('open')
+}
+
+function closeForm(){$('modal').classList.remove('open')}
+$('newEvent').onclick=()=>openForm();
+$('addBottom').onclick=()=>openForm();
+$('cancel').onclick=closeForm;
+
+$('form').onsubmit=async ev=>{
+ev.preventDefault();
+if($('endTime').value<=$('time').value)
+return alert('Sluttiden måste vara senare än starttiden.');
+const e={
+id:editing||crypto.randomUUID(),
+created_by:editing?(events.find(x=>x.id===editing)?.created_by||user.id):user.id
+};
+['title','date','time','endTime','type','place','notes','link'].forEach(k=>e[k]=$(k).value);
+const {error}=await db.from('coachhub_events').upsert(e);
+if(error)return alert('Kunde inte spara: '+error.message);
+selected=e.date;
+view=dateFrom(e.date);
+closeForm();
+await loadEvents()
+};
+
+$('delete').onclick=async()=>{
+if(!editing||!confirm('Radera aktiviteten för alla tränare?'))return;
+const {error}=await db.from('coachhub_events').delete().eq('id',editing);
+if(error)return alert('Kunde inte radera: '+error.message);
+closeForm();
+await loadEvents()
+};
+
+function showImport(){
+let old=[];
+try{old=JSON.parse(localStorage.getItem(localKey)||'[]')}catch{}
+if(!Array.isArray(old))old=[];
+const missing=old.filter(e=>e.id&&!events.some(x=>x.id===e.id));
+$('importPanel').hidden=!missing.length;
+$('importDescription').textContent=missing.length+' aktiviteter finns sparade lokalt på den här enheten men saknas i den gemensamma kalendern. Importera dem bara en gång.'
+}
+
+$('importButton').onclick=async()=>{
+let old=[];
+try{old=JSON.parse(localStorage.getItem(localKey)||'[]')}catch{}
+if(!Array.isArray(old))return;
+const missing=old.filter(e=>e.id&&!events.some(x=>x.id===e.id));
+if(!missing.length)return showImport();
+if(!confirm('Importera '+missing.length+' aktiviteter till den gemensamma kalendern?'))return;
+let count=0;
+for(const e of missing){
+const payload={
+id:String(e.id),
+title:e.title||'Aktivitet',
+date:e.date,
+time:e.time||'16:30',
+endTime:end(e),
+type:e.type||'Övrigt',
+place:e.place||'',
+notes:e.notes||'',
+link:e.link||'',
+created_by:user.id
+};
+const {error}=await db.from('coachhub_events').upsert(payload,{onConflict:'id',ignoreDuplicates:true});
+if(error){
+$('importStatus').textContent='Importen avbröts efter '+count+' aktiviteter: '+error.message;
+await loadEvents();
+return
+}
+count++
+}
+$('importStatus').textContent=count+' aktiviteter importerade.';
+await loadEvents()
+};
 </script>
 </body>
 </html>
