@@ -3,350 +3,236 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#123c2b">
 <title>Coach Hub</title>
-
 <style>
-:root{
-  --green:#174632;
-  --dark:#103425;
-  --bg:#f5f7f5;
-  --line:#e0e8e2;
-  --text:#183b2b;
-  --muted:#687a6d;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-}
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;--green:#174632;--bg:#f5f7f5;--line:#dce6de;--text:#183b2b}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text)}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer;border:0}
 [hidden]{display:none!important}
-.app{max-width:1450px;margin:auto;padding:12px 10px 90px}
-.header{
-  background:linear-gradient(125deg,#103425,#236b4b);
-  color:white;border-radius:17px;padding:18px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;
-}
-.brand{display:flex;align-items:center;gap:11px}
-.brand-icon{font-size:27px}
-.brand h1{font-size:25px;margin:0}
-.brand p{font-size:12px;margin:3px 0 0;color:#d6e8dc}
-.header button{background:#ffffff24;color:white;border:1px solid #ffffff44}
-.btn{
-  background:var(--green);color:white;border-radius:10px;
-  padding:11px 14px;font-weight:700;
-}
-.btn-light{background:#e7eee9;color:var(--green)}
-.topbar{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:10px;margin:15px 2px;
-}
-.status{font-size:12px;color:var(--muted)}
-.tabs{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:4px;padding:4px;border-radius:12px;background:#e5ede7;
-  margin:12px 0;
-}
-.tabs button{
-  border-radius:9px;padding:11px 5px;
-  background:transparent;color:var(--green);font-weight:700;
-}
-.tabs button.active{background:white;box-shadow:0 2px 7px #173c2c16}
-.nav{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:5px;background:white;border:1px solid var(--line);
-  border-radius:14px;padding:8px;margin-bottom:12px;
-}
-.nav h2{font-size:16px;margin:0;text-align:center;flex:1}
-.nav button{
-  background:#edf3ef;color:var(--green);
-  border-radius:9px;padding:9px 11px;font-weight:750;
-}
-.calendar-card{
-  background:white;border:1px solid var(--line);
-  border-radius:14px;overflow:hidden;
-}
-.week-scroll{width:100%;overflow:hidden}
-.week-board{width:100%;min-width:0}
-.week-head,.week-grid{
-  display:grid;
-  grid-template-columns:37px repeat(7,minmax(0,1fr));
-}
+.app{max-width:1400px;margin:auto;padding:12px 9px 100px}
+.header{background:linear-gradient(120deg,#103425,#24704d);border-radius:17px;padding:18px;color:white;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.header h1{margin:0;font-size:25px}
+.header p{margin:3px 0 0;font-size:12px;color:#d6e9dd}
+.btn{background:var(--green);color:white;border-radius:10px;padding:11px 14px;font-weight:700}
+.header .btn{background:#ffffff25}
+.light{background:#e7eee9;color:var(--green)}
+.danger{background:#a93636;color:white}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:15px 2px}
+.status{font-size:12px;color:#63766a}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:#e5ede7;gap:4px;padding:4px;border-radius:12px;margin:12px 0}
+.tabs button{background:transparent;border-radius:9px;padding:11px 5px;color:var(--green);font-weight:700}
+.tabs button.active{background:white;box-shadow:0 2px 7px #173c2c15}
+.nav{display:flex;align-items:center;gap:5px;background:white;border:1px solid var(--line);border-radius:14px;padding:8px;margin-bottom:12px}
+.nav h2{flex:1;text-align:center;font-size:15px;margin:0}
+.nav button{background:#edf3ef;color:var(--green);padding:9px 11px;border-radius:9px;font-weight:700}
+.calendar{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.week-head,.week-grid{display:grid;grid-template-columns:34px repeat(7,minmax(0,1fr))}
 .week-head{border-bottom:1px solid var(--line)}
-.week-head button{
-  background:white;color:var(--text);
-  border-left:1px solid var(--line);
-  border-radius:0;padding:9px 0;
-  min-width:0;font-size:10px;font-weight:700;
-}
-.week-head button.today{background:#e4f2e8}
-.week-head button.selected{box-shadow:inset 0 -3px #257d52}
+.week-head button{min-width:0;background:white;border-left:1px solid var(--line);padding:9px 0;font-size:10px;color:var(--text);font-weight:700}
+.week-head button.today{background:#e3f2e8}
+.week-head button.selected{box-shadow:inset 0 -3px #27835a}
 .week-grid{position:relative}
-.hour-axis{position:relative;background:#fff}
-.hour-label{
-  position:absolute;right:3px;transform:translateY(-6px);
-  color:#657469;font-size:9px;
-}
-.day-column{
-  position:relative;min-width:0;
-  border-left:1px solid #e0e5e1;
-  overflow:hidden;
-}
-.day-column.today{background-color:#f0f8f2}
-.event-block{
-  position:absolute;left:1px;right:1px;
-  min-width:0;overflow:hidden;text-align:left;
-  padding:3px 2px;border-radius:4px;
-  border-left:2px solid;
-  font-size:9px;line-height:1.15;
-  overflow-wrap:anywhere;
-}
-.event-block strong{display:block;font-size:9px;overflow-wrap:anywhere}
-.event-block small{display:block;font-size:8px;margin-bottom:2px}
+.axis{position:relative}
+.hour{position:absolute;right:2px;transform:translateY(-6px);font-size:9px;color:#6b796e}
+.daycol{position:relative;min-width:0;overflow:hidden;border-left:1px solid #dfe6e0}
+.daycol.today{background-color:#f0f8f2}
+.block{position:absolute;left:1px;right:1px;min-width:0;overflow:hidden;border-radius:4px;text-align:left;padding:3px 2px;border-left:2px solid;overflow-wrap:anywhere;line-height:1.15}
+.block small{display:block;font-size:8px;margin-bottom:2px}
+.block strong{display:block;font-size:9px}
 .training{background:#f6b8b4;color:#5c1b19;border-color:#d9514c}
 .match{background:#ffe08a;color:#543c00;border-color:#dfa928}
 .analysis{background:#c5dafb;color:#1c3e70;border-color:#6491d4}
 .meeting{background:#e4d1f5;color:#59347a;border-color:#9b74c5}
 .other{background:#b9e1f2;color:#164b65;border-color:#57a8ce}
-.time-settings{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:8px;padding:12px;background:white;border-top:1px solid var(--line);
-}
-.time-settings span{font-size:12px;color:var(--muted)}
-.time-options{display:flex;gap:4px;background:#edf2ee;padding:4px;border-radius:12px}
-.time-options button{
-  background:transparent;color:var(--green);
-  padding:8px 11px;border-radius:9px;font-size:12px;font-weight:700;
-}
-.time-options button.active{background:var(--green);color:white}
-.month-grid{
-  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
-  gap:3px;padding:6px;
-}
-.weekday{text-align:center;font-size:11px;font-weight:700;padding:8px 0}
-.month-day{
-  background:#f8faf8;border:1px solid var(--line);
-  border-radius:7px;min-height:80px;
-  text-align:left;padding:6px;min-width:0;color:var(--text);
-}
+.scale-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px;background:white;border-top:1px solid var(--line)}
+.scale-bar span{font-size:12px;color:#66796d}
+.scale-options{display:flex;gap:4px;padding:4px;border-radius:11px;background:#edf2ee}
+.scale-options button{background:transparent;color:var(--green);font-size:12px;font-weight:700;border-radius:8px;padding:8px}
+.scale-options button.active{background:var(--green);color:white}
+.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;padding:6px}
+.weekday{text-align:center;padding:8px 0;font-size:11px;font-weight:700}
+.month-day{background:#f8faf8;border:1px solid var(--line);border-radius:7px;min-height:75px;text-align:left;padding:6px;min-width:0;color:var(--text)}
 .month-day.today{background:#e7f4eb}
 .month-day.selected{outline:2px solid #27835a}
 .dots{display:flex;gap:3px;flex-wrap:wrap;margin-top:7px}
-.dot{width:7px;height:7px;border-radius:50%;background:#58a6ca}
-.dot.training{background:#d9514c}
-.dot.match{background:#dfa928}
-.dot.analysis{background:#6491d4}
-.dot.meeting{background:#9b74c5}
-.list-panel{background:white;border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:15px}
+.dot{width:7px;height:7px;border-radius:50%}
+.list-panel,.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:15px;margin-top:14px}
 .list-panel h3{margin:0 0 12px;font-size:17px;text-transform:capitalize}
-.list-item{
-  width:100%;display:flex;gap:11px;align-items:flex-start;
-  background:#f5f8f6;color:var(--text);border:1px solid var(--line);
-  border-left:4px solid #57a8ce;border-radius:10px;
-  padding:12px;text-align:left;margin:8px 0;
-}
+.list-item{width:100%;display:flex;gap:10px;text-align:left;background:#f6f9f7;border:1px solid var(--line);border-left:4px solid #57a8ce;border-radius:10px;padding:12px;margin:8px 0;color:var(--text)}
 .list-item.training{border-left-color:#d9514c}
 .list-item.match{border-left-color:#dfa928}
 .list-item.analysis{border-left-color:#6491d4}
 .list-item.meeting{border-left-color:#9b74c5}
 .list-time{font-size:12px;font-weight:800;min-width:43px}
-.list-info{min-width:0}
 .list-info strong{display:block;font-size:14px}
-.list-info small{display:block;color:var(--muted);margin-top:4px}
-.empty{color:var(--muted);font-size:13px}
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:5;
-  display:flex;justify-content:space-around;align-items:center;
-  background:#ffffffef;backdrop-filter:blur(15px);
-  border-top:1px solid var(--line);
-  padding:8px 6px max(9px,env(safe-area-inset-bottom));
-}
-.bottom-nav button{
-  background:transparent;color:var(--green);
-  display:flex;flex-direction:column;align-items:center;
-  gap:3px;font-size:11px;font-weight:700;
-  padding:5px 10px;
-}
-.bottom-nav button span{font-size:22px}
-.bottom-nav .add{
-  background:var(--green);color:white;
-  border-radius:50%;width:52px;height:52px;
-  font-size:31px;padding:0;justify-content:center;
-}
-.panel{
-  background:white;border:1px solid var(--line);
-  border-radius:14px;padding:18px;margin:14px 0;
-}
-.panel h2{margin-top:0}
-label{display:block;font-weight:650;font-size:13px;margin:12px 0 5px}
-input,select,textarea{
-  width:100%;border:1px solid #cbd7cf;
-  border-radius:9px;padding:11px;background:white;
-  color:var(--text);font-size:16px;
-}
+.list-info small{display:block;color:#65786b;margin-top:4px}
+.empty{color:#68796d;font-size:13px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:5;display:flex;justify-content:space-around;align-items:center;background:#fffffff2;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 5px max(9px,env(safe-area-inset-bottom))}
+.bottom-nav button{background:transparent;color:var(--green);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:700;padding:5px}
+.bottom-nav button span{font-size:21px}
+.bottom-nav .add{background:var(--green);color:white;border-radius:50%;width:52px;height:52px;justify-content:center;font-size:30px}
 .login{max-width:450px;margin:35px auto}
-.login .btn{width:100%;margin-top:16px}
-.modal{
-  position:fixed;inset:0;background:#0009;z-index:20;
-  display:none;align-items:center;justify-content:center;
-  padding:12px;
-}
+label{display:block;font-size:13px;font-weight:650;margin:12px 0 5px}
+input,select,textarea{width:100%;border:1px solid #cbd7cf;border-radius:9px;padding:11px;background:white;color:var(--text);font-size:16px}
+.modal{position:fixed;inset:0;background:#0009;z-index:100;display:none;align-items:center;justify-content:center;padding:12px}
 .modal.open{display:flex}
-.modal form{
-  background:white;width:100%;max-width:500px;
-  max-height:93vh;overflow:auto;
-  border-radius:17px;padding:20px;
-}
-.modal h2{margin:0 0 12px}
+.modal form{background:white;width:100%;max-width:500px;max-height:90dvh;overflow-y:auto;overscroll-behavior:contain;border-radius:17px;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modal-head h2{margin:0}
+.close-x{background:#e7eee9;color:var(--green);width:42px;height:42px;border-radius:10px;font-size:25px;font-weight:700;flex-shrink:0}
 .time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .form-actions{display:flex;gap:7px;margin-top:20px}
-.form-actions button{flex:1;padding:12px 5px}
-.danger{background:#aa3939;color:white}
+.form-actions button{flex:1;padding:13px 5px}
+.document-button{display:block;width:100%;text-align:center;background:#e2efe7;color:#125b35;border:1px solid #a5cbb4;padding:13px;border-radius:10px;font-weight:800;text-decoration:none;margin-top:10px}
+.document-help{font-size:12px;color:#68796d;margin-top:6px}
 details summary{cursor:pointer;font-weight:700}
-a{color:#175b9c}
 @media(min-width:800px){
-  .app{padding:20px 24px 100px}
-  .week-head,.week-grid{
-    grid-template-columns:54px repeat(7,minmax(0,1fr));
-  }
-  .week-head button{font-size:13px}
-  .hour-label{font-size:11px}
-  .event-block{padding:5px;font-size:12px}
-  .event-block strong{font-size:12px}
-  .event-block small{font-size:10px}
-  .month-day{min-height:120px}
-  .bottom-nav{max-width:650px;left:50%;transform:translateX(-50%);border:1px solid var(--line);border-radius:18px 18px 0 0}
+.app{padding:20px 24px 100px}
+.week-head,.week-grid{grid-template-columns:54px repeat(7,minmax(0,1fr))}
+.week-head button{font-size:13px}
+.hour{font-size:11px}
+.block{padding:5px}
+.block strong{font-size:12px}
+.block small{font-size:10px}
+.month-day{min-height:120px}
+.bottom-nav{max-width:650px;left:50%;transform:translateX(-50%);border-radius:18px 18px 0 0}
 }
 @media(max-width:390px){
-  .app{padding-left:5px;padding-right:5px}
-  .week-head,.week-grid{
-    grid-template-columns:30px repeat(7,minmax(0,1fr));
-  }
-  .week-head button{font-size:9px}
-  .event-block{font-size:8px;padding:2px 1px}
-  .event-block strong{font-size:8px}
-  .event-block small{font-size:7px}
-  .nav h2{font-size:14px}
-  .nav button{padding:8px}
-  .time-options button{padding:7px 8px}
+.app{padding-left:5px;padding-right:5px}
+.week-head,.week-grid{grid-template-columns:30px repeat(7,minmax(0,1fr))}
+.week-head button{font-size:9px}
+.block{padding:2px 1px}
+.block strong{font-size:8px}
+.block small{font-size:7px}
+.nav h2{font-size:14px}
+.nav button{padding:8px}
 }
 </style>
 </head>
-
 <body>
+
 <div class="app">
-  <div class="header">
-    <div class="brand">
-      <div class="brand-icon">⚽</div>
-      <div>
-        <h1>Coach Hub</h1>
-        <p>Gemensam tränarkalender</p>
-      </div>
-    </div>
-    <button id="logout" class="btn" hidden>Logga ut</button>
+<header class="header">
+  <div>
+    <h1>⚽ Coach Hub</h1>
+    <p>Gemensam tränarkalender</p>
+  </div>
+  <button id="logout" class="btn" hidden>Logga ut</button>
+</header>
+
+<section id="loginPanel" class="panel login">
+  <h2>Logga in</h2>
+  <label>E-postadress</label>
+  <input id="email" type="email" autocomplete="email">
+  <label>Lösenord</label>
+  <input id="password" type="password" autocomplete="current-password">
+  <button id="loginButton" class="btn" style="width:100%;margin-top:16px">Logga in</button>
+  <p id="loginStatus" class="status"></p>
+</section>
+
+<main id="mainApp" hidden>
+  <div class="topbar">
+    <span id="syncStatus" class="status">Ansluter…</span>
+    <button id="newEvent" class="btn">+ Aktivitet</button>
   </div>
 
-  <div id="loginPanel" class="panel login">
-    <h2>Logga in</h2>
-    <p>Logga in med ditt tränarkonto.</p>
-    <label for="email">E-postadress</label>
-    <input id="email" type="email" autocomplete="email">
-    <label for="password">Lösenord</label>
-    <input id="password" type="password" autocomplete="current-password">
-    <button id="loginButton" class="btn">Logga in</button>
-    <p id="loginStatus" class="status"></p>
+  <div class="tabs">
+    <button id="weekTab" class="active">Vecka</button>
+    <button id="monthTab">Månad</button>
+    <button id="listTab">Lista</button>
   </div>
 
-  <div id="mainApp" hidden>
-    <div class="topbar">
-      <span id="syncStatus" class="status">Ansluter…</span>
-      <button id="newEvent" class="btn">+ Aktivitet</button>
-    </div>
+  <div class="nav">
+    <button id="prev">‹</button>
+    <button id="todayButton">Idag</button>
+    <h2 id="period"></h2>
+    <button id="next">›</button>
+  </div>
 
-    <div class="tabs">
-      <button id="weekTab" class="active">Vecka</button>
-      <button id="monthTab">Månad</button>
-      <button id="listTab">Lista</button>
-    </div>
-
-    <div class="nav">
-      <button id="prev">‹</button>
-      <button id="todayButton">Idag</button>
-      <h2 id="period"></h2>
-      <button id="next">›</button>
-    </div>
-
-    <div id="weekView" class="calendar-card">
-      <div class="week-scroll">
-        <div class="week-board">
-          <div class="week-head" id="weekHead"></div>
-          <div class="week-grid" id="weekGrid"></div>
-        </div>
+  <div id="weekView" class="calendar">
+    <div id="weekHead" class="week-head"></div>
+    <div id="weekGrid" class="week-grid"></div>
+    <div class="scale-bar">
+      <span>Tidsintervall</span>
+      <div class="scale-options">
+        <button data-scale="30">30 min</button>
+        <button data-scale="60" class="active">60 min</button>
+        <button data-scale="90">90 min</button>
       </div>
-      <div class="time-settings">
-        <span>Tidsintervall</span>
-        <div class="time-options">
-          <button data-scale="30">30 min</button>
-          <button data-scale="60" class="active">60 min</button>
-          <button data-scale="90">90 min</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="monthView" class="calendar-card" hidden>
-      <div id="monthGrid" class="month-grid"></div>
-    </div>
-
-    <div id="listView" class="panel" hidden>
-      <h2>Veckans aktiviteter</h2>
-      <div id="weekList"></div>
-    </div>
-
-    <div class="list-panel">
-      <h3 id="dateTitle"></h3>
-      <div id="dayActivities"></div>
-    </div>
-
-    <details class="panel">
-      <summary>Mitt konto och lösenord</summary>
-      <p id="accountEmail" class="status"></p>
-      <label>Nytt lösenord</label>
-      <input id="newPassword" type="password" minlength="12">
-      <label>Bekräfta lösenord</label>
-      <input id="confirmPassword" type="password" minlength="12">
-      <button id="savePassword" class="btn" style="margin-top:12px">Spara lösenord</button>
-      <p id="passwordStatus" class="status"></p>
-    </details>
-
-    <div id="importPanel" class="panel" hidden>
-      <h3>Importera tidigare aktiviteter</h3>
-      <p id="importDescription" class="status"></p>
-      <button id="importButton" class="btn">Importera</button>
-      <p id="importStatus" class="status"></p>
     </div>
   </div>
+
+  <div id="monthView" class="calendar" hidden>
+    <div id="monthGrid" class="month-grid"></div>
+  </div>
+
+  <section id="listView" class="panel" hidden>
+    <h2>Veckans aktiviteter</h2>
+    <div id="weekList"></div>
+  </section>
+
+  <section class="list-panel">
+    <h3 id="dateTitle"></h3>
+    <div id="dayActivities"></div>
+  </section>
+
+  <details class="panel">
+    <summary>Mitt konto och lösenord</summary>
+    <p id="accountEmail" class="status"></p>
+    <label>Nytt lösenord</label>
+    <input id="newPassword" type="password" minlength="12">
+    <label>Bekräfta lösenord</label>
+    <input id="confirmPassword" type="password" minlength="12">
+    <button id="savePassword" class="btn" style="margin-top:12px">Spara lösenord</button>
+    <p id="passwordStatus" class="status"></p>
+  </details>
+
+  <section id="importPanel" class="panel" hidden>
+    <h3>Importera tidigare aktiviteter</h3>
+    <p id="importDescription" class="status"></p>
+    <button id="importButton" class="btn">Importera</button>
+    <p id="importStatus" class="status"></p>
+  </section>
+</main>
 </div>
 
-<div id="bottomNav" class="bottom-nav" hidden>
+<nav id="bottomNav" class="bottom-nav" hidden>
   <button id="bottomToday"><span>▣</span>Idag</button>
   <button id="bottomMonth"><span>▦</span>Månad</button>
   <button id="bottomAdd" class="add" aria-label="Ny aktivitet">+</button>
   <button id="bottomList"><span>☷</span>Lista</button>
   <button id="bottomWeek"><span>▤</span>Vecka</button>
-</div>
+</nav>
 
-<div id="modal" class="modal">
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
   <form id="eventForm">
-    <h2 id="formTitle">Ny aktivitet</h2>
-    <label>Rubrik<input id="title" required></label>
-    <label>Datum<input id="date" type="date" required></label>
-    <div class="time-row">
-      <div><label>Starttid</label><input id="time" type="time" required></div>
-      <div><label>Sluttid</label><input id="endTime" type="time" required></div>
+    <div class="modal-head">
+      <h2 id="formTitle">Ny aktivitet</h2>
+      <button type="button" id="closeX" class="close-x" aria-label="Stäng">×</button>
     </div>
-    <label>Typ</label>
+
+    <label for="title">Rubrik</label>
+    <input id="title" required>
+
+    <label for="date">Datum</label>
+    <input id="date" type="date" required>
+
+    <div class="time-row">
+      <div>
+        <label for="time">Starttid</label>
+        <input id="time" type="time" required>
+      </div>
+      <div>
+        <label for="endTime">Sluttid</label>
+        <input id="endTime" type="time" required>
+      </div>
+    </div>
+
+    <label for="type">Typ</label>
     <select id="type">
       <option>Träning</option>
       <option>Match</option>
@@ -356,12 +242,27 @@ a{color:#175b9c}
       <option>Möte</option>
       <option>Övrigt</option>
     </select>
-    <label>Plats<input id="place"></label>
-    <label>Anteckningar<textarea id="notes" rows="4"></textarea></label>
-    <label>Dokumentlänk<input id="link" type="url"></label>
+
+    <label for="place">Plats</label>
+    <input id="place">
+
+    <label for="notes">Anteckningar</label>
+    <textarea id="notes" rows="4"></textarea>
+
+    <label for="link">Dokumentlänk</label>
+    <input id="link" type="url" placeholder="https://www.icloud.com/...">
+
+    <a id="openDocument" class="document-button" href="#" target="_blank" rel="noopener noreferrer" hidden>
+      ↗ Öppna dokument
+    </a>
+    <p class="document-help">
+      Klistra in en delningslänk från iCloud Drive eller Keynote.
+      Filen måste vara delad med dem som ska kunna öppna den.
+    </p>
+
     <div class="form-actions">
-      <button type="button" id="cancel" class="btn btn-light">Avbryt</button>
-      <button type="button" id="delete" class="btn danger">Radera</button>
+      <button type="button" id="cancel" class="btn light">Avbryt</button>
+      <button type="button" id="delete" class="btn danger" hidden>Radera</button>
       <button type="submit" id="saveEvent" class="btn">Spara</button>
     </div>
   </form>
@@ -371,8 +272,8 @@ a{color:#175b9c}
 <script>
 "use strict";
 
-const $ = id => document.getElementById(id);
-const db = window.supabase?.createClient(
+const $=id=>document.getElementById(id);
+const db=window.supabase?.createClient(
   "https://vrzgwqygzftzjwnhhdxt.supabase.co",
   "sb_publishable_xks7gBla4x8TVxbcr0Bnzw_h-USANI5"
 );
@@ -427,11 +328,6 @@ function category(t){
   if((t||"").toLowerCase().includes("analys"))return "analysis";
   return "other";
 }
-function dateLabel(d){
-  return d.toLocaleDateString("sv-SE",{
-    weekday:"long",day:"numeric",month:"long"
-  });
-}
 function chooseDate(d){
   selected=d;
   view=dateFrom(d);
@@ -457,25 +353,25 @@ function navigate(n){
   render();
 }
 
-$("prev").onclick=()=>navigate(-1);
-$("next").onclick=()=>navigate(1);
-$("todayButton").onclick=goToday;
-$("bottomToday").onclick=goToday;
-$("weekTab").onclick=()=>changeMode("week");
-$("monthTab").onclick=()=>changeMode("month");
-$("listTab").onclick=()=>changeMode("list");
-$("bottomWeek").onclick=()=>changeMode("week");
-$("bottomMonth").onclick=()=>changeMode("month");
-$("bottomList").onclick=()=>changeMode("list");
+$("prev").addEventListener("click",()=>navigate(-1));
+$("next").addEventListener("click",()=>navigate(1));
+$("todayButton").addEventListener("click",goToday);
+$("bottomToday").addEventListener("click",goToday);
+$("weekTab").addEventListener("click",()=>changeMode("week"));
+$("monthTab").addEventListener("click",()=>changeMode("month"));
+$("listTab").addEventListener("click",()=>changeMode("list"));
+$("bottomWeek").addEventListener("click",()=>changeMode("week"));
+$("bottomMonth").addEventListener("click",()=>changeMode("month"));
+$("bottomList").addEventListener("click",()=>changeMode("list"));
 
 document.querySelectorAll("[data-scale]").forEach(button=>{
-  button.onclick=()=>{
+  button.addEventListener("click",()=>{
     scale=Number(button.dataset.scale);
     document.querySelectorAll("[data-scale]").forEach(b=>{
       b.classList.toggle("active",Number(b.dataset.scale)===scale);
     });
     renderWeek();
-  };
+  });
 });
 
 function render(){
@@ -485,7 +381,6 @@ function render(){
   ["week","month","list"].forEach(m=>{
     $(m+"Tab").classList.toggle("active",mode===m);
   });
-
   if(mode==="week")renderWeek();
   if(mode==="month")renderMonth();
   if(mode==="list")renderWeekList();
@@ -496,34 +391,35 @@ function renderWeek(){
   const start=monday(dateFrom(selected));
   const last=addDays(start,6);
   $("period").textContent="Vecka "+isoWeek(dateFrom(selected))+
-    ", "+start.toLocaleDateString("sv-SE",{month:"short",year:"numeric"});
+    " · "+start.toLocaleDateString("sv-SE",{month:"short",year:"numeric"});
 
   const head=$("weekHead"),grid=$("weekGrid");
   head.replaceChildren();
   grid.replaceChildren();
   head.append(document.createElement("div"));
 
-  // 30, 60 och 90 anger antalet pixlar per timme.
-  // Hela veckan behåller samma tidsintervall.
   const pxPerHour=scale===30?24:scale===60?36:50;
   const pxPerMinute=pxPerHour/60;
 
-  // Anpassa synlig tidsram efter veckans aktiviteter.
-  const weekEvents=events.filter(e=>e.date>=localDate(start)&&e.date<=localDate(last));
-  const starts=weekEvents.map(e=>minutes(e.time)).filter(n=>n!==null);
-  const ends=weekEvents.map(e=>minutes(end(e))).filter(n=>n!==null);
+  const weekEvents=events.filter(e=>
+    e.date>=localDate(start)&&e.date<=localDate(last)
+  );
+  const starts=weekEvents.map(e=>minutes(e.time))
+    .filter(n=>n!==null);
+  const ends=weekEvents.map(e=>minutes(end(e)))
+    .filter(n=>n!==null);
   const firstHour=starts.length?
     Math.max(0,Math.min(7,Math.floor(Math.min(...starts)/60))):7;
   const lastHour=ends.length?
     Math.min(24,Math.max(21,Math.ceil(Math.max(...ends)/60))):21;
-  const height=(lastHour-firstHour)*pxPerHour;
-  grid.style.height=height+"px";
+
+  grid.style.height=((lastHour-firstHour)*pxPerHour)+"px";
 
   const axis=document.createElement("div");
-  axis.className="hour-axis";
+  axis.className="axis";
   for(let h=firstHour;h<=lastHour;h++){
     const label=document.createElement("div");
-    label.className="hour-label";
+    label.className="hour";
     label.style.top=(h-firstHour)*pxPerHour+"px";
     label.textContent=String(h).padStart(2,"0")+":00";
     axis.append(label);
@@ -532,91 +428,96 @@ function renderWeek(){
 
   for(let i=0;i<7;i++){
     const date=localDate(addDays(start,i));
-    const button=document.createElement("button");
-    button.textContent=weekdays[i].toLowerCase()+" "+dateFrom(date).getDate();
-    if(date===localDate(new Date()))button.classList.add("today");
-    if(date===selected)button.classList.add("selected");
-    button.onclick=()=>chooseDate(date);
-    head.append(button);
+    const b=document.createElement("button");
+    b.textContent=weekdays[i]+" "+dateFrom(date).getDate();
+    if(date===localDate(new Date()))b.classList.add("today");
+    if(date===selected)b.classList.add("selected");
+    b.addEventListener("click",()=>chooseDate(date));
+    head.append(b);
 
     const col=document.createElement("div");
-    col.className="day-column";
+    col.className="daycol";
     if(date===localDate(new Date()))col.classList.add("today");
-
     col.style.backgroundImage=
       "repeating-linear-gradient(to bottom,transparent 0,transparent "+
-      (pxPerHour-1)+"px,#e0e6e1 "+(pxPerHour-1)+"px,#e0e6e1 "+pxPerHour+"px)";
+      (pxPerHour-1)+"px,#dfe6e0 "+(pxPerHour-1)+"px,#dfe6e0 "+
+      pxPerHour+"px)";
 
-    const dayEvents=events.filter(e=>e.date===date)
-      .sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+    events.filter(e=>e.date===date)
+      .sort((a,b)=>(a.time||"").localeCompare(b.time||""))
+      .forEach(e=>{
+        const st=minutes(e.time),en=minutes(end(e));
+        if(st===null||en===null)return;
+        const a=Math.max(st,firstHour*60);
+        const z=Math.min(en,lastHour*60);
+        if(z<=a)return;
 
-    dayEvents.forEach(e=>{
-      const st=minutes(e.time),en=minutes(end(e));
-      if(st===null||en===null)return;
-      const visibleStart=Math.max(st,firstHour*60);
-      const visibleEnd=Math.min(en,lastHour*60);
-      if(visibleEnd<=visibleStart)return;
+        const block=document.createElement("button");
+        block.className="block "+category(e.type);
+        block.style.top=(a-firstHour*60)*pxPerMinute+"px";
+        block.style.height=Math.max(15,(z-a)*pxPerMinute-2)+"px";
 
-      const block=document.createElement("button");
-      block.className="event-block "+category(e.type);
-      block.style.top=(visibleStart-firstHour*60)*pxPerMinute+"px";
-      block.style.height=Math.max(15,(visibleEnd-visibleStart)*pxPerMinute-2)+"px";
-
-      const time=document.createElement("small");
-      time.textContent=e.time||"";
-      const title=document.createElement("strong");
-      title.textContent=e.title||"Aktivitet";
-      block.append(time,title);
-      block.onclick=()=>openForm(e.id);
-      col.append(block);
-    });
+        const time=document.createElement("small");
+        time.textContent=e.time||"";
+        const title=document.createElement("strong");
+        title.textContent=e.title||"Aktivitet";
+        block.append(time,title);
+        block.addEventListener("click",()=>openForm(e.id));
+        col.append(block);
+      });
     grid.append(col);
   }
 }
 
 function renderMonth(){
   const y=view.getFullYear(),m=view.getMonth();
-  $("period").textContent=new Date(y,m,1).toLocaleDateString(
-    "sv-SE",{month:"long",year:"numeric"}
-  );
+  $("period").textContent=new Date(y,m,1)
+    .toLocaleDateString("sv-SE",{month:"long",year:"numeric"});
   const grid=$("monthGrid");
   grid.replaceChildren();
+
   weekdays.forEach(w=>{
     const el=document.createElement("div");
     el.className="weekday";
     el.textContent=w;
     grid.append(el);
   });
+
   const offset=(new Date(y,m,1).getDay()+6)%7;
   for(let i=0;i<offset;i++)grid.append(document.createElement("div"));
+
   const count=new Date(y,m+1,0).getDate();
   for(let d=1;d<=count;d++){
     const date=localDate(new Date(y,m,d));
-    const button=document.createElement("button");
-    button.className="month-day";
-    if(date===localDate(new Date()))button.classList.add("today");
-    if(date===selected)button.classList.add("selected");
+    const b=document.createElement("button");
+    b.className="month-day";
+    if(date===localDate(new Date()))b.classList.add("today");
+    if(date===selected)b.classList.add("selected");
+
     const num=document.createElement("strong");
     num.textContent=d;
     const dots=document.createElement("div");
     dots.className="dots";
+
     events.filter(e=>e.date===date).slice(0,8).forEach(e=>{
       const dot=document.createElement("span");
       dot.className="dot "+category(e.type);
       dots.append(dot);
     });
-    button.append(num,dots);
-    button.onclick=()=>chooseDate(date);
-    grid.append(button);
+    b.append(num,dots);
+    b.addEventListener("click",()=>chooseDate(date));
+    grid.append(b);
   }
 }
 
 function eventRow(e,showDate=false){
-  const button=document.createElement("button");
-  button.className="list-item "+category(e.type);
+  const b=document.createElement("button");
+  b.className="list-item "+category(e.type);
+
   const time=document.createElement("div");
   time.className="list-time";
   time.textContent=e.time||"–";
+
   const info=document.createElement("div");
   info.className="list-info";
   const title=document.createElement("strong");
@@ -627,21 +528,32 @@ function eventRow(e,showDate=false){
     (e.place?" · "+e.place:"")+
     " · "+(e.time||"")+"–"+end(e);
   info.append(title,details);
+
   if(e.notes){
     const notes=document.createElement("small");
     notes.textContent=e.notes;
     info.append(notes);
   }
-  button.append(time,info);
-  button.onclick=()=>openForm(e.id);
-  return button;
+  if(e.link){
+    const documentInfo=document.createElement("small");
+    documentInfo.textContent="📎 Dokument finns bifogat";
+    info.append(documentInfo);
+  }
+  b.append(time,info);
+  b.addEventListener("click",()=>openForm(e.id));
+  return b;
 }
+
 function renderDay(){
-  $("dateTitle").textContent=dateLabel(dateFrom(selected));
+  $("dateTitle").textContent=dateFrom(selected)
+    .toLocaleDateString("sv-SE",{
+      weekday:"long",day:"numeric",month:"long"
+    });
   const box=$("dayActivities");
   box.replaceChildren();
   const items=events.filter(e=>e.date===selected)
     .sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+
   if(!items.length){
     const p=document.createElement("p");
     p.className="empty";
@@ -650,6 +562,7 @@ function renderDay(){
   }
   items.forEach(e=>box.append(eventRow(e)));
 }
+
 function renderWeekList(){
   const start=localDate(monday(dateFrom(selected)));
   const finish=localDate(addDays(dateFrom(start),6));
@@ -689,6 +602,7 @@ async function startSession(){
   const {data:{user:current},error:authError}=await db.auth.getUser();
   if(version!==sessionVersion)return;
   user=authError?null:current;
+
   if(!user){
     $("loginPanel").hidden=false;
     $("mainApp").hidden=true;
@@ -696,9 +610,11 @@ async function startSession(){
     $("logout").hidden=true;
     return;
   }
+
   const {data,error}=await db.from("coachhub_members")
     .select("user_id").eq("user_id",user.id).maybeSingle();
   if(version!==sessionVersion)return;
+
   if(error||!data){
     $("loginPanel").hidden=false;
     $("mainApp").hidden=true;
@@ -707,6 +623,7 @@ async function startSession(){
     $("loginStatus").textContent="Kontot är inte godkänt som medlem.";
     return;
   }
+
   $("loginPanel").hidden=true;
   $("mainApp").hidden=false;
   $("bottomNav").hidden=false;
@@ -715,7 +632,7 @@ async function startSession(){
   await loadEvents();
 }
 
-$("loginButton").onclick=async()=>{
+$("loginButton").addEventListener("click",async()=>{
   if(!db)return;
   $("loginButton").disabled=true;
   $("loginStatus").textContent="Loggar in…";
@@ -733,20 +650,22 @@ $("loginButton").onclick=async()=>{
   }finally{
     $("loginButton").disabled=false;
   }
-};
+});
 
-$("logout").onclick=async()=>{
+$("logout").addEventListener("click",async()=>{
   await db.auth.signOut();
   user=null;
   events=[];
+  closeForm();
   await startSession();
-};
+});
 
-$("savePassword").onclick=async()=>{
+$("savePassword").addEventListener("click",async()=>{
   const password=$("newPassword").value;
   if(password.length<12)return alert("Använd minst 12 tecken.");
   if(password!==$("confirmPassword").value)
     return alert("Lösenorden matchar inte.");
+
   const {error}=await db.auth.updateUser({password});
   if(error){
     $("passwordStatus").textContent=error.message;
@@ -755,12 +674,36 @@ $("savePassword").onclick=async()=>{
   $("newPassword").value="";
   $("confirmPassword").value="";
   $("passwordStatus").textContent="Lösenordet är uppdaterat.";
-};
+});
 
+// Dokumenthantering
+function updateDocumentButton(){
+  const input=$("link").value.trim();
+  const button=$("openDocument");
+  let url;
+  try{
+    url=new URL(input);
+  }catch{
+    button.hidden=true;
+    button.removeAttribute("href");
+    return;
+  }
+  if(url.protocol!=="https:"&&url.protocol!=="http:"){
+    button.hidden=true;
+    button.removeAttribute("href");
+    return;
+  }
+  button.href=url.href;
+  button.hidden=false;
+}
+$("link").addEventListener("input",updateDocumentButton);
+
+// Aktivitetens formulär
 function openForm(id){
   const e=events.find(x=>x.id===id);
   editing=e?.id||null;
   $("eventForm").reset();
+
   ["title","date","time","type","place","notes","link"].forEach(k=>{
     $(k).value=e?.[k]||"";
   });
@@ -769,25 +712,63 @@ function openForm(id){
   $("endTime").value=e?end(e):"18:00";
   $("formTitle").textContent=e?"Redigera aktivitet":"Ny aktivitet";
   $("delete").hidden=!e;
+
+  updateDocumentButton();
   $("modal").classList.add("open");
+  document.body.style.overflow="hidden";
 }
+
 function closeForm(){
   $("modal").classList.remove("open");
+  document.body.style.overflow="";
+  editing=null;
 }
-$("newEvent").onclick=()=>openForm();
-$("bottomAdd").onclick=()=>openForm();
-$("cancel").onclick=closeForm();
 
-$("eventForm").onsubmit=async ev=>{
+$("newEvent").addEventListener("click",()=>openForm());
+$("bottomAdd").addEventListener("click",()=>openForm());
+
+// Tre sätt att stänga utan att spara
+$("cancel").addEventListener("click",function(event){
+  event.preventDefault();
+  event.stopPropagation();
+  closeForm();
+});
+$("closeX").addEventListener("click",function(event){
+  event.preventDefault();
+  event.stopPropagation();
+  closeForm();
+});
+$("modal").addEventListener("click",function(event){
+  if(event.target===$("modal"))closeForm();
+});
+document.addEventListener("keydown",function(event){
+  if(event.key==="Escape"&&$("modal").classList.contains("open")){
+    closeForm();
+  }
+});
+
+// Öppna dokumentlänken i ny flik
+$("openDocument").addEventListener("click",function(event){
+  const href=this.getAttribute("href");
+  if(!href||href==="#"){
+    event.preventDefault();
+    alert("Ange en giltig delningslänk först.");
+  }
+});
+
+$("eventForm").addEventListener("submit",async ev=>{
   ev.preventDefault();
   if(!user)return;
+
   if($("endTime").value<=$("time").value){
     alert("Sluttiden måste vara senare än starttiden.");
     return;
   }
+
   const e={id:editing||crypto.randomUUID()};
   ["title","date","time","endTime","type","place","notes","link"]
     .forEach(k=>{e[k]=$(k).value;});
+
   $("saveEvent").disabled=true;
   try{
     let result;
@@ -799,6 +780,7 @@ $("eventForm").onsubmit=async ev=>{
       result=await db.from("coachhub_events").insert(e);
     }
     if(result.error)throw result.error;
+
     selected=e.date;
     view=dateFrom(e.date);
     closeForm();
@@ -808,11 +790,12 @@ $("eventForm").onsubmit=async ev=>{
   }finally{
     $("saveEvent").disabled=false;
   }
-};
+});
 
-$("delete").onclick=async()=>{
+$("delete").addEventListener("click",async()=>{
   if(!editing||!user)return;
   if(!confirm("Radera aktiviteten för alla tränare?"))return;
+
   const {error}=await db.from("coachhub_events")
     .delete().eq("id",editing);
   if(error){
@@ -821,7 +804,7 @@ $("delete").onclick=async()=>{
   }
   closeForm();
   await loadEvents();
-};
+});
 
 function showImport(){
   let old=[];
@@ -834,16 +817,19 @@ function showImport(){
   $("importDescription").textContent=missing.length+
     " äldre aktiviteter finns lokalt på denna enhet.";
 }
-$("importButton").onclick=async()=>{
+
+$("importButton").addEventListener("click",async()=>{
   if(!user)return;
   let old=[];
   try{
     old=JSON.parse(localStorage.getItem(localKey)||"[]");
   }catch{}
   if(!Array.isArray(old))return;
+
   const missing=old.filter(e=>e.id&&!events.some(x=>x.id===e.id));
   if(!missing.length)return;
   if(!confirm("Importera "+missing.length+" aktiviteter?"))return;
+
   $("importButton").disabled=true;
   let count=0;
   try{
@@ -872,7 +858,7 @@ $("importButton").onclick=async()=>{
   }finally{
     $("importButton").disabled=false;
   }
-};
+});
 
 if(db){
   db.auth.onAuthStateChange(event=>{
