@@ -4,731 +4,297 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#183b2b">
+<meta name="theme-color" content="#173c2c">
 <title>Coach Hub</title>
 
 <style>
-  
-/* COACH HUB – RESPONSIV DESIGNUPPGRADERING */
-
 :root {
-  --ink: #17352b;
-  --forest: #1b4938;
-  --forest-dark: #103426;
-  --accent: #2d805d;
-  --paper: #f5f7f5;
-  --surface: #ffffff;
-  --line: #e1e9e3;
-  --muted: #64766c;
-  --shadow: 0 8px 28px rgba(22,53,39,.065);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:#183b2b;
+  background:#f5f7f5;
 }
-
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: Inter, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Arial, sans-serif;
-  line-height: 1.5;
-}
-
-main {
-  max-width: 1380px;
-  padding: 26px clamp(16px,3vw,44px) 90px;
-}
-
-header {
-  padding: 22px 26px;
-  background: linear-gradient(125deg,#173c2c,#286b4d);
-  color: white;
-  border-radius: 22px;
-  box-shadow: var(--shadow);
-  align-items: center;
-}
-
-header h1 {
-  font-size: clamp(24px,2.6vw,32px);
-  letter-spacing: -.7px;
-  font-weight: 800;
-}
-
-header .muted {
-  color: #d1e6d7;
-  font-size: 14px;
-}
-
-header #logout {
-  background: #ffffff20;
-  color: white;
-  border: 1px solid #ffffff50;
-}
-
-h2 {
-  letter-spacing: -.4px;
-  font-weight: 750;
-}
-
+* { box-sizing:border-box; }
+body { margin:0; }
+main { max-width:1350px;margin:auto;padding:15px 12px 70px; }
+button,input,select,textarea { font:inherit; }
 button {
-  min-height: 43px;
-  border-radius: 12px;
-  transition: background .15s, transform .15s,
-    box-shadow .15s;
-  background: var(--forest);
-  font-weight: 700;
+  cursor:pointer;
+  border:0;
+  border-radius:10px;
+  padding:11px 14px;
+  background:#194532;
+  color:white;
+  font-weight:700;
 }
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-summary:focus-visible {
-  outline: 3px solid #5cb28b;
-  outline-offset: 3px;
+button:disabled { opacity:.5; }
+.alt { background:#e6eee8;color:#183b2b; }
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  background:linear-gradient(125deg,#173c2c,#286b4d);
+  color:white;
+  border-radius:18px;
+  padding:20px 22px;
+  margin-bottom:17px;
 }
-
-@media (hover:hover) {
-  button:not(:disabled):hover {
-    filter: brightness(1.07);
-  }
-
-  .day:hover {
-    border-color: #9dcdb1;
-  }
-
-  .block:hover {
-    filter: brightness(.96);
-  }
-
-  article:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px #17352b15;
-  }
+header h1 { font-size:27px;margin:0 0 3px; }
+header p { margin:0;color:#d9eadf;font-size:13px; }
+header .alt {
+  background:#ffffff22;
+  color:white;
+  border:1px solid #ffffff55;
 }
-
-.alt {
-  background: #eaf0eb;
-  color: var(--forest);
-}
-
-.muted,
-.status {
-  color: var(--muted);
-}
-
 .bar {
-  gap: 14px;
-  margin: 22px 0 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin:15px 0;
 }
-
-.bar h2 {
-  font-size: clamp(19px,2.1vw,26px);
-  text-transform: capitalize;
-}
-
-#syncStatus {
-  font-size: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-#syncStatus:before {
-  content: "";
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #39a26c;
-  flex: none;
-}
-
-#newEvent,
-#addBottom {
-  background: var(--forest);
-  box-shadow: 0 5px 14px #173c2c1c;
-}
-
+.bar h2 { margin:0;text-align:center;font-size:19px; }
+.muted { color:#66796d;font-size:13px; }
 .tabs {
-  margin: 22px auto;
-  max-width: 400px;
-  background: #e8efea;
-  border: 1px solid #dce8df;
-  border-radius: 15px;
-  padding: 5px;
+  display:flex;
+  gap:5px;
+  max-width:350px;
+  background:#e6eee8;
+  border-radius:12px;
+  padding:5px;
+  margin:14px auto;
 }
-
-.tabs button {
-  border-radius: 11px;
-  min-height: 42px;
+.tabs button { flex:1;background:transparent;color:#183b2b; }
+.tabs button.active {
+  background:white;
+  box-shadow:0 2px 8px #183b2b1a;
 }
-
-.tabs .active {
-  background: white;
-  color: var(--forest);
-  box-shadow: 0 2px 8px #193f2b19;
-}
-
-#prev,
-#next {
-  width: 45px;
-  height: 45px;
-  padding: 0;
-  font-size: 25px;
-  flex: none;
-}
-
-/* MÅNADSVY */
-
 .month {
-  gap: 6px;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:4px;
+  padding:7px;
+  background:white;
+  border:1px solid #dce7df;
+  border-radius:14px;
 }
-
-.weekday {
-  font-size: 12px;
-  font-weight: 750;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  padding: 10px 0;
-}
-
+.weekday { text-align:center;font-weight:700;font-size:11px;padding:7px 0; }
 .day {
-  min-height: 108px;
-  padding: 11px 9px;
-  border: 1px solid #e9efeb;
-  border-radius: 12px;
-  background: #fafcfb;
-  font-size: 15px;
-  font-weight: 700;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-width: 0;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:5px;
+  min-width:0;
+  min-height:90px;
+  background:#fafcfb;
+  color:#183b2b;
+  border:1px solid #e5ece7;
+  border-radius:8px;
+  padding:7px;
+  text-align:left;
 }
-
-.day.today {
-  background: #e9f5ec;
-  border-color: #b7dec3;
-}
-
-.day.sel {
-  border: 2px solid var(--accent);
-  background: #f0f8f2;
-  box-shadow: 0 0 0 2px #2d805d13;
-}
-
-.dots {
-  margin-top: 10px;
-  gap: 5px;
-  max-width: 100%;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  flex: none;
-}
-
-/* VECKOVY */
+.day.today { background:#e8f5eb; }
+.day.sel { outline:2px solid #2d805d; }
+.dots { display:flex;flex-wrap:wrap;gap:3px; }
+.dot { width:7px;height:7px;border-radius:50%;background:#379366; }
+.dot.match { background:#e2a439; }
+.dot.analysis { background:#648bce; }
+.dot.meeting { background:#9b7ac7; }
 
 .week-scroll {
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
+  width:100%;
+  overflow-x:auto;
+  background:white;
+  border:1px solid #e1e8e1;
+  border-radius:14px;
 }
-
-.week-board {
-  min-width: 800px;
+.week-board { min-width:720px; }
+.week-head,.week-grid {
+  display:grid;
+  grid-template-columns:49px repeat(7,minmax(0,1fr));
 }
-
 .week-head {
-  border-bottom: 1px solid var(--line);
+  background:white;
+  position:sticky;
+  top:0;
+  z-index:2;
+  border-bottom:1px solid #dce7df;
 }
-
 .week-head button {
-  font-weight: 750;
-  font-size: 12px;
-  min-height: 49px;
+  background:white;
+  color:#183b2b;
+  border-left:1px solid #e1e8e1;
+  border-radius:0;
+  font-size:11px;
+  padding:8px 1px;
+  min-width:0;
 }
-
+.week-head button.today { background:#e6f4e9; }
+.week-grid { height:960px; }
+.hours,.daycol { position:relative;min-width:0; }
+.hour {
+  position:absolute;
+  right:3px;
+  transform:translateY(-7px);
+  font-size:10px;
+  color:#718177;
+}
+.daycol {
+  border-left:1px solid #dfe7df;
+  background:repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 29px,
+    #edf1ed 29px,
+    #edf1ed 30px,
+    transparent 30px,
+    transparent 59px,
+    #dce5dc 59px,
+    #dce5dc 60px
+  );
+}
+.daycol.today { background-color:#eef8f0; }
 .block {
-  border-radius: 7px;
-  font-size: 12px;
-  padding: 5px;
-  box-shadow: 0 2px 5px #0000000d;
+  position:absolute;
+  left:2px;
+  right:2px;
+  overflow:hidden;
+  background:#ccebd4;
+  color:#183b2b;
+  border-left:3px solid #379366;
+  border-radius:5px;
+  text-align:left;
+  padding:4px 3px;
+  font-size:10px;
+  line-height:1.15;
+  min-height:18px;
+  overflow-wrap:anywhere;
 }
+.block.match { background:#f9e4b4;border-color:#e2a439; }
+.block.analysis { background:#bfd7fa;border-color:#648bce; }
+.block.meeting { background:#e0cafa;border-color:#9b7ac7; }
+.block strong { display:block;overflow-wrap:anywhere; }
+.block span { font-size:9px; }
 
-.block span {
-  font-size: 10px;
-}
-
-/* AKTIVITETER */
-
-section {
-  margin-top: 30px;
-}
-
-section > h2 {
-  font-size: 21px;
-  margin-bottom: 14px;
-  text-transform: capitalize;
-}
-
+section { margin-top:23px; }
+section h2 { font-size:20px;text-transform:capitalize; }
 article {
-  background: #eaf6ed;
-  border: 1px solid #d3e9d8;
-  border-left: 5px solid #379366;
-  border-radius: 16px;
-  padding: 17px 19px;
-  margin: 11px 0;
-  transition: transform .15s, box-shadow .15s;
-  box-shadow: 0 2px 8px #00000007;
-  overflow-wrap: anywhere;
+  background:#e5f3e8;
+  border-left:5px solid #379366;
+  border-radius:12px;
+  padding:13px;
+  margin:10px 0;
+  cursor:pointer;
 }
-
-article.match {
-  background: #fff4da;
-  border-color: #f1e1bb;
-  border-left-color: #e2a439;
-}
-
-article.analysis {
-  background: #eaf2ff;
-  border-color: #d3e2f7;
-  border-left-color: #648bce;
-}
-
-article.meeting {
-  background: #f3eafb;
-  border-color: #e7d7f4;
-  border-left-color: #9b7ac7;
-}
-
-article h3 {
-  font-size: 18px;
-  line-height: 1.3;
-  margin: 10px 0;
-}
-
-article p {
-  font-size: 14px;
-  white-space: pre-wrap;
-}
-
+article.match { background:#f9e4b4;border-color:#e2a439; }
+article.analysis { background:#bfd7fa;border-color:#648bce; }
+article.meeting { background:#e0cafa;border-color:#9b7ac7; }
+article h3 { margin:9px 0; }
+article p { margin:7px 0;white-space:pre-wrap; }
 .eventtop {
-  align-items: flex-start;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:flex-start;
 }
-
-.eventtop > b {
-  font-size: 12px;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-
-.timebox {
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
+.timebox { display:flex;gap:5px; }
 .timebox div {
-  background: #ffffffba;
-  border: 1px solid #ffffffc9;
-  border-radius: 10px;
-  padding: 6px 10px;
+  background:#ffffffaa;
+  border-radius:7px;
+  padding:4px 6px;
+  text-align:center;
 }
-
-.timebox strong {
-  font-size: 16px;
-}
-
-/* INLOGGNING OCH FORMULÄR */
-
+.timebox small { display:block;font-size:9px; }
+.timebox strong { font-size:13px; }
 .panel {
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 19px;
-  padding: 22px;
-  box-shadow: var(--shadow);
+  background:white;
+  border:1px solid #e1e8e1;
+  padding:18px;
+  border-radius:15px;
+  margin:14px 0;
 }
-
-#loginPanel {
-  max-width: 520px;
-  margin: 32px auto;
-  padding: clamp(22px,4vw,38px);
-}
-
-#loginPanel > button {
-  width: 100%;
-  margin-top: 20px;
-}
-
-input,
-select,
-textarea {
-  border: 1px solid #cddbd1;
-  border-radius: 11px;
-  padding: 12px 13px;
-  background: white;
-  color: var(--ink);
-  font-size: 16px;
-  min-height: 44px;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color: var(--accent);
-}
-
-label {
-  font-size: 14px;
-}
-
+.status { font-size:13px;color:#64756a; }
+.hidden,[hidden] { display:none!important; }
 .modal {
-  padding: 20px;
-  backdrop-filter: blur(5px);
-  background: #0c2518a8;
+  position:fixed;
+  inset:0;
+  background:#0009;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+  z-index:10;
 }
-
+.modal.open { display:flex; }
 form {
-  border-radius: 22px;
-  max-width: 550px;
-  padding: clamp(20px,3vw,32px);
-  box-shadow: 0 25px 70px #0d281e3d;
+  background:white;
+  padding:19px;
+  border-radius:15px;
+  width:100%;
+  max-width:500px;
+  max-height:93vh;
+  overflow:auto;
+}
+label { display:block;font-size:13px;font-weight:650;margin:11px 0 5px; }
+input,select,textarea {
+  width:100%;
+  padding:11px;
+  border:1px solid #ccd6ce;
+  border-radius:9px;
+  background:white;
+  color:#183b2b;
+  font-size:16px;
+}
+.time-row { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+.actions { display:flex;gap:7px;margin-top:18px; }
+.actions button { flex:1;padding:11px 5px; }
+#delete { background:#a83b3b; }
+a { color:#164b9b; }
+summary { cursor:pointer;font-weight:700; }
+#loginPanel { max-width:500px;margin:35px auto; }
+#loginPanel button { width:100%;margin-top:15px; }
+
+@media(min-width:950px) {
+  .week-board { min-width:0; }
+  .day { min-height:120px; }
 }
 
-form h2 {
-  margin-top: 0;
-}
-
-.actions {
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.actions button {
-  flex: 1;
-  min-width: 85px;
-}
-
-.account {
-  margin-top: 26px;
-}
-
-summary {
-  padding: 4px 0;
-}
-
-/* STÖRRE DATORSKÄRMAR */
-
-@media (min-width:1000px) {
-  main {
-    padding-top: 30px;
+/* Hela veckan synlig på telefon */
+@media(max-width:700px) {
+  main { padding:10px 7px 70px; }
+  header { padding:17px 14px; }
+  header h1 { font-size:23px; }
+  .bar h2 { font-size:15px; }
+  .bar button { padding:9px 11px; }
+  .month { gap:2px;padding:4px; }
+  .day { min-height:61px;padding:4px 2px;font-size:11px; }
+  .weekday { font-size:10px; }
+  .week-scroll { overflow-x:hidden; }
+  .week-board { min-width:0;width:100%; }
+  .week-head,.week-grid {
+    grid-template-columns:27px repeat(7,minmax(0,1fr));
   }
-
-  .month {
-    gap: 8px;
-    padding: 18px;
+  .week-head button {
+    font-size:9px;
+    line-height:1.2;
+    padding:6px 0;
+    min-height:39px;
+    overflow-wrap:anywhere;
   }
-
-  .day {
-    min-height: 125px;
-    padding: 13px;
-  }
-
-  .week-board {
-    min-width: 0;
-  }
-
-  .week-head,
-  .week-grid {
-    grid-template-columns:
-      60px repeat(7,minmax(0,1fr));
-  }
-
+  .hour { font-size:8px;right:1px; }
+  .daycol { overflow:hidden; }
   .block {
-    padding: 6px;
+    left:1px;
+    right:1px;
+    border-left-width:2px;
+    border-radius:3px;
+    padding:3px 1px;
+    font-size:8px;
+    line-height:1.15;
   }
-}
-
-/* MOBIL OCH SURFPLATTA */
-
-@media (max-width:700px) {
-  main {
-    padding: 12px 11px 100px;
-  }
-
-  header {
-    padding: 17px 16px;
-    border-radius: 17px;
-    gap: 8px;
-  }
-
-  header h1 {
-    font-size: 23px;
-  }
-
-  header .muted {
-    font-size: 12px;
-  }
-
-  header #logout {
-    font-size: 12px;
-    padding: 9px 10px;
-    min-height: 38px;
-  }
-
-  .bar {
-    margin: 18px 1px 12px;
-  }
-
-  .bar h2 {
-    font-size: 19px;
-  }
-
-  .tabs {
-    margin: 16px auto;
-    max-width: none;
-  }
-
-  .month {
-    gap: 3px;
-    padding: 6px;
-    border-radius: 15px;
-  }
-
-  .weekday {
-    font-size: 10px;
-    letter-spacing: 0;
-    padding: 9px 0;
-  }
-
-  .day {
-    min-height: 67px;
-    padding: 6px 4px;
-    border-radius: 8px;
-    font-size: 13px;
-    border-width: 1px;
-  }
-
-  .day.sel {
-    border-width: 2px;
-  }
-
-  .dots {
-    gap: 3px;
-    margin-top: 7px;
-  }
-
-  .dot {
-    width: 6px;
-    height: 6px;
-  }
-
-  .week-board {
-    min-width: 760px;
-  }
-
-  .week-scroll {
-    border-radius: 15px;
-  }
-
-  section {
-    margin-top: 23px;
-  }
-
-  section > h2 {
-    font-size: 19px;
-  }
-
-  article {
-    padding: 14px 13px;
-    border-radius: 13px;
-  }
-
-  .eventtop {
-    gap: 5px;
-  }
-
-  .timebox div {
-    padding: 5px 7px;
-  }
-
-  .timebox strong {
-    font-size: 14px;
-  }
-
-  .timebox small {
-    font-size: 9px;
-  }
-
-  article h3 {
-    font-size: 17px;
-  }
-
-  .modal {
-    padding: 0;
-    align-items: flex-end;
-  }
-
-  form {
-    border-radius: 22px 22px 0 0;
-    max-width: none;
-    max-height: 94dvh;
-    padding: 23px 17px
-      max(23px,env(safe-area-inset-bottom));
-  }
-
-  .actions {
-    position: sticky;
-    bottom: -23px;
-    background: white;
-    padding: 12px 0 3px;
-    margin-top: 14px;
-  }
-
-  .panel {
-    padding: 17px;
-    border-radius: 15px;
-  }
-
-  #newEvent {
-    padding: 11px 12px;
-    font-size: 13px;
-  }
-
-  #syncStatus {
-    font-size: 11px;
-    max-width: 50%;
-    line-height: 1.25;
-  }
-}
-
-/* EXTRA SMÅ MOBILER */
-
-@media (max-width:380px) {
-  .day {
-    min-height: 61px;
-    padding: 5px 3px;
-  }
-
-  .weekday {
-    font-size: 9px;
-  }
-
-  .timebox div {
-    padding: 4px 5px;
-  }
-
-  .timebox strong {
-    font-size: 12px;
-  }
-
-  .bar h2 {
-    font-size: 17px;
-  }
-
-  #prev,
-  #next {
-    width: 39px;
-    height: 39px;
-  }
-}
-
-/* TILLGÄNGLIGHET */
-
-@media (prefers-reduced-motion:reduce) {
-  *,
-  *:before,
-  *:after {
-    scroll-behavior: auto !important;
-    transition: none !important;
-  }
-}
-
-*{box-sizing:border-box}
-body{margin:0;background:#f4f6f3;color:#183b2b;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
-main{max-width:1100px;margin:auto;padding:16px 12px 60px}
-header,.bar,.eventtop,.actions{display:flex;justify-content:space-between;align-items:center;gap:10px}
-h1{font-size:24px;margin:0}
-h2{font-size:20px}
-button{border:0;border-radius:10px;background:#183b2b;color:white;padding:11px 13px;font:inherit;font-weight:650;cursor:pointer}
-button:disabled{opacity:.5;cursor:wait}
-.alt{background:#e1e8e1;color:#183b2b}
-.muted{color:#6b796f;font-size:13px}
-.tabs{display:flex;background:#e1e8e1;border-radius:12px;padding:4px;max-width:340px;margin:18px auto}
-.tabs button{flex:1;background:transparent;color:#183b2b}
-.tabs .active{background:#183b2b;color:white}
-.bar{margin:15px 0}
-.bar h2{text-align:center;margin:0}
-.month{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;background:white;padding:8px;border-radius:14px}
-.weekday{text-align:center;color:#6b796f;font-size:12px;padding:8px 0}
-.day{min-height:72px;text-align:left;padding:6px 4px;background:#f4f6f3;color:#183b2b;border:2px solid transparent}
-.day.sel{border-color:#379366}
-.day.today{background:#e0eee2}
-.dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:8px}
-.dot{width:7px;height:7px;border-radius:50%;background:#379366}
-.dot.match{background:#e2a439}
-.dot.analysis{background:#648bce}
-.dot.meeting{background:#9b7ac7}
-.week-scroll{overflow:auto;background:white;border-radius:14px;border:1px solid #e1e8e1}
-.week-board{min-width:740px}
-.week-head,.week-grid{display:grid;grid-template-columns:54px repeat(7,minmax(0,1fr))}
-.week-head{position:sticky;top:0;background:white;z-index:2}
-.week-head button{background:transparent;color:#183b2b;font-size:12px;padding:10px 1px;border-radius:0;border-left:1px solid #e1e8e1}
-.week-grid{height:960px}
-.hours,.daycol{position:relative}
-.hour{position:absolute;right:4px;transform:translateY(-7px);font-size:11px;color:#64756a}
-.daycol{border-left:1px solid #dfe7df;background:repeating-linear-gradient(to bottom,transparent 0,transparent 29px,#edf1ed 29px,#edf1ed 30px,transparent 30px,transparent 59px,#dce5dc 59px,#dce5dc 60px)}
-.daycol.today{background-color:#f0faf2}
-.block{position:absolute;left:2px;right:2px;overflow:hidden;padding:4px 3px;background:#ccebd4;color:#183b2b;border-left:4px solid #379366;border-radius:6px;text-align:left;font-size:11px;line-height:1.2;min-height:18px}
-.block.match{background:#f9e4b4;border-color:#e2a439}
-.block.analysis{background:#bfd7fa;border-color:#648bce}
-.block.meeting{background:#e0cafa;border-color:#9b7ac7}
-.block strong{display:block;overflow-wrap:anywhere}
-.block span{font-size:10px}
-article{background:#e5f3e8;border-left:5px solid #379366;border-radius:13px;padding:14px;margin:10px 0;cursor:pointer}
-article.match{background:#f9e4b4;border-color:#e2a439}
-article.analysis{background:#bfd7fa;border-color:#648bce}
-article.meeting{background:#e0cafa;border-color:#9b7ac7}
-article h3{margin:8px 0}
-article p{margin:8px 0}
-.timebox{display:flex;gap:5px}
-.timebox div{background:#ffffffad;border-radius:8px;padding:5px 8px;text-align:center}
-.timebox small{display:block;font-size:10px;color:#5f7165}
-.timebox strong{font-size:17px}
-section{margin-top:20px}
-.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:12px;z-index:10}
-.modal.open{display:flex}
-form{background:white;padding:20px;border-radius:16px;width:100%;max-width:500px;max-height:92vh;overflow:auto}
-label{display:block;margin:12px 0 5px;font-weight:650}
-input,select,textarea{width:100%;padding:11px;border:1px solid #ccd6ce;border-radius:9px;font:inherit}
-.time-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.actions{margin-top:20px}
-#delete{background:#a83b3b}
-.panel{background:white;padding:18px;border-radius:15px;margin:14px 0}
-.panel input{margin:8px 0}
-.status{font-size:13px;color:#64756a;margin:8px 0}
-.hidden,[hidden]{display:none!important}
-a{color:#164b9b}
-details{margin-top:20px}
-summary{cursor:pointer;font-weight:650}
-.account{border:1px solid #dce5dc}
-@media(max-width:420px){
-.day{min-height:62px}
-.month{gap:3px;padding:6px}
-h1{font-size:22px}
+  .block strong { font-size:8px; }
+  .block span { display:none; }
+  .timebox strong { font-size:12px; }
 }
 </style>
 </head>
@@ -736,806 +302,504 @@ h1{font-size:22px}
 <body>
 <main>
 <header>
-<div>
-<h1>⚽ Coach Hub</h1>
-<div class="muted">Gemensam tränarkalender</div>
-</div>
-<button id="logout" class="alt hidden">Logga ut</button>
+  <div>
+    <h1>⚽ Coach Hub</h1>
+    <p>Gemensam tränarkalender</p>
+  </div>
+  <button id="logout" class="alt hidden">Logga ut</button>
 </header>
 
 <div id="loginPanel" class="panel">
-<h2>Logga in</h2>
-<p>Logga in med ditt godkända tränarkonto.</p>
-
-<label for="email">E-postadress</label>
-<input id="email" type="email"
-placeholder="namn@exempel.se"
-autocomplete="email">
-
-<label for="password">Lösenord</label>
-<input id="password" type="password"
-placeholder="Ditt lösenord"
-autocomplete="current-password">
-
-<button id="sendLogin">Logga in</button>
-
-<p id="loginStatus" class="status"></p>
-<p class="muted">
-Har du ännu inget lösenord?
-Om du redan är inloggad på en annan enhet
-kan du skapa ett lösenord under Mitt konto där.
-</p>
+  <h2>Logga in</h2>
+  <p>Logga in med ditt godkända tränarkonto.</p>
+  <label for="email">E-postadress</label>
+  <input id="email" type="email" autocomplete="email">
+  <label for="password">Lösenord</label>
+  <input id="password" type="password" autocomplete="current-password">
+  <button id="sendLogin">Logga in</button>
+  <p id="loginStatus" class="status"></p>
 </div>
 
 <div id="app" hidden>
+  <div class="bar">
+    <span id="syncStatus" class="muted">Ansluter…</span>
+    <button id="newEvent">+ Aktivitet</button>
+  </div>
 
-<div class="bar">
-<span id="syncStatus" class="muted">Ansluter…</span>
-<button id="newEvent">+ Aktivitet</button>
-</div>
+  <div class="tabs">
+    <button id="monthTab" class="active">Månad</button>
+    <button id="weekTab">Vecka</button>
+  </div>
 
-<div class="tabs">
-<button id="monthTab" class="active">Månad</button>
-<button id="weekTab">Vecka</button>
-</div>
+  <div class="bar">
+    <button id="prev" class="alt">‹</button>
+    <h2 id="period"></h2>
+    <button id="today" class="alt">Idag</button>
+    <button id="next" class="alt">›</button>
+  </div>
 
-<div class="bar">
-<button id="prev" class="alt">‹</button>
-<h2 id="period"></h2>
-<button id="next" class="alt">›</button>
-</div>
+  <div id="monthView" class="month"></div>
 
-<div id="monthView" class="month"></div>
+  <div id="weekView" hidden>
+    <div class="week-scroll">
+      <div class="week-board">
+        <div class="week-head" id="weekHead"></div>
+        <div class="week-grid" id="weekGrid"></div>
+      </div>
+    </div>
+  </div>
 
-<div id="weekView" hidden>
-<div class="week-scroll">
-<div class="week-board">
-<div class="week-head" id="weekHead"></div>
-<div class="week-grid" id="weekGrid"></div>
-</div>
-</div>
-<p class="muted">
-Svep i sidled för att se hela veckan.
-Tryck på ett block för att redigera.
-</p>
-</div>
+  <section>
+    <h2 id="dateTitle"></h2>
+    <div id="activities"></div>
+    <button id="addBottom">+ Lägg till aktivitet</button>
+  </section>
 
-<section>
-<h2 id="dateTitle"></h2>
-<div id="activities"></div>
-<button id="addBottom">+ Lägg till aktivitet</button>
-</section>
+  <div class="panel" id="importPanel" hidden>
+    <h3>Flytta över tidigare aktiviteter</h3>
+    <p id="importDescription" class="muted"></p>
+    <button id="importButton">Importera till gemensam kalender</button>
+    <p id="importStatus" class="status"></p>
+  </div>
 
-<div class="panel" id="importPanel" hidden>
-<h3>Flytta över tidigare aktiviteter</h3>
-<p class="muted" id="importDescription"></p>
-<button id="importButton">
-Importera till gemensam kalender
-</button>
-<p id="importStatus" class="status"></p>
-</div>
-
-<details class="panel account">
-<summary>Mitt konto – skapa eller ändra lösenord</summary>
-
-<p class="muted">
-Du kan skapa ett lösenord när du är inloggad.
-Använd sedan samma lösenord på datorn och telefonen.
-</p>
-
-<p id="accountEmail" class="muted"></p>
-
-<label for="newPassword">Nytt lösenord</label>
-<input id="newPassword"
-type="password"
-minlength="12"
-autocomplete="new-password"
-placeholder="Minst 12 tecken">
-
-<label for="confirmPassword">Bekräfta lösenord</label>
-<input id="confirmPassword"
-type="password"
-minlength="12"
-autocomplete="new-password"
-placeholder="Skriv lösenordet igen">
-
-<button id="savePassword">Spara lösenord</button>
-<p id="passwordStatus" class="status"></p>
-</details>
-
+  <details class="panel">
+    <summary>Mitt konto – ändra lösenord</summary>
+    <p id="accountEmail" class="muted"></p>
+    <label>Nytt lösenord
+      <input id="newPassword" type="password" minlength="12">
+    </label>
+    <label>Bekräfta lösenord
+      <input id="confirmPassword" type="password" minlength="12">
+    </label>
+    <button id="savePassword">Spara lösenord</button>
+    <p id="passwordStatus" class="status"></p>
+  </details>
 </div>
 </main>
 
 <div class="modal" id="modal">
-<form id="form">
-<h2 id="formTitle">Ny aktivitet</h2>
-
-<label>Rubrik
-<input id="title" required>
-</label>
-
-<label>Datum
-<input id="date" type="date" required>
-</label>
-
-<div class="time-row">
-<label>Starttid
-<input id="time" type="time" required>
-</label>
-<label>Sluttid
-<input id="endTime" type="time" required>
-</label>
-</div>
-
-<label>Typ
-<select id="type">
-<option>Träning</option>
-<option>Match</option>
-<option>Matchanalys</option>
-<option>Motståndaranalys</option>
-<option>Träningsanalys</option>
-<option>Möte</option>
-<option>Övrigt</option>
-</select>
-</label>
-
-<label>Plats
-<input id="place">
-</label>
-
-<label>Anteckningar
-<textarea id="notes" rows="4"></textarea>
-</label>
-
-<label>Dokumentlänk
-<input id="link" type="url" placeholder="https://...">
-</label>
-
-<div class="actions">
-<button type="button" class="alt" id="cancel">
-Avbryt
-</button>
-<button type="button" id="delete">
-Radera
-</button>
-<button type="submit" id="saveEvent">
-Spara
-</button>
-</div>
-</form>
+  <form id="form">
+    <h2 id="formTitle">Ny aktivitet</h2>
+    <label>Rubrik<input id="title" required></label>
+    <label>Datum<input id="date" type="date" required></label>
+    <div class="time-row">
+      <label>Starttid<input id="time" type="time" required></label>
+      <label>Sluttid<input id="endTime" type="time" required></label>
+    </div>
+    <label>Typ
+      <select id="type">
+        <option>Träning</option>
+        <option>Match</option>
+        <option>Matchanalys</option>
+        <option>Motståndaranalys</option>
+        <option>Träningsanalys</option>
+        <option>Möte</option>
+        <option>Övrigt</option>
+      </select>
+    </label>
+    <label>Plats<input id="place"></label>
+    <label>Anteckningar<textarea id="notes" rows="4"></textarea></label>
+    <label>Dokumentlänk<input id="link" type="url"></label>
+    <div class="actions">
+      <button type="button" class="alt" id="cancel">Avbryt</button>
+      <button type="button" id="delete">Radera</button>
+      <button type="submit" id="saveEvent">Spara</button>
+    </div>
+  </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script>
-
 <script>
-const $=id=>document.getElementById(id);
-
-const SUPABASE_URL=
-'https://vrzgwqygzftzjwnhhdxt.supabase.co';
-
-const SUPABASE_KEY=
-'sb_publishable_xks7gBla4x8TVxbcr0Bnzw_h-USANI5';
-
-const db=window.supabase?.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+const $ = id => document.getElementById(id);
+const db = window.supabase?.createClient(
+  'https://vrzgwqygzftzjwnhhdxt.supabase.co',
+  'sb_publishable_xks7gBla4x8TVxbcr0Bnzw_h-USANI5'
 );
 
-const localKey='coachhub-calendar-v1';
+const localKey = 'coachhub-calendar-v1';
+let events = [];
+let selected = localDate(new Date());
+let view = new Date();
+let mode = 'month';
+let editing = null;
+let user = null;
+let sessionVersion = 0;
 
-let events=[];
-let selected=localDate(new Date());
-let view=new Date();
-let mode='month';
-let editing=null;
-let user=null;
-let sessionVersion=0;
+const weekdays = ['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
 
-const weekdays=[
-'Mån','Tis','Ons','Tor','Fre','Lör','Sön'
-];
-
-function localDate(d){
-return d.getFullYear()+'-'+
-String(d.getMonth()+1).padStart(2,'0')+'-'+
-String(d.getDate()).padStart(2,'0');
+function localDate(d) {
+  return d.getFullYear() + '-' +
+    String(d.getMonth()+1).padStart(2,'0') + '-' +
+    String(d.getDate()).padStart(2,'0');
+}
+function dateFrom(s) { return new Date(s+'T12:00:00'); }
+function monday(d) {
+  const a = new Date(d);
+  a.setDate(a.getDate()-(a.getDay()+6)%7);
+  return a;
+}
+function addDays(d,n) {
+  const a = new Date(d);
+  a.setDate(a.getDate()+n);
+  return a;
+}
+function cat(t) {
+  if(t==='Match') return 'match';
+  if(t==='Möte') return 'meeting';
+  if((t||'').toLowerCase().includes('analys')) return 'analysis';
+  return '';
+}
+function min(t) {
+  const m = /^(\d\d?):(\d\d)$/.exec(t||'');
+  return m ? +m[1]*60 + +m[2] : null;
+}
+function end(e) {
+  if(e.endTime) return e.endTime;
+  const n = min(e.time);
+  const v = (n??990)+90;
+  return String(Math.floor(v/60)%24).padStart(2,'0')+
+    ':'+String(v%60).padStart(2,'0');
+}
+function isoWeek(d) {
+  const a = new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));
+  a.setUTCDate(a.getUTCDate()+4-(a.getUTCDay()||7));
+  const y = new Date(Date.UTC(a.getUTCFullYear(),0,1));
+  return Math.ceil((((a-y)/86400000)+1)/7);
+}
+function setStatus(s) {
+  $('syncStatus').textContent=s;
 }
 
-function dateFrom(s){
-return new Date(s+'T12:00:00');
+async function loadEvents() {
+  if(!user) return;
+  setStatus('Uppdaterar…');
+  const {data,error}=await db.from('coachhub_events')
+    .select('*').order('date',{ascending:true});
+  if(error) {
+    setStatus('Fel vid hämtning: '+error.message);
+    return;
+  }
+  events=data||[];
+  setStatus('Gemensam kalender · uppdaterad');
+  render();
+  showImport();
 }
 
-function monday(d){
-const a=new Date(d);
-a.setDate(a.getDate()-(a.getDay()+6)%7);
-return a;
-}
-
-function addDays(d,n){
-const a=new Date(d);
-a.setDate(a.getDate()+n);
-return a;
-}
-
-function cat(t){
-return t==='Match'?'match':
-t==='Möte'?'meeting':
-(t||'').toLowerCase().includes('analys')?
-'analysis':'';
-}
-
-function min(t){
-const m=/^(\d\d?):(\d\d)$/.exec(t||'');
-return m?+m[1]*60 + +m[2]:null;
-}
-
-function end(e){
-if(e.endTime)return e.endTime;
-const n=min(e.time);
-const v=(n??990)+90;
-return String(Math.floor(v/60)%24).padStart(2,'0')+
-':'+String(v%60).padStart(2,'0');
-}
-
-function setStatus(s){
-$('syncStatus').textContent=s;
-}
-
-async function loadEvents(){
-if(!user)return;
-
-setStatus('Uppdaterar…');
-
-const {data,error}=await db
-.from('coachhub_events')
-.select('*')
-.order('date',{ascending:true});
-
-if(error){
-setStatus('Fel vid hämtning: '+error.message);
-return;
-}
-
-events=data||[];
-
-setStatus('Gemensam kalender · uppdaterad');
-
-render();
-showImport();
-}
-
-async function startSession(){
-if(!db){
-$('loginStatus').textContent=
-'Kunde inte ladda Supabase. Kontrollera internetanslutningen.';
-return;
-}
-
-const version=++sessionVersion;
-
-const {data:{user:current},error:authError}=
-await db.auth.getUser();
-
-if(version!==sessionVersion)return;
-
-user=authError?null:current;
-
-if(!user){
-$('loginPanel').hidden=false;
-$('app').hidden=true;
-$('logout').classList.add('hidden');
-return;
-}
-
-const {data,error}=await db
-.from('coachhub_members')
-.select('user_id')
-.eq('user_id',user.id)
-.maybeSingle();
-
-if(version!==sessionVersion)return;
-
-if(error||!data){
-$('loginPanel').hidden=false;
-$('app').hidden=true;
-$('loginStatus').textContent=
-'Kontot är inloggat men ännu inte godkänt som medlem i Coach Hub.';
-$('logout').classList.remove('hidden');
-return;
-}
-
-$('loginPanel').hidden=true;
-$('app').hidden=false;
-$('logout').classList.remove('hidden');
-$('accountEmail').textContent='Inloggad som '+user.email;
-
-await loadEvents();
+async function startSession() {
+  if(!db) {
+    $('loginStatus').textContent='Kunde inte ansluta till Supabase.';
+    return;
+  }
+  const version=++sessionVersion;
+  const {data:{user:current},error:authError}=await db.auth.getUser();
+  if(version!==sessionVersion) return;
+  user=authError?null:current;
+  if(!user) {
+    $('loginPanel').hidden=false;
+    $('app').hidden=true;
+    $('logout').classList.add('hidden');
+    return;
+  }
+  const {data,error}=await db.from('coachhub_members')
+    .select('user_id').eq('user_id',user.id).maybeSingle();
+  if(version!==sessionVersion) return;
+  if(error||!data) {
+    $('loginPanel').hidden=false;
+    $('app').hidden=true;
+    $('loginStatus').textContent='Kontot är inte godkänt som medlem.';
+    $('logout').classList.remove('hidden');
+    return;
+  }
+  $('loginPanel').hidden=true;
+  $('app').hidden=false;
+  $('logout').classList.remove('hidden');
+  $('accountEmail').textContent='Inloggad som '+user.email;
+  await loadEvents();
 }
 
 $('sendLogin').onclick=async()=>{
-if(!db){
-alert('Kunde inte ansluta till Supabase.');
-return;
-}
-
-const email=$('email').value.trim();
-const password=$('password').value;
-
-if(!email||!password){
-alert('Ange både e-postadress och lösenord.');
-return;
-}
-
-$('sendLogin').disabled=true;
-$('loginStatus').textContent='Loggar in…';
-
-try{
-const {error}=await db.auth.signInWithPassword({
-email,
-password
-});
-
-if(error){
-$('loginStatus').textContent=
-'Inloggningen misslyckades: '+error.message;
-return;
-}
-
-$('loginStatus').textContent='';
-$('password').value='';
-await startSession();
-
-}catch(err){
-$('loginStatus').textContent=
-'Fel vid inloggning: '+err.message;
-}finally{
-$('sendLogin').disabled=false;
-}
+  if(!db) return alert('Kunde inte ansluta.');
+  const email=$('email').value.trim();
+  const password=$('password').value;
+  if(!email||!password) return alert('Ange e-post och lösenord.');
+  $('sendLogin').disabled=true;
+  $('loginStatus').textContent='Loggar in…';
+  try {
+    const {error}=await db.auth.signInWithPassword({email,password});
+    if(error) {
+      $('loginStatus').textContent=error.message;
+      return;
+    }
+    $('loginStatus').textContent='';
+    $('password').value='';
+    await startSession();
+  } catch(err) {
+    $('loginStatus').textContent=err.message;
+  } finally {
+    $('sendLogin').disabled=false;
+  }
 };
 
 $('savePassword').onclick=async()=>{
-if(!db||!user)return;
-
-const password=$('newPassword').value;
-const confirmation=$('confirmPassword').value;
-
-if(password.length<12){
-alert('Lösenordet måste innehålla minst 12 tecken.');
-return;
-}
-
-if(password!==confirmation){
-alert('Lösenorden är inte likadana.');
-return;
-}
-
-$('savePassword').disabled=true;
-$('passwordStatus').textContent='Sparar lösenord…';
-
-try{
-const {error}=await db.auth.updateUser({password});
-
-if(error){
-$('passwordStatus').textContent=
-'Kunde inte spara lösenordet: '+error.message;
-return;
-}
-
-$('newPassword').value='';
-$('confirmPassword').value='';
-
-$('passwordStatus').textContent=
-'Lösenordet är sparat! Nu kan du logga in med det på andra enheter.';
-
-}catch(err){
-$('passwordStatus').textContent=
-'Fel: '+err.message;
-}finally{
-$('savePassword').disabled=false;
-}
+  if(!db||!user) return;
+  const password=$('newPassword').value;
+  if(password.length<12) return alert('Minst 12 tecken krävs.');
+  if(password!==$('confirmPassword').value)
+    return alert('Lösenorden är inte likadana.');
+  try {
+    const {error}=await db.auth.updateUser({password});
+    if(error) throw error;
+    $('newPassword').value='';
+    $('confirmPassword').value='';
+    $('passwordStatus').textContent='Lösenordet är sparat.';
+  } catch(err) {
+    $('passwordStatus').textContent=err.message;
+  }
 };
 
 $('logout').onclick=async()=>{
-if(!db)return;
-
-await db.auth.signOut();
-
-user=null;
-events=[];
-await startSession();
+  await db.auth.signOut();
+  user=null;
+  events=[];
+  await startSession();
 };
 
-if(db){
-db.auth.onAuthStateChange((event)=>{
-if(event==='SIGNED_IN'||event==='SIGNED_OUT'){
-setTimeout(startSession,0);
-}
-});
-
-startSession();
+if(db) {
+  db.auth.onAuthStateChange(event=>{
+    if(event==='SIGNED_IN'||event==='SIGNED_OUT')
+      setTimeout(startSession,0);
+  });
+  startSession();
 }
 
-$('monthTab').onclick=()=>{
-mode='month';
-render();
-};
-
-$('weekTab').onclick=()=>{
-mode='week';
-render();
-};
-
+$('monthTab').onclick=()=>{mode='month';render();};
+$('weekTab').onclick=()=>{mode='week';render();};
 $('prev').onclick=()=>navigate(-1);
 $('next').onclick=()=>navigate(1);
-
-function navigate(n){
-if(mode==='month'){
-view=new Date(
-view.getFullYear(),
-view.getMonth()+n,
-1
-);
-selected=localDate(view);
-}else{
-selected=localDate(
-addDays(dateFrom(selected),7*n)
-);
-view=dateFrom(selected);
-}
-
-render();
-}
-
-function chooseDate(d){
-selected=d;
-view=dateFrom(d);
-render();
-}
-
-function render(){
-$('monthTab').classList.toggle(
-'active',mode==='month'
-);
-
-$('weekTab').classList.toggle(
-'active',mode==='week'
-);
-
-$('monthView').hidden=mode!=='month';
-$('weekView').hidden=mode!=='week';
-
-if(mode==='month')renderMonth();
-else renderWeek();
-
-renderDetails();
-}
-
-function renderMonth(){
-const y=view.getFullYear();
-const m=view.getMonth();
-const cal=$('monthView');
-
-$('period').textContent=
-new Date(y,m,1).toLocaleDateString(
-'sv-SE',
-{month:'long',year:'numeric'}
-);
-
-cal.replaceChildren();
-
-weekdays.forEach(w=>{
-const e=document.createElement('div');
-e.className='weekday';
-e.textContent=w;
-cal.append(e);
-});
-
-const offset=
-(new Date(y,m,1).getDay()+6)%7;
-
-for(let i=0;i<offset;i++){
-cal.append(document.createElement('div'));
-}
-
-const days=new Date(y,m+1,0).getDate();
-
-for(let d=1;d<=days;d++){
-const date=localDate(new Date(y,m,d));
-const b=document.createElement('button');
-
-b.className='day'+
-(date===selected?' sel':'')+
-(date===localDate(new Date())?' today':'');
-
-b.textContent=d;
-
-const dots=document.createElement('div');
-dots.className='dots';
-
-events.filter(e=>e.date===date).forEach(e=>{
-const dot=document.createElement('span');
-dot.className='dot '+cat(e.type);
-dots.append(dot);
-});
-
-b.append(dots);
-b.onclick=()=>chooseDate(date);
-cal.append(b);
-}
-}
-
-function isoWeek(d){
-const a=new Date(Date.UTC(
-d.getFullYear(),
-d.getMonth(),
-d.getDate()
-));
-
-a.setUTCDate(
-a.getUTCDate()+4-(a.getUTCDay()||7)
-);
-
-const y=new Date(Date.UTC(
-a.getUTCFullYear(),0,1
-));
-
-return Math.ceil(
-(((a-y)/86400000)+1)/7
-);
-}
-
-function renderWeek(){
-const start=monday(dateFrom(selected));
-const last=addDays(start,6);
-
-$('period').textContent=
-'Vecka '+isoWeek(dateFrom(selected))+
-' · '+
-start.toLocaleDateString(
-'sv-SE',{day:'numeric',month:'short'}
-)+
-'–'+
-last.toLocaleDateString(
-'sv-SE',{
-day:'numeric',
-month:'short',
-year:'numeric'
-}
-);
-
-const head=$('weekHead');
-const grid=$('weekGrid');
-
-head.replaceChildren();
-grid.replaceChildren();
-
-head.append(document.createElement('div'));
-
-const hours=document.createElement('div');
-hours.className='hours';
-
-for(let h=7;h<=23;h++){
-const el=document.createElement('div');
-el.className='hour';
-el.style.top=((h-7)*60)+'px';
-el.textContent=
-String(h).padStart(2,'0')+':00';
-hours.append(el);
-}
-
-grid.append(hours);
-
-for(let i=0;i<7;i++){
-const date=localDate(addDays(start,i));
-const b=document.createElement('button');
-
-b.textContent=
-weekdays[i]+' '+
-dateFrom(date).getDate()+'/'+
-(dateFrom(date).getMonth()+1);
-
-b.onclick=()=>chooseDate(date);
-head.append(b);
-
-const col=document.createElement('div');
-
-col.className='daycol'+
-(date===localDate(new Date())?' today':'');
-
-const occupied=[];
-
-events
-.filter(e=>e.date===date)
-.sort((a,b)=>
-(a.time||'').localeCompare(b.time||'')
-)
-.forEach(e=>{
-const st=min(e.time);
-const en=min(end(e));
-
-if(st===null||en===null||
-en<=420||st>=1380)return;
-
-const a=Math.max(st,420);
-const z=Math.min(en,1380);
-
-const block=document.createElement('button');
-block.className='block '+cat(e.type);
-
-block.style.top=(a-420)+'px';
-block.style.height=
-Math.max(18,z-a-2)+'px';
-
-const t=document.createElement('span');
-t.textContent=
-(e.time||'')+'–'+end(e);
-
-const title=document.createElement('strong');
-title.textContent=e.title;
-
-block.append(t,title);
-
-block.onclick=()=>{
-chooseDate(date);
-openForm(e.id);
+$('today').onclick=()=>{
+  selected=localDate(new Date());
+  view=new Date();
+  render();
 };
 
-const conflicts=occupied.filter(o=>
-a<o.end&&z>o.start
-);
-
-if(conflicts.length){
-const width=100/(conflicts.length+1);
-
-conflicts.forEach((o,j)=>{
-o.el.style.left=(j*width)+'%';
-o.el.style.width=width+'%';
-o.el.style.right='auto';
-});
-
-block.style.left=
-(conflicts.length*width)+'%';
-
-block.style.width=width+'%';
-block.style.right='auto';
+function navigate(n) {
+  if(mode==='month') {
+    view=new Date(view.getFullYear(),view.getMonth()+n,1);
+    selected=localDate(view);
+  } else {
+    selected=localDate(addDays(dateFrom(selected),7*n));
+    view=dateFrom(selected);
+  }
+  render();
+}
+function chooseDate(d) {
+  selected=d;
+  view=dateFrom(d);
+  render();
+}
+function render() {
+  $('monthTab').classList.toggle('active',mode==='month');
+  $('weekTab').classList.toggle('active',mode==='week');
+  $('monthView').hidden=mode!=='month';
+  $('weekView').hidden=mode!=='week';
+  if(mode==='month') renderMonth();
+  else renderWeek();
+  renderDetails();
 }
 
-occupied.push({
-start:a,
-end:z,
-el:block
-});
-
-col.append(block);
-});
-
-grid.append(col);
-}
-}
-
-function renderDetails(){
-$('dateTitle').textContent=
-dateFrom(selected).toLocaleDateString(
-'sv-SE',
-{
-weekday:'long',
-day:'numeric',
-month:'long'
-}
-);
-
-const list=$('activities');
-list.replaceChildren();
-
-const items=events
-.filter(e=>e.date===selected)
-.sort((a,b)=>
-(a.time||'').localeCompare(b.time||'')
-);
-
-if(!items.length){
-const p=document.createElement('p');
-p.textContent='Inget planerat den här dagen.';
-list.append(p);
+function renderMonth() {
+  const y=view.getFullYear(),m=view.getMonth(),cal=$('monthView');
+  $('period').textContent=new Date(y,m,1)
+    .toLocaleDateString('sv-SE',{month:'long',year:'numeric'});
+  cal.replaceChildren();
+  weekdays.forEach(w=>{
+    const e=document.createElement('div');
+    e.className='weekday';
+    e.textContent=w;
+    cal.append(e);
+  });
+  const offset=(new Date(y,m,1).getDay()+6)%7;
+  for(let i=0;i<offset;i++) cal.append(document.createElement('div'));
+  const days=new Date(y,m+1,0).getDate();
+  for(let d=1;d<=days;d++) {
+    const date=localDate(new Date(y,m,d));
+    const b=document.createElement('button');
+    b.className='day'+
+      (date===localDate(new Date())?' today':'')+
+      (date===selected?' sel':'');
+    const number=document.createElement('strong');
+    number.textContent=d;
+    const dots=document.createElement('div');
+    dots.className='dots';
+    events.filter(e=>e.date===date).slice(0,8).forEach(e=>{
+      const dot=document.createElement('span');
+      dot.className='dot '+cat(e.type);
+      dots.append(dot);
+    });
+    b.append(number,dots);
+    b.onclick=()=>chooseDate(date);
+    cal.append(b);
+  }
 }
 
-items.forEach(e=>{
-const a=document.createElement('article');
-a.className=cat(e.type);
+function renderWeek() {
+  const start=monday(dateFrom(selected));
+  const last=addDays(start,6);
+  $('period').textContent='Vecka '+isoWeek(dateFrom(selected))+
+    ' · '+start.toLocaleDateString('sv-SE',{day:'numeric',month:'short'})+
+    '–'+last.toLocaleDateString('sv-SE',{day:'numeric',month:'short'});
 
-const top=document.createElement('div');
-top.className='eventtop';
+  const head=$('weekHead'),grid=$('weekGrid');
+  head.replaceChildren();
+  grid.replaceChildren();
+  head.append(document.createElement('div'));
 
-const type=document.createElement('b');
-type.textContent=e.type;
+  const hours=document.createElement('div');
+  hours.className='hours';
+  for(let h=7;h<=23;h++) {
+    const el=document.createElement('div');
+    el.className='hour';
+    el.style.top=((h-7)*60)+'px';
+    el.textContent=String(h).padStart(2,'0')+':00';
+    hours.append(el);
+  }
+  grid.append(hours);
 
-const times=document.createElement('div');
-times.className='timebox';
+  for(let i=0;i<7;i++) {
+    const date=localDate(addDays(start,i));
+    const b=document.createElement('button');
+    b.textContent=weekdays[i]+' '+dateFrom(date).getDate();
+    if(date===localDate(new Date())) b.classList.add('today');
+    b.onclick=()=>chooseDate(date);
+    head.append(b);
 
-[
-['Start',e.time],
-['Slut',e.endTime||'–']
-].forEach(([label,val])=>{
-const box=document.createElement('div');
-const small=document.createElement('small');
-const strong=document.createElement('strong');
+    const col=document.createElement('div');
+    col.className='daycol'+
+      (date===localDate(new Date())?' today':'');
 
-small.textContent=label;
-strong.textContent=val;
+    const occupied=[];
+    events.filter(e=>e.date===date)
+      .sort((a,b)=>(a.time||'').localeCompare(b.time||''))
+      .forEach(e=>{
+        const st=min(e.time),en=min(end(e));
+        if(st===null||en===null||en<=420||st>=1380) return;
+        const a=Math.max(st,420),z=Math.min(en,1380);
+        const block=document.createElement('button');
+        block.className='block '+cat(e.type);
+        block.style.top=(a-420)+'px';
+        block.style.height=Math.max(18,z-a-2)+'px';
 
-box.append(small,strong);
-times.append(box);
-});
+        const t=document.createElement('span');
+        t.textContent=(e.time||'')+'–'+end(e);
+        const title=document.createElement('strong');
+        title.textContent=e.title;
+        block.append(t,title);
+        block.onclick=()=>{
+          chooseDate(date);
+          openForm(e.id);
+        };
 
-top.append(type,times);
-
-const h=document.createElement('h3');
-h.textContent=e.title;
-
-a.append(top,h);
-
-if(e.place){
-const p=document.createElement('p');
-p.textContent='📍 '+e.place;
-a.append(p);
+        const conflicts=occupied.filter(o=>a<o.end&&z>o.start);
+        if(conflicts.length) {
+          const width=100/(conflicts.length+1);
+          conflicts.forEach((o,j)=>{
+            o.el.style.left=(j*width)+'%';
+            o.el.style.width=width+'%';
+            o.el.style.right='auto';
+          });
+          block.style.left=(conflicts.length*width)+'%';
+          block.style.width=width+'%';
+          block.style.right='auto';
+        }
+        occupied.push({start:a,end:z,el:block});
+        col.append(block);
+      });
+    grid.append(col);
+  }
 }
 
-if(e.notes){
-const p=document.createElement('p');
-p.textContent=e.notes;
-a.append(p);
+function renderDetails() {
+  $('dateTitle').textContent=dateFrom(selected)
+    .toLocaleDateString('sv-SE',{
+      weekday:'long',day:'numeric',month:'long'
+    });
+  const list=$('activities');
+  list.replaceChildren();
+  const items=events.filter(e=>e.date===selected)
+    .sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+
+  if(!items.length) {
+    const p=document.createElement('p');
+    p.textContent='Inget planerat den här dagen.';
+    list.append(p);
+  }
+
+  items.forEach(e=>{
+    const a=document.createElement('article');
+    a.className=cat(e.type);
+    const top=document.createElement('div');
+    top.className='eventtop';
+    const type=document.createElement('b');
+    type.textContent=e.type;
+    const times=document.createElement('div');
+    times.className='timebox';
+
+    [['Start',e.time],['Slut',e.endTime||'–']].forEach(([label,val])=>{
+      const box=document.createElement('div');
+      const small=document.createElement('small');
+      const strong=document.createElement('strong');
+      small.textContent=label;
+      strong.textContent=val;
+      box.append(small,strong);
+      times.append(box);
+    });
+
+    top.append(type,times);
+    const h=document.createElement('h3');
+    h.textContent=e.title;
+    a.append(top,h);
+
+    if(e.place) {
+      const p=document.createElement('p');
+      p.textContent='📍 '+e.place;
+      a.append(p);
+    }
+    if(e.notes) {
+      const p=document.createElement('p');
+      p.textContent=e.notes;
+      a.append(p);
+    }
+    if(e.link&&/^https?:\/\//i.test(e.link)) {
+      const link=document.createElement('a');
+      link.href=e.link;
+      link.target='_blank';
+      link.rel='noopener noreferrer';
+      link.textContent='Öppna dokument';
+      a.append(link);
+    }
+    a.onclick=ev=>{
+      if(ev.target.tagName!=='A') openForm(e.id);
+    };
+    list.append(a);
+  });
 }
 
-if(e.link&&/^https?:\/\//i.test(e.link)){
-const link=document.createElement('a');
-link.href=e.link;
-link.target='_blank';
-link.rel='noopener noreferrer';
-link.textContent='Öppna dokument';
-a.append(link);
+function openForm(id) {
+  const e=events.find(x=>x.id===id);
+  editing=e?.id||null;
+  $('form').reset();
+  ['title','date','time','type','place','notes','link'].forEach(k=>{
+    $(k).value=e?.[k]||'';
+  });
+  $('date').value=e?.date||selected;
+  $('time').value=e?.time||'16:30';
+  $('endTime').value=e?end(e):'18:00';
+  $('formTitle').textContent=e?'Redigera aktivitet':'Ny aktivitet';
+  $('delete').hidden=!e;
+  $('modal').classList.add('open');
 }
-
-a.onclick=ev=>{
-if(ev.target.tagName!=='A'){
-openForm(e.id);
-}
-};
-
-list.append(a);
-});
-}
-
-function openForm(id){
-const e=events.find(x=>x.id===id);
-editing=e?.id||null;
-
-$('form').reset();
-
-[
-'title',
-'date',
-'time',
-'type',
-'place',
-'notes',
-'link'
-].forEach(k=>{
-$(k).value=e?.[k]||'';
-});
-
-$('date').value=e?.date||selected;
-$('time').value=e?.time||'16:30';
-$('endTime').value=e?end(e):'18:00';
-
-$('formTitle').textContent=
-e?'Redigera aktivitet':'Ny aktivitet';
-
-$('delete').hidden=!e;
-$('modal').classList.add('open');
-}
-
-function closeForm(){
-$('modal').classList.remove('open');
+function closeForm() {
+  $('modal').classList.remove('open');
 }
 
 $('newEvent').onclick=()=>openForm();
@@ -1543,752 +807,116 @@ $('addBottom').onclick=()=>openForm();
 $('cancel').onclick=closeForm;
 
 $('form').onsubmit=async ev=>{
-ev.preventDefault();
+  ev.preventDefault();
+  if(!user) return;
+  if($('endTime').value<=$('time').value)
+    return alert('Sluttiden måste vara senare än starttiden.');
 
-if(!user)return;
+  const e={id:editing||crypto.randomUUID()};
+  ['title','date','time','endTime','type','place','notes','link']
+    .forEach(k=>{e[k]=$(k).value;});
 
-if($('endTime').value<=$('time').value){
-alert('Sluttiden måste vara senare än starttiden.');
-return;
-}
-
-const e={
-id:editing||crypto.randomUUID()
-};
-
-[
-'title',
-'date',
-'time',
-'endTime',
-'type',
-'place',
-'notes',
-'link'
-].forEach(k=>{
-e[k]=$(k).value;
-});
-
-$('saveEvent').disabled=true;
-
-try{
-let result;
-
-if(editing){
-result=await db
-.from('coachhub_events')
-.update(e)
-.eq('id',editing);
-}else{
-e.created_by=user.id;
-
-result=await db
-.from('coachhub_events')
-.insert(e);
-}
-
-if(result.error){
-alert('Kunde inte spara: '+result.error.message);
-return;
-}
-
-selected=e.date;
-view=dateFrom(e.date);
-
-closeForm();
-await loadEvents();
-
-}catch(err){
-alert('Fel: '+err.message);
-}finally{
-$('saveEvent').disabled=false;
-}
+  $('saveEvent').disabled=true;
+  try {
+    let result;
+    if(editing) {
+      result=await db.from('coachhub_events')
+        .update(e).eq('id',editing);
+    } else {
+      e.created_by=user.id;
+      result=await db.from('coachhub_events').insert(e);
+    }
+    if(result.error) {
+      alert('Kunde inte spara: '+result.error.message);
+      return;
+    }
+    selected=e.date;
+    view=dateFrom(e.date);
+    closeForm();
+    await loadEvents();
+  } catch(err) {
+    alert('Fel: '+err.message);
+  } finally {
+    $('saveEvent').disabled=false;
+  }
 };
 
 $('delete').onclick=async()=>{
-if(!editing||!user)return;
-
-if(!confirm(
-'Radera aktiviteten för alla tränare?'
-))return;
-
-const {error}=await db
-.from('coachhub_events')
-.delete()
-.eq('id',editing);
-
-if(error){
-alert('Kunde inte radera: '+error.message);
-return;
-}
-
-closeForm();
-await loadEvents();
+  if(!editing||!user) return;
+  if(!confirm('Radera aktiviteten för alla tränare?')) return;
+  const {error}=await db.from('coachhub_events')
+    .delete().eq('id',editing);
+  if(error) return alert('Kunde inte radera: '+error.message);
+  closeForm();
+  await loadEvents();
 };
 
-function showImport(){
-let old=[];
-
-try{
-old=JSON.parse(
-localStorage.getItem(localKey)||'[]'
-);
-}catch{}
-
-if(!Array.isArray(old))old=[];
-
-const missing=old.filter(e=>
-e.id&&!events.some(x=>x.id===e.id)
-);
-
-$('importPanel').hidden=!missing.length;
-
-$('importDescription').textContent=
-missing.length+
-' aktiviteter finns sparade lokalt på den här enheten men saknas i den gemensamma kalendern. Importera dem bara en gång.';
+function showImport() {
+  let old=[];
+  try {
+    old=JSON.parse(localStorage.getItem(localKey)||'[]');
+  } catch {}
+  if(!Array.isArray(old)) old=[];
+  const missing=old.filter(e=>e.id&&!events.some(x=>x.id===e.id));
+  $('importPanel').hidden=!missing.length;
+  $('importDescription').textContent=missing.length+
+    ' aktiviteter finns lokalt på enheten men saknas i den gemensamma kalendern.';
 }
 
 $('importButton').onclick=async()=>{
-if(!user)return;
+  if(!user) return;
+  let old=[];
+  try {
+    old=JSON.parse(localStorage.getItem(localKey)||'[]');
+  } catch {}
+  if(!Array.isArray(old)) return;
+  const missing=old.filter(e=>e.id&&!events.some(x=>x.id===e.id));
+  if(!missing.length) return;
+  if(!confirm('Importera '+missing.length+' aktiviteter?')) return;
 
-let old=[];
-
-try{
-old=JSON.parse(
-localStorage.getItem(localKey)||'[]'
-);
-}catch{}
-
-if(!Array.isArray(old))return;
-
-const missing=old.filter(e=>
-e.id&&!events.some(x=>x.id===e.id)
-);
-
-if(!missing.length){
-showImport();
-return;
-}
-
-if(!confirm(
-'Importera '+missing.length+
-' aktiviteter till den gemensamma kalendern?'
-))return;
-
-let count=0;
-
-$('importButton').disabled=true;
-
-try{
-for(const e of missing){
-const payload={
-id:String(e.id),
-title:e.title||'Aktivitet',
-date:e.date,
-time:e.time||'16:30',
-endTime:end(e),
-type:e.type||'Övrigt',
-place:e.place||'',
-notes:e.notes||'',
-link:e.link||'',
-created_by:user.id
-};
-
-const {error}=await db
-.from('coachhub_events')
-.upsert(payload,{
-onConflict:'id',
-ignoreDuplicates:true
-});
-
-if(error){
-$('importStatus').textContent=
-'Importen avbröts efter '+
-count+' aktiviteter: '+error.message;
-
-await loadEvents();
-return;
-}
-
-count++;
-}
-
-$('importStatus').textContent=
-count+' aktiviteter importerade.';
-
-await loadEvents();
-
-}finally{
-$('importButton').disabled=false;
-}
+  $('importButton').disabled=true;
+  let count=0;
+  try {
+    for(const e of missing) {
+      const payload={
+        id:String(e.id),
+        title:e.title||'Aktivitet',
+        date:e.date,
+        time:e.time||'16:30',
+        endTime:end(e),
+        type:e.type||'Övrigt',
+        place:e.place||'',
+        notes:e.notes||'',
+        link:e.link||'',
+        created_by:user.id
+      };
+      const {error}=await db.from('coachhub_events')
+        .upsert(payload,{onConflict:'id',ignoreDuplicates:true});
+      if(error) {
+        $('importStatus').textContent='Importfel: '+error.message;
+        await loadEvents();
+        return;
+      }
+      count++;
+    }
+    $('importStatus').textContent=count+' aktiviteter importerade.';
+    await loadEvents();
+  } finally {
+    $('importButton').disabled=false;
+  }
 };
 
 window.addEventListener('focus',()=>{
-if(user)loadEvents();
+  if(user) loadEvents();
 });
-
-document.addEventListener(
-'visibilitychange',
-()=>{
-if(!document.hidden&&user){
-loadEvents();
-}
-}
-);
-
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&user) loadEvents();
+});
 setInterval(()=>{
-if(user&&!document.hidden){
-loadEvents();
-}
+  if(user&&!document.hidden) loadEvents();
 },30000);
+
+render();
 </script>
-  
-<!-- COACH HUB 2.0 – GRÄNSSNITTSUPPGRADERING -->
-<style>
-/* ÖVERSIKT */
-.ch-dashboard {
-  margin: 22px 0;
-}
-.ch-welcome {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
-}
-.ch-welcome h2 {
-  margin: 0;
-  font-size: clamp(21px, 3vw, 28px);
-}
-.ch-welcome p {
-  margin: 4px 0 0;
-  color: #64766c;
-  font-size: 13px;
-}
-.ch-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 12px;
-}
-.ch-stat {
-  background: #fff;
-  border: 1px solid #e1e9e3;
-  border-radius: 17px;
-  padding: 18px;
-  box-shadow: 0 4px 16px #17352b0a;
-}
-.ch-stat small {
-  display: block;
-  color: #64766c;
-  font-weight: 650;
-  font-size: 12px;
-}
-.ch-stat strong {
-  display: block;
-  font-size: 31px;
-  line-height: 1.25;
-  margin-top: 6px;
-  color: #173c2c;
-}
-.ch-dashboard-grid {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 14px;
-  margin-top: 14px;
-}
-.ch-panel {
-  background: white;
-  border: 1px solid #e1e9e3;
-  border-radius: 18px;
-  padding: 18px;
-  min-width: 0;
-}
-.ch-panel h3 {
-  margin: 0 0 12px;
-  font-size: 16px;
-}
-.ch-preview {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  width: 100%;
-  padding: 11px;
-  margin: 7px 0;
-  background: #f5f8f5;
-  color: #17352b;
-  border: 1px solid #e4ebe5;
-  text-align: left;
-  border-radius: 11px;
-}
-.ch-preview-time {
-  font-size: 12px;
-  font-weight: 800;
-  white-space: nowrap;
-  min-width: 45px;
-}
-.ch-preview-info {
-  min-width: 0;
-}
-.ch-preview-info strong,
-.ch-preview-info small {
-  display: block;
-}
-.ch-preview-info strong {
-  font-size: 13px;
-  overflow-wrap: anywhere;
-}
-.ch-preview-info small {
-  font-size: 11px;
-  color: #64766c;
-}
-.ch-empty {
-  color: #64766c;
-  font-size: 13px;
-  padding: 10px 0;
-}
-.ch-quick-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px;
-}
-.ch-quick-actions button {
-  background: #eaf2ec;
-  color: #173c2c;
-  min-height: 52px;
-  text-align: left;
-  font-size: 13px;
-  padding: 11px;
-}
-.ch-quick-actions button:first-child {
-  background: #173c2c;
-  color: white;
-}
-.ch-today {
-  background: #e4eee6;
-  color: #173c2c;
-  font-size: 13px;
-  padding: 10px 14px;
-}
-.ch-period-controls {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.ch-mobile-hint {
-  display: none;
-}
-
-/* BÄTTRE DATORVY */
-@media(min-width: 1000px) {
-  .week-board {
-    min-width: 0;
-  }
-  .week-scroll {
-    overflow: hidden;
-  }
-  .week-head button {
-    min-height: 56px;
-    font-size: 13px;
-  }
-  .block {
-    padding: 7px;
-    font-size: 12px;
-  }
-  .month .day {
-    min-height: 130px;
-  }
-}
-
-/* MOBILVY */
-@media(max-width: 700px) {
-  .ch-dashboard {
-    margin: 16px 0;
-  }
-  .ch-welcome h2 {
-    font-size: 22px;
-  }
-  .ch-stats {
-    gap: 7px;
-  }
-  .ch-stat {
-    padding: 12px 9px;
-    border-radius: 13px;
-  }
-  .ch-stat small {
-    font-size: 10px;
-    line-height: 1.25;
-  }
-  .ch-stat strong {
-    font-size: 25px;
-  }
-  .ch-dashboard-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .ch-panel {
-    padding: 14px;
-    border-radius: 14px;
-  }
-  .ch-today {
-    padding: 9px 11px;
-  }
-  .ch-period-controls {
-    gap: 5px;
-  }
-  .ch-mobile-hint {
-    display: block;
-    font-size: 12px;
-    color: #64766c;
-    margin: 10px 0;
-  }
-
-  /* MOBILENS NYA VECKOVY */
-  #weekView.ch-mobile-week .week-scroll {
-    overflow: visible;
-    border: none;
-    box-shadow: none;
-    background: transparent;
-  }
-  #weekView.ch-mobile-week .week-board {
-    min-width: 0;
-    width: 100%;
-  }
-  #weekView.ch-mobile-week .week-head {
-    display: grid;
-    grid-template-columns: repeat(7,minmax(0,1fr));
-    gap: 4px;
-    background: transparent;
-    border: none;
-    position: static;
-  }
-  #weekView.ch-mobile-week .week-head button {
-    border: 1px solid #dce8df;
-    background: white;
-    color: #17352b;
-    border-radius: 11px;
-    min-height: 66px;
-    padding: 7px 1px;
-    font-size: 11px;
-    line-height: 1.5;
-  }
-  #weekView.ch-mobile-week .week-head button.ch-selected {
-    background: #173c2c;
-    color: white;
-    border-color: #173c2c;
-  }
-  #weekView.ch-mobile-week .week-head button.ch-current {
-    box-shadow: inset 0 0 0 2px #3b9b69;
-  }
-  #weekView.ch-mobile-week .week-grid {
-    display: none;
-  }
-  #weekView.ch-mobile-week > p.muted {
-    display: none;
-  }
-  #weekView.ch-mobile-week + section {
-    margin-top: 15px;
-  }
-}
-
-/* EXTRA SMÅ TELEFONER */
-@media(max-width: 380px) {
-  .ch-quick-actions {
-    grid-template-columns: 1fr 1fr;
-  }
-  .ch-quick-actions button {
-    font-size: 12px;
-  }
-  #weekView.ch-mobile-week .week-head {
-    gap: 2px;
-  }
-  #weekView.ch-mobile-week .week-head button {
-    font-size: 10px;
-    min-height: 61px;
-  }
-}
-</style>
-
-<script>
-(function () {
-  "use strict";
-
-  // Behåll originalappens funktioner och databas.
-  const originalRender = render;
-  const originalRenderWeek = renderWeek;
-
-  const dashboard = document.createElement("div");
-  dashboard.className = "ch-dashboard";
-  dashboard.innerHTML = `
-    <div class="ch-welcome">
-      <div>
-        <h2>Din översikt</h2>
-        <p>Planering för dig och tränarstaben</p>
-      </div>
-    </div>
-
-    <div class="ch-stats">
-      <div class="ch-stat">
-        <small>Idag</small>
-        <strong id="ch-today-count">0</strong>
-      </div>
-      <div class="ch-stat">
-        <small>Denna vecka</small>
-        <strong id="ch-week-count">0</strong>
-      </div>
-      <div class="ch-stat">
-        <small>Kommande matcher</small>
-        <strong id="ch-match-count">0</strong>
-      </div>
-    </div>
-
-    <div class="ch-dashboard-grid">
-      <div class="ch-panel">
-        <h3>Dagens schema</h3>
-        <div id="ch-today-events"></div>
-      </div>
-
-      <div class="ch-panel">
-        <h3>Snabbåtgärder</h3>
-        <div class="ch-quick-actions">
-          <button type="button" id="ch-add">
-            + Ny aktivitet
-          </button>
-          <button type="button" id="ch-add-training">
-            + Träning
-          </button>
-          <button type="button" id="ch-add-match">
-            + Match
-          </button>
-          <button type="button" id="ch-go-today">
-            Visa idag
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const tabs = document.querySelector(".tabs");
-  tabs.parentNode.insertBefore(dashboard, tabs);
-
-  // Lägg till knappen "Idag" i kalendern.
-  const periodBar = document.getElementById("period")
-    .parentElement;
-
-  const todayButton = document.createElement("button");
-  todayButton.type = "button";
-  todayButton.className = "ch-today";
-  todayButton.textContent = "Idag";
-
-  const nextButton = document.getElementById("next");
-  const controls = document.createElement("div");
-  controls.className = "ch-period-controls";
-
-  nextButton.parentNode.insertBefore(controls, nextButton);
-  controls.append(todayButton, nextButton);
-
-  function goToday() {
-    const now = new Date();
-    selected = localDate(now);
-    view = new Date(now);
-    render();
-  }
-
-  todayButton.addEventListener("click", goToday);
-  document.getElementById("ch-go-today")
-    .addEventListener("click", goToday);
-
-  // Genvägar till aktivitetsskapandet.
-  document.getElementById("ch-add")
-    .addEventListener("click", () => openForm());
-
-  document.getElementById("ch-add-training")
-    .addEventListener("click", () => {
-      openForm();
-      document.getElementById("type").value = "Träning";
-    });
-
-  document.getElementById("ch-add-match")
-    .addEventListener("click", () => {
-      openForm();
-      document.getElementById("type").value = "Match";
-    });
-
-  // Ny mobilanpassad veckovy.
-  renderWeek = function () {
-    const mobile = window.matchMedia(
-      "(max-width: 700px)"
-    ).matches;
-
-    const weekView = document.getElementById("weekView");
-
-    if (!mobile) {
-      weekView.classList.remove("ch-mobile-week");
-      originalRenderWeek();
-      return;
-    }
-
-    weekView.classList.add("ch-mobile-week");
-
-    const start = monday(dateFrom(selected));
-    const last = addDays(start, 6);
-
-    document.getElementById("period").textContent =
-      "Vecka " + isoWeek(dateFrom(selected)) +
-      " · " +
-      start.toLocaleDateString("sv-SE", {
-        day: "numeric",
-        month: "short"
-      }) +
-      "–" +
-      last.toLocaleDateString("sv-SE", {
-        day: "numeric",
-        month: "short"
-      });
-
-    const head = document.getElementById("weekHead");
-    const grid = document.getElementById("weekGrid");
-
-    head.replaceChildren();
-    grid.replaceChildren();
-
-    for (let i = 0; i < 7; i++) {
-      const d = addDays(start, i);
-      const date = localDate(d);
-
-      const button = document.createElement("button");
-      button.type = "button";
-
-      const dayName = weekdays[i];
-      const number = d.getDate();
-
-      const count = events.filter(
-        e => e.date === date
-      ).length;
-
-      button.innerHTML =
-        "<strong>" + dayName + "</strong><br>" +
-        "<span>" + number + "</span><br>" +
-        "<small>" + count + " akt.</small>";
-
-      if (date === selected) {
-        button.classList.add("ch-selected");
-      }
-
-      if (date === localDate(new Date())) {
-        button.classList.add("ch-current");
-      }
-
-      button.addEventListener("click", () => {
-        chooseDate(date);
-      });
-
-      head.appendChild(button);
-    }
-  };
-
-  // Översikt och statistik.
-  function updateDashboard() {
-    const today = localDate(new Date());
-    const start = monday(new Date());
-    const weekStart = localDate(start);
-    const weekEnd = localDate(addDays(start, 6));
-
-    const todaysEvents = events
-      .filter(e => e.date === today)
-      .sort((a, b) =>
-        (a.time || "").localeCompare(b.time || "")
-      );
-
-    const weekEvents = events.filter(e =>
-      e.date >= weekStart && e.date <= weekEnd
-    );
-
-    const upcomingMatches = events.filter(e =>
-      e.date >= today && e.type === "Match"
-    );
-
-    document.getElementById("ch-today-count")
-      .textContent = todaysEvents.length;
-
-    document.getElementById("ch-week-count")
-      .textContent = weekEvents.length;
-
-    document.getElementById("ch-match-count")
-      .textContent = upcomingMatches.length;
-
-    const container =
-      document.getElementById("ch-today-events");
-
-    container.replaceChildren();
-
-    if (!todaysEvents.length) {
-      const empty = document.createElement("p");
-      empty.className = "ch-empty";
-      empty.textContent =
-        "Inga aktiviteter planerade idag.";
-      container.append(empty);
-      return;
-    }
-
-    todaysEvents.forEach(e => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "ch-preview";
-
-      const time = document.createElement("span");
-      time.className = "ch-preview-time";
-      time.textContent = e.time || "–";
-
-      const info = document.createElement("span");
-      info.className = "ch-preview-info";
-
-      const title = document.createElement("strong");
-      title.textContent = e.title || "Aktivitet";
-
-      const detail = document.createElement("small");
-      detail.textContent =
-        (e.type || "Övrigt") +
-        (e.place ? " · " + e.place : "");
-
-      info.append(title, detail);
-      button.append(time, info);
-
-      button.addEventListener("click", () => {
-        chooseDate(e.date);
-        openForm(e.id);
-      });
-
-      container.append(button);
-    });
-  }
-
-  // Uppdatera översikten varje gång kalendern ritas.
-  render = function () {
-    originalRender();
-    updateDashboard();
-  };
-
-  // Anpassa automatiskt när skärmstorleken ändras.
-  let lastMobile = window.matchMedia(
-    "(max-width: 700px)"
-  ).matches;
-
-  window.addEventListener("resize", () => {
-    const mobile = window.matchMedia(
-      "(max-width: 700px)"
-    ).matches;
-
-    if (mobile !== lastMobile) {
-      lastMobile = mobile;
-      render();
-    }
-  });
-
-  // Ladda den nya layouten.
-  render();
-})();
-</script>
-<!-- SLUT COACH HUB 2.0 -->
-
 </body>
 </html>
