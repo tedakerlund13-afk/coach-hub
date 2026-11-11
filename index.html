@@ -1742,5 +1742,553 @@ loadEvents();
 }
 },30000);
 </script>
+  
+<!-- COACH HUB 2.0 – GRÄNSSNITTSUPPGRADERING -->
+<style>
+/* ÖVERSIKT */
+.ch-dashboard {
+  margin: 22px 0;
+}
+.ch-welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+.ch-welcome h2 {
+  margin: 0;
+  font-size: clamp(21px, 3vw, 28px);
+}
+.ch-welcome p {
+  margin: 4px 0 0;
+  color: #64766c;
+  font-size: 13px;
+}
+.ch-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+}
+.ch-stat {
+  background: #fff;
+  border: 1px solid #e1e9e3;
+  border-radius: 17px;
+  padding: 18px;
+  box-shadow: 0 4px 16px #17352b0a;
+}
+.ch-stat small {
+  display: block;
+  color: #64766c;
+  font-weight: 650;
+  font-size: 12px;
+}
+.ch-stat strong {
+  display: block;
+  font-size: 31px;
+  line-height: 1.25;
+  margin-top: 6px;
+  color: #173c2c;
+}
+.ch-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+.ch-panel {
+  background: white;
+  border: 1px solid #e1e9e3;
+  border-radius: 18px;
+  padding: 18px;
+  min-width: 0;
+}
+.ch-panel h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+.ch-preview {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 11px;
+  margin: 7px 0;
+  background: #f5f8f5;
+  color: #17352b;
+  border: 1px solid #e4ebe5;
+  text-align: left;
+  border-radius: 11px;
+}
+.ch-preview-time {
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  min-width: 45px;
+}
+.ch-preview-info {
+  min-width: 0;
+}
+.ch-preview-info strong,
+.ch-preview-info small {
+  display: block;
+}
+.ch-preview-info strong {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.ch-preview-info small {
+  font-size: 11px;
+  color: #64766c;
+}
+.ch-empty {
+  color: #64766c;
+  font-size: 13px;
+  padding: 10px 0;
+}
+.ch-quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+.ch-quick-actions button {
+  background: #eaf2ec;
+  color: #173c2c;
+  min-height: 52px;
+  text-align: left;
+  font-size: 13px;
+  padding: 11px;
+}
+.ch-quick-actions button:first-child {
+  background: #173c2c;
+  color: white;
+}
+.ch-today {
+  background: #e4eee6;
+  color: #173c2c;
+  font-size: 13px;
+  padding: 10px 14px;
+}
+.ch-period-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.ch-mobile-hint {
+  display: none;
+}
+
+/* BÄTTRE DATORVY */
+@media(min-width: 1000px) {
+  .week-board {
+    min-width: 0;
+  }
+  .week-scroll {
+    overflow: hidden;
+  }
+  .week-head button {
+    min-height: 56px;
+    font-size: 13px;
+  }
+  .block {
+    padding: 7px;
+    font-size: 12px;
+  }
+  .month .day {
+    min-height: 130px;
+  }
+}
+
+/* MOBILVY */
+@media(max-width: 700px) {
+  .ch-dashboard {
+    margin: 16px 0;
+  }
+  .ch-welcome h2 {
+    font-size: 22px;
+  }
+  .ch-stats {
+    gap: 7px;
+  }
+  .ch-stat {
+    padding: 12px 9px;
+    border-radius: 13px;
+  }
+  .ch-stat small {
+    font-size: 10px;
+    line-height: 1.25;
+  }
+  .ch-stat strong {
+    font-size: 25px;
+  }
+  .ch-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .ch-panel {
+    padding: 14px;
+    border-radius: 14px;
+  }
+  .ch-today {
+    padding: 9px 11px;
+  }
+  .ch-period-controls {
+    gap: 5px;
+  }
+  .ch-mobile-hint {
+    display: block;
+    font-size: 12px;
+    color: #64766c;
+    margin: 10px 0;
+  }
+
+  /* MOBILENS NYA VECKOVY */
+  #weekView.ch-mobile-week .week-scroll {
+    overflow: visible;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+  #weekView.ch-mobile-week .week-board {
+    min-width: 0;
+    width: 100%;
+  }
+  #weekView.ch-mobile-week .week-head {
+    display: grid;
+    grid-template-columns: repeat(7,minmax(0,1fr));
+    gap: 4px;
+    background: transparent;
+    border: none;
+    position: static;
+  }
+  #weekView.ch-mobile-week .week-head button {
+    border: 1px solid #dce8df;
+    background: white;
+    color: #17352b;
+    border-radius: 11px;
+    min-height: 66px;
+    padding: 7px 1px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  #weekView.ch-mobile-week .week-head button.ch-selected {
+    background: #173c2c;
+    color: white;
+    border-color: #173c2c;
+  }
+  #weekView.ch-mobile-week .week-head button.ch-current {
+    box-shadow: inset 0 0 0 2px #3b9b69;
+  }
+  #weekView.ch-mobile-week .week-grid {
+    display: none;
+  }
+  #weekView.ch-mobile-week > p.muted {
+    display: none;
+  }
+  #weekView.ch-mobile-week + section {
+    margin-top: 15px;
+  }
+}
+
+/* EXTRA SMÅ TELEFONER */
+@media(max-width: 380px) {
+  .ch-quick-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ch-quick-actions button {
+    font-size: 12px;
+  }
+  #weekView.ch-mobile-week .week-head {
+    gap: 2px;
+  }
+  #weekView.ch-mobile-week .week-head button {
+    font-size: 10px;
+    min-height: 61px;
+  }
+}
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  // Behåll originalappens funktioner och databas.
+  const originalRender = render;
+  const originalRenderWeek = renderWeek;
+
+  const dashboard = document.createElement("div");
+  dashboard.className = "ch-dashboard";
+  dashboard.innerHTML = `
+    <div class="ch-welcome">
+      <div>
+        <h2>Din översikt</h2>
+        <p>Planering för dig och tränarstaben</p>
+      </div>
+    </div>
+
+    <div class="ch-stats">
+      <div class="ch-stat">
+        <small>Idag</small>
+        <strong id="ch-today-count">0</strong>
+      </div>
+      <div class="ch-stat">
+        <small>Denna vecka</small>
+        <strong id="ch-week-count">0</strong>
+      </div>
+      <div class="ch-stat">
+        <small>Kommande matcher</small>
+        <strong id="ch-match-count">0</strong>
+      </div>
+    </div>
+
+    <div class="ch-dashboard-grid">
+      <div class="ch-panel">
+        <h3>Dagens schema</h3>
+        <div id="ch-today-events"></div>
+      </div>
+
+      <div class="ch-panel">
+        <h3>Snabbåtgärder</h3>
+        <div class="ch-quick-actions">
+          <button type="button" id="ch-add">
+            + Ny aktivitet
+          </button>
+          <button type="button" id="ch-add-training">
+            + Träning
+          </button>
+          <button type="button" id="ch-add-match">
+            + Match
+          </button>
+          <button type="button" id="ch-go-today">
+            Visa idag
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const tabs = document.querySelector(".tabs");
+  tabs.parentNode.insertBefore(dashboard, tabs);
+
+  // Lägg till knappen "Idag" i kalendern.
+  const periodBar = document.getElementById("period")
+    .parentElement;
+
+  const todayButton = document.createElement("button");
+  todayButton.type = "button";
+  todayButton.className = "ch-today";
+  todayButton.textContent = "Idag";
+
+  const nextButton = document.getElementById("next");
+  const controls = document.createElement("div");
+  controls.className = "ch-period-controls";
+
+  nextButton.parentNode.insertBefore(controls, nextButton);
+  controls.append(todayButton, nextButton);
+
+  function goToday() {
+    const now = new Date();
+    selected = localDate(now);
+    view = new Date(now);
+    render();
+  }
+
+  todayButton.addEventListener("click", goToday);
+  document.getElementById("ch-go-today")
+    .addEventListener("click", goToday);
+
+  // Genvägar till aktivitetsskapandet.
+  document.getElementById("ch-add")
+    .addEventListener("click", () => openForm());
+
+  document.getElementById("ch-add-training")
+    .addEventListener("click", () => {
+      openForm();
+      document.getElementById("type").value = "Träning";
+    });
+
+  document.getElementById("ch-add-match")
+    .addEventListener("click", () => {
+      openForm();
+      document.getElementById("type").value = "Match";
+    });
+
+  // Ny mobilanpassad veckovy.
+  renderWeek = function () {
+    const mobile = window.matchMedia(
+      "(max-width: 700px)"
+    ).matches;
+
+    const weekView = document.getElementById("weekView");
+
+    if (!mobile) {
+      weekView.classList.remove("ch-mobile-week");
+      originalRenderWeek();
+      return;
+    }
+
+    weekView.classList.add("ch-mobile-week");
+
+    const start = monday(dateFrom(selected));
+    const last = addDays(start, 6);
+
+    document.getElementById("period").textContent =
+      "Vecka " + isoWeek(dateFrom(selected)) +
+      " · " +
+      start.toLocaleDateString("sv-SE", {
+        day: "numeric",
+        month: "short"
+      }) +
+      "–" +
+      last.toLocaleDateString("sv-SE", {
+        day: "numeric",
+        month: "short"
+      });
+
+    const head = document.getElementById("weekHead");
+    const grid = document.getElementById("weekGrid");
+
+    head.replaceChildren();
+    grid.replaceChildren();
+
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(start, i);
+      const date = localDate(d);
+
+      const button = document.createElement("button");
+      button.type = "button";
+
+      const dayName = weekdays[i];
+      const number = d.getDate();
+
+      const count = events.filter(
+        e => e.date === date
+      ).length;
+
+      button.innerHTML =
+        "<strong>" + dayName + "</strong><br>" +
+        "<span>" + number + "</span><br>" +
+        "<small>" + count + " akt.</small>";
+
+      if (date === selected) {
+        button.classList.add("ch-selected");
+      }
+
+      if (date === localDate(new Date())) {
+        button.classList.add("ch-current");
+      }
+
+      button.addEventListener("click", () => {
+        chooseDate(date);
+      });
+
+      head.appendChild(button);
+    }
+  };
+
+  // Översikt och statistik.
+  function updateDashboard() {
+    const today = localDate(new Date());
+    const start = monday(new Date());
+    const weekStart = localDate(start);
+    const weekEnd = localDate(addDays(start, 6));
+
+    const todaysEvents = events
+      .filter(e => e.date === today)
+      .sort((a, b) =>
+        (a.time || "").localeCompare(b.time || "")
+      );
+
+    const weekEvents = events.filter(e =>
+      e.date >= weekStart && e.date <= weekEnd
+    );
+
+    const upcomingMatches = events.filter(e =>
+      e.date >= today && e.type === "Match"
+    );
+
+    document.getElementById("ch-today-count")
+      .textContent = todaysEvents.length;
+
+    document.getElementById("ch-week-count")
+      .textContent = weekEvents.length;
+
+    document.getElementById("ch-match-count")
+      .textContent = upcomingMatches.length;
+
+    const container =
+      document.getElementById("ch-today-events");
+
+    container.replaceChildren();
+
+    if (!todaysEvents.length) {
+      const empty = document.createElement("p");
+      empty.className = "ch-empty";
+      empty.textContent =
+        "Inga aktiviteter planerade idag.";
+      container.append(empty);
+      return;
+    }
+
+    todaysEvents.forEach(e => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "ch-preview";
+
+      const time = document.createElement("span");
+      time.className = "ch-preview-time";
+      time.textContent = e.time || "–";
+
+      const info = document.createElement("span");
+      info.className = "ch-preview-info";
+
+      const title = document.createElement("strong");
+      title.textContent = e.title || "Aktivitet";
+
+      const detail = document.createElement("small");
+      detail.textContent =
+        (e.type || "Övrigt") +
+        (e.place ? " · " + e.place : "");
+
+      info.append(title, detail);
+      button.append(time, info);
+
+      button.addEventListener("click", () => {
+        chooseDate(e.date);
+        openForm(e.id);
+      });
+
+      container.append(button);
+    });
+  }
+
+  // Uppdatera översikten varje gång kalendern ritas.
+  render = function () {
+    originalRender();
+    updateDashboard();
+  };
+
+  // Anpassa automatiskt när skärmstorleken ändras.
+  let lastMobile = window.matchMedia(
+    "(max-width: 700px)"
+  ).matches;
+
+  window.addEventListener("resize", () => {
+    const mobile = window.matchMedia(
+      "(max-width: 700px)"
+    ).matches;
+
+    if (mobile !== lastMobile) {
+      lastMobile = mobile;
+      render();
+    }
+  });
+
+  // Ladda den nya layouten.
+  render();
+})();
+</script>
+<!-- SLUT COACH HUB 2.0 -->
+
 </body>
 </html>
