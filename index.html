@@ -3,72 +3,538 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#183b2b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Coach Hub">
 <title>Coach Hub</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f4f6f3;color:#183b2b;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
-main{max-width:750px;margin:auto;padding:16px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-h1{font-size:24px;margin:0}
-button{border:0;background:#183b2b;color:white;padding:11px 14px;border-radius:10px;font-weight:600}
-.alt{background:#e1e8e1;color:#183b2b}
-nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:16px}
-nav h2{font-size:18px;text-transform:capitalize}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;background:white;padding:8px;border-radius:15px}
-.weekday{text-align:center;font-size:12px;color:#718076;padding:8px 0}
-.day{min-height:66px;background:#f4f6f3;color:#183b2b;border:2px solid transparent;text-align:left;padding:7px 4px}
-.day.selected{border-color:#379366}
-.day.today{background:#e0eee2}
-.dots{display:flex;gap:3px;margin-top:7px;flex-wrap:wrap}
-.dot{width:7px;height:7px;border-radius:50%;background:#379366}
-.match{background:#e2a439}
-.analysis{background:#648bce}
-.meeting{background:#9b7ac7}
-article{background:white;border-radius:12px;padding:14px;margin:9px 0;border-left:5px solid #379366;cursor:pointer}
-article h3{margin:5px 0}
-small{color:#718076}
-section{margin-top:22px}
-.modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:12px;z-index:10}
-.modal.open{display:flex}
-form{background:white;border-radius:16px;padding:20px;width:100%;max-width:500px;max-height:92vh;overflow:auto}
-label{display:block;margin-top:12px;margin-bottom:5px;font-weight:600}
-input,select,textarea{width:100%;padding:11px;border:1px solid #ccd6ce;border-radius:9px;font:inherit}
-.time-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.actions{display:flex;justify-content:space-between;gap:8px;margin-top:20px}
-#delete{background:#a83b3b}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f6f3;
+  color: #183b2b;
+  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 18px 14px 70px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+h1 {
+  font-size: 25px;
+  margin: 0;
+}
+
+button {
+  border: 0;
+  background: #183b2b;
+  color: white;
+  padding: 11px 14px;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.alt {
+  background: #e1e8e1;
+  color: #183b2b;
+}
+
+/* VÄXLA MÅNAD / VECKA */
+
+.switch {
+  display: flex;
+  background: #e4ebe5;
+  padding: 4px;
+  border-radius: 15px;
+  max-width: 330px;
+  margin: 0 auto 18px;
+}
+
+.switch button {
+  flex: 1;
+  background: transparent;
+  color: #183b2b;
+}
+
+.switch button.active {
+  background: #183b2b;
+  color: white;
+}
+
+/* NAVIGERING */
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.nav h2 {
+  font-size: 19px;
+  text-align: center;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+/* MÅNADSVY */
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+  background: white;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 12px;
+  color: #718076;
+  padding: 9px 0;
+}
+
+.day {
+  min-height: 75px;
+  background: #f4f6f3;
+  color: #183b2b;
+  border: 2px solid transparent;
+  text-align: left;
+  padding: 8px 5px;
+  border-radius: 12px;
+}
+
+.day.selected {
+  border-color: #379366;
+}
+
+.day.today {
+  background: #e0eee2;
+}
+
+.dots {
+  display: flex;
+  gap: 4px;
+  margin-top: 9px;
+  flex-wrap: wrap;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #379366;
+}
+
+/* AKTIVITETSFÄRGER */
+
+.match {
+  --event: #e2a439;
+  --event-bg: #f9e4b4;
+}
+
+.analysis {
+  --event: #648bce;
+  --event-bg: #bfd7fa;
+}
+
+.meeting {
+  --event: #9b7ac7;
+  --event-bg: #e0cafa;
+}
+
+.training {
+  --event: #379366;
+  --event-bg: #ccebd4;
+}
+
+.dot.match { background: #e2a439; }
+.dot.analysis { background: #648bce; }
+.dot.meeting { background: #9b7ac7; }
+.dot.training { background: #379366; }
+
+/* AKTIVITETSKORT */
+
+section {
+  margin-top: 25px;
+}
+
+section h2 {
+  font-size: 23px;
+}
+
+article {
+  background: var(--event-bg, white);
+  border-radius: 15px;
+  padding: 15px;
+  margin: 10px 0;
+  border-left: 6px solid var(--event, #379366);
+  cursor: pointer;
+}
+
+article h3 {
+  margin: 8px 0;
+}
+
+article p {
+  margin: 8px 0;
+}
+
+article a {
+  display: inline-block;
+  margin-top: 7px;
+  color: #153f8b;
+  font-weight: 700;
+}
+
+small {
+  color: #718076;
+}
+
+.event-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.event-type {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.times {
+  display: flex;
+  gap: 6px;
+}
+
+.time-box {
+  background: #ffffffb8;
+  border-radius: 9px;
+  padding: 5px 9px;
+  text-align: center;
+  min-width: 66px;
+}
+
+.time-box small {
+  display: block;
+  font-size: 11px;
+}
+
+.time-box strong {
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* VECKOVY */
+
+.week-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: white;
+  border-radius: 17px;
+  border: 1px solid #e3e9e3;
+  -webkit-overflow-scrolling: touch;
+}
+
+.week-board {
+  min-width: 740px;
+}
+
+.week-header {
+  display: grid;
+  grid-template-columns: 54px repeat(7, minmax(0, 1fr));
+  background: white;
+  border-bottom: 1px solid #dce5df;
+}
+
+.week-label {
+  text-align: center;
+  font-size: 12px;
+  padding: 11px 2px;
+  border-left: 1px solid #e3e9e3;
+}
+
+.week-label.current {
+  background: #e0eee2;
+  font-weight: 800;
+}
+
+.week-label.selected {
+  box-shadow: inset 0 -3px #379366;
+}
+
+.week-label button {
+  padding: 0;
+  background: transparent;
+  color: #183b2b;
+  font-size: 12px;
+}
+
+.week-body {
+  position: relative;
+  height: 960px;
+  display: grid;
+  grid-template-columns: 54px repeat(7, minmax(0, 1fr));
+}
+
+.hour-col {
+  position: relative;
+}
+
+.hour {
+  position: absolute;
+  left: 0;
+  right: 3px;
+  transform: translateY(-8px);
+  text-align: right;
+  font-size: 12px;
+  color: #66776a;
+  font-variant-numeric: tabular-nums;
+}
+
+.hour:first-child {
+  transform: none;
+}
+
+.day-col {
+  position: relative;
+  border-left: 1px solid #e0e6e0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 29px,
+    #edf1ed 29px,
+    #edf1ed 30px,
+    transparent 30px,
+    transparent 59px,
+    #dce5dc 59px,
+    #dce5dc 60px
+  );
+}
+
+.day-col.current {
+  background-color: #f3faf4;
+}
+
+.week-event {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  background: var(--event-bg, #ccebd4);
+  border-left: 4px solid var(--event, #379366);
+  border-radius: 7px;
+  padding: 4px;
+  overflow: hidden;
+  text-align: left;
+  color: #183b2b;
+  font-size: 11px;
+  line-height: 1.2;
+  z-index: 1;
+  min-height: 17px;
+}
+
+.week-event strong {
+  display: block;
+  font-size: 11px;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.week-event span {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.week-event.overlap {
+  right: 45%;
+}
+
+.week-event.overlap.second {
+  left: 55%;
+  right: 2px;
+}
+
+.week-note {
+  font-size: 12px;
+  color: #718076;
+  margin: 9px 0;
+}
+
+/* FORMULÄR */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #0008;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  z-index: 10;
+}
+
+.modal.open {
+  display: flex;
+}
+
+form {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 92vh;
+  overflow: auto;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 5px;
+  font-weight: 650;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ccd6ce;
+  border-radius: 9px;
+  font: inherit;
+}
+
+.time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+#delete {
+  background: #a83b3b;
+}
+
+@media (min-width: 800px) {
+  .day {
+    min-height: 100px;
+  }
+
+  .week-board {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  main {
+    padding: 15px 10px 60px;
+  }
+
+  header h1 {
+    font-size: 22px;
+  }
+
+  .day {
+    min-height: 65px;
+    padding: 6px 3px;
+  }
+
+  .calendar {
+    gap: 3px;
+    padding: 7px;
+  }
+
+  section h2 {
+    font-size: 21px;
+  }
+}
 </style>
 </head>
+
 <body>
+
 <main>
+
 <header>
-<div>
-<h1>⚽ Coach Hub</h1>
-<small>Din tränarkalender</small>
-</div>
-<button onclick="openForm()">+ Aktivitet</button>
+  <div>
+    <h1>⚽ Coach Hub</h1>
+    <small>Din tränarkalender</small>
+  </div>
+
+  <button onclick="openForm()">+ Aktivitet</button>
 </header>
 
-<nav>
-<button class="alt" onclick="changeMonth(-1)">‹</button>
-<h2 id="month"></h2>
-<button class="alt" onclick="changeMonth(1)">›</button>
-</nav>
+<div class="switch">
+  <button id="monthTab" class="active"
+    onclick="setMode('month')">Månad</button>
 
-<div class="calendar" id="calendar"></div>
+  <button id="weekTab"
+    onclick="setMode('week')">Vecka</button>
+</div>
+
+<div class="nav">
+  <button class="alt" onclick="navigate(-1)">‹</button>
+  <h2 id="period"></h2>
+  <button class="alt" onclick="navigate(1)">›</button>
+</div>
+
+<div id="monthView">
+  <div class="calendar" id="calendar"></div>
+</div>
+
+<div id="weekView" hidden>
+  <div class="week-scroll">
+    <div class="week-board">
+      <div class="week-header" id="weekHeader"></div>
+      <div class="week-body" id="weekBody"></div>
+    </div>
+  </div>
+
+  <p class="week-note">
+    Svep åt sidan för att se hela veckan.
+    Tryck på en aktivitet för att redigera.
+  </p>
+</div>
 
 <section>
-<h2 id="dateTitle"></h2>
-<div id="activities"></div>
-<button onclick="openForm()">+ Lägg till aktivitet</button>
+  <h2 id="dateTitle"></h2>
+  <div id="activities"></div>
+
+  <button onclick="openForm()">
+    + Lägg till aktivitet
+  </button>
 </section>
+
 </main>
 
 <div class="modal" id="modal">
 <form id="form">
+
 <h2 id="formTitle">Ny aktivitet</h2>
 
 <label for="title">Rubrik</label>
@@ -78,25 +544,26 @@ input,select,textarea{width:100%;padding:11px;border:1px solid #ccd6ce;border-ra
 <input id="date" type="date" required>
 
 <div class="time-row">
-<div>
-<label for="time">Starttid</label>
-<input id="time" type="time" value="16:30" required>
-</div>
-<div>
-<label for="endTime">Sluttid</label>
-<input id="endTime" type="time" value="18:00" required>
-</div>
+  <div>
+    <label for="time">Starttid</label>
+    <input id="time" type="time" value="16:30" required>
+  </div>
+
+  <div>
+    <label for="endTime">Sluttid</label>
+    <input id="endTime" type="time" value="18:00" required>
+  </div>
 </div>
 
 <label for="type">Typ</label>
 <select id="type">
-<option>Träning</option>
-<option>Match</option>
-<option>Matchanalys</option>
-<option>Motståndaranalys</option>
-<option>Träningsanalys</option>
-<option>Möte</option>
-<option>Övrigt</option>
+  <option>Träning</option>
+  <option>Match</option>
+  <option>Matchanalys</option>
+  <option>Motståndaranalys</option>
+  <option>Träningsanalys</option>
+  <option>Möte</option>
+  <option>Övrigt</option>
 </select>
 
 <label for="place">Plats</label>
@@ -109,167 +576,483 @@ input,select,textarea{width:100%;padding:11px;border:1px solid #ccd6ce;border-ra
 <input id="link" type="url" placeholder="https://...">
 
 <div class="actions">
-<button type="button" class="alt" onclick="closeForm()">Avbryt</button>
-<button type="button" id="delete" onclick="removeActivity()">Radera</button>
-<button type="submit">Spara</button>
+  <button type="button" class="alt"
+    onclick="closeForm()">Avbryt</button>
+
+  <button type="button" id="delete"
+    onclick="removeActivity()">Radera</button>
+
+  <button type="submit">Spara</button>
 </div>
+
 </form>
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
+
+const $ = id => document.getElementById(id);
 
 // Samma lagringsnyckel som tidigare.
-// Därmed behålls redan sparade aktiviteter.
-const key="coachhub-calendar-v1";
-let events=[];
+const key = "coachhub-calendar-v1";
 
-try{
-  events=JSON.parse(localStorage.getItem(key)||"[]");
-  if(!Array.isArray(events))events=[];
-}catch{
-  events=[];
+let events = [];
+
+try {
+  events = JSON.parse(localStorage.getItem(key) || "[]");
+  if (!Array.isArray(events)) events = [];
+} catch {
+  events = [];
 }
 
-let view=new Date();
-let selected=localDate(view);
-let editing=null;
+let view = new Date();
+let selected = localDate(view);
+let editing = null;
+let mode = "month";
 
-function localDate(d){
-  return d.getFullYear()+"-"+
-    String(d.getMonth()+1).padStart(2,"0")+"-"+
-    String(d.getDate()).padStart(2,"0");
+const days = [
+  "Mån", "Tis", "Ons", "Tor", "Fre", "Lör", "Sön"
+];
+
+function localDate(d) {
+  return d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
 }
 
-function category(t){
-  return t==="Match"?"match":
-    t==="Möte"?"meeting":
-    t.includes("analys")?"analysis":"";
+function dateFrom(s) {
+  return new Date(s + "T12:00:00");
 }
 
-function save(){
-  localStorage.setItem(key,JSON.stringify(events));
+function monday(d) {
+  const a = new Date(
+    d.getFullYear(), d.getMonth(), d.getDate(), 12
+  );
+
+  a.setDate(a.getDate() - (a.getDay() + 6) % 7);
+  return a;
+}
+
+function plusDays(d, n) {
+  const a = new Date(d);
+  a.setDate(a.getDate() + n);
+  return a;
+}
+
+function category(t) {
+  return t === "Match" ? "match" :
+    t === "Möte" ? "meeting" :
+    (t || "").toLowerCase().includes("analys") ? "analysis" :
+    t === "Träning" ? "training" : "";
+}
+
+function mins(t) {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(t || "");
+
+  return m
+    ? Number(m[1]) * 60 + Number(m[2])
+    : null;
+}
+
+function suggestEnd(start) {
+  const n = mins(start);
+  if (n === null) return "18:00";
+
+  const total = n + 90;
+
+  return String(Math.floor(total / 60) % 24)
+    .padStart(2, "0") +
+    ":" +
+    String(total % 60).padStart(2, "0");
+}
+
+function eventEnd(e) {
+  return e.endTime || suggestEnd(e.time || "16:30");
+}
+
+function save() {
+  localStorage.setItem(key, JSON.stringify(events));
   render();
 }
 
-function changeMonth(n){
-  view=new Date(view.getFullYear(),view.getMonth()+n,1);
-  selected=localDate(view);
+function setMode(next) {
+  mode = next;
   render();
 }
 
-function render(){
-  const y=view.getFullYear();
-  const m=view.getMonth();
+function navigate(n) {
+  if (mode === "month") {
+    view = new Date(
+      view.getFullYear(),
+      view.getMonth() + n,
+      1
+    );
 
-  $("month").textContent=
-    new Date(y,m,1).toLocaleDateString("sv-SE",{
-      month:"long",year:"numeric"
+    selected = localDate(view);
+  } else {
+    selected = localDate(
+      plusDays(dateFrom(selected), 7 * n)
+    );
+
+    view = dateFrom(selected);
+  }
+
+  render();
+}
+
+function chooseDate(date) {
+  selected = date;
+  view = dateFrom(date);
+  render();
+}
+
+function render() {
+  $("monthTab").classList.toggle(
+    "active", mode === "month"
+  );
+
+  $("weekTab").classList.toggle(
+    "active", mode === "week"
+  );
+
+  $("monthView").hidden = mode !== "month";
+  $("weekView").hidden = mode !== "week";
+
+  if (mode === "month") {
+    renderMonth();
+  } else {
+    renderWeek();
+  }
+
+  renderDetails();
+}
+
+/* MÅNADSVY */
+
+function renderMonth() {
+  const y = view.getFullYear();
+  const m = view.getMonth();
+
+  $("period").textContent =
+    new Date(y, m, 1).toLocaleDateString("sv-SE", {
+      month: "long",
+      year: "numeric"
     });
 
-  const cal=$("calendar");
+  const cal = $("calendar");
   cal.replaceChildren();
 
-  ["Mån","Tis","Ons","Tor","Fre","Lör","Sön"]
-    .forEach(w=>{
-      const el=document.createElement("div");
-      el.className="weekday";
-      el.textContent=w;
-      cal.append(el);
-    });
+  days.forEach(w => {
+    const el = document.createElement("div");
+    el.className = "weekday";
+    el.textContent = w;
+    cal.append(el);
+  });
 
-  const offset=(new Date(y,m,1).getDay()+6)%7;
+  const offset =
+    (new Date(y, m, 1).getDay() + 6) % 7;
 
-  for(let i=0;i<offset;i++){
+  for (let i = 0; i < offset; i++) {
     cal.append(document.createElement("div"));
   }
 
-  for(let d=1;d<=new Date(y,m+1,0).getDate();d++){
-    const date=localDate(new Date(y,m,d));
-    const b=document.createElement("button");
+  const numberOfDays =
+    new Date(y, m + 1, 0).getDate();
 
-    b.className="day"+
-      (date===selected?" selected":"")+
-      (date===localDate(new Date())?" today":"");
+  for (let d = 1; d <= numberOfDays; d++) {
+    const date = localDate(new Date(y, m, d));
+    const b = document.createElement("button");
 
-    const num=document.createElement("span");
-    num.textContent=d;
+    b.className = "day" +
+      (date === selected ? " selected" : "") +
+      (date === localDate(new Date()) ? " today" : "");
+
+    const num = document.createElement("span");
+    num.textContent = d;
     b.append(num);
 
-    const dots=document.createElement("div");
-    dots.className="dots";
+    const dots = document.createElement("div");
+    dots.className = "dots";
 
-    events.filter(e=>e.date===date).forEach(e=>{
-      const dot=document.createElement("span");
-      dot.className="dot "+category(e.type);
-      dots.append(dot);
-    });
-
-    b.append(dots);
-    b.onclick=()=>{
-      selected=date;
-      render();
-    };
-    cal.append(b);
-  }
-
-  $("dateTitle").textContent=
-    new Date(selected+"T12:00:00")
-      .toLocaleDateString("sv-SE",{
-        weekday:"long",day:"numeric",month:"long"
+    events
+      .filter(e => e.date === date)
+      .forEach(e => {
+        const dot = document.createElement("span");
+        dot.className = "dot " + category(e.type);
+        dots.append(dot);
       });
 
-  const list=$("activities");
+    b.append(dots);
+    b.onclick = () => chooseDate(date);
+
+    cal.append(b);
+  }
+}
+
+/* VECKONUMMER */
+
+function isoWeek(date) {
+  const d = new Date(Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  ));
+
+  d.setUTCDate(
+    d.getUTCDate() + 4 - (d.getUTCDay() || 7)
+  );
+
+  const yearStart =
+    new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+
+  return Math.ceil(
+    (((d - yearStart) / 86400000) + 1) / 7
+  );
+}
+
+/* VECKOVY 07:00–23:00 */
+
+function renderWeek() {
+  const start = monday(dateFrom(selected));
+  const end = plusDays(start, 6);
+  const weekNum = isoWeek(dateFrom(selected));
+
+  $("period").textContent =
+    "Vecka " + weekNum + " · " +
+    start.toLocaleDateString("sv-SE", {
+      day: "numeric",
+      month: "short"
+    }) +
+    "–" +
+    end.toLocaleDateString("sv-SE", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+
+  const header = $("weekHeader");
+  const body = $("weekBody");
+
+  header.replaceChildren();
+  body.replaceChildren();
+
+  header.append(document.createElement("div"));
+
+  const times = document.createElement("div");
+  times.className = "hour-col";
+
+  for (let h = 7; h <= 23; h++) {
+    const label = document.createElement("div");
+
+    label.className = "hour";
+    label.style.top = ((h - 7) * 60) + "px";
+
+    label.textContent =
+      String(h).padStart(2, "0") + ":00";
+
+    times.append(label);
+  }
+
+  body.append(times);
+
+  for (let i = 0; i < 7; i++) {
+    const date = localDate(plusDays(start, i));
+
+    const label = document.createElement("div");
+
+    label.className = "week-label" +
+      (date === localDate(new Date()) ? " current" : "") +
+      (date === selected ? " selected" : "");
+
+    const b = document.createElement("button");
+
+    b.textContent =
+      days[i] + " " +
+      dateFrom(date).getDate() + "/" +
+      (dateFrom(date).getMonth() + 1);
+
+    b.onclick = () => chooseDate(date);
+
+    label.append(b);
+    header.append(label);
+
+    const col = document.createElement("div");
+
+    col.className = "day-col" +
+      (date === localDate(new Date()) ? " current" : "");
+
+    col.onclick = ev => {
+      if (ev.target === col) {
+        chooseDate(date);
+      }
+    };
+
+    const todays = events
+      .filter(e => e.date === date)
+      .sort((a, b) =>
+        (a.time || "").localeCompare(b.time || "")
+      );
+
+    const rendered = [];
+
+    todays.forEach(e => {
+      const st = mins(e.time);
+      const en = mins(eventEnd(e));
+
+      if (
+        st === null ||
+        en === null ||
+        en <= 420 ||
+        st >= 1380
+      ) {
+        return;
+      }
+
+      const startMin = Math.max(420, st);
+      const endMin = Math.min(
+        1380,
+        Math.max(en, st + 15)
+      );
+
+      const block = document.createElement("button");
+
+      block.className =
+        "week-event " + category(e.type);
+
+      block.style.top =
+        (startMin - 420) + "px";
+
+      block.style.height =
+        Math.max(18, endMin - startMin - 2) + "px";
+
+      const time = document.createElement("span");
+
+      time.textContent =
+        (e.time || "") + "–" + eventEnd(e);
+
+      const title = document.createElement("strong");
+      title.textContent = e.title || "Aktivitet";
+
+      block.append(time, title);
+
+      block.title =
+        (e.title || "") + " " +
+        (e.time || "") + "–" + eventEnd(e);
+
+      block.onclick = ev => {
+        ev.stopPropagation();
+        chooseDate(date);
+        openForm(e.id);
+      };
+
+      const overlapping = rendered.find(x =>
+        startMin < x.end && endMin > x.start
+      );
+
+      if (overlapping) {
+        block.classList.add("overlap", "second");
+        overlapping.el.classList.add("overlap");
+      }
+
+      rendered.push({
+        start: startMin,
+        end: endMin,
+        el: block
+      });
+
+      col.append(block);
+    });
+
+    body.append(col);
+  }
+}
+
+/* AKTIVITETER FÖR VALD DAG */
+
+function renderDetails() {
+  $("dateTitle").textContent =
+    dateFrom(selected).toLocaleDateString("sv-SE", {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    });
+
+  const list = $("activities");
   list.replaceChildren();
 
-  const dayEvents=events
-    .filter(e=>e.date===selected)
-    .sort((a,b)=>
-      (a.time||"").localeCompare(b.time||"")
+  const dayEvents = events
+    .filter(e => e.date === selected)
+    .sort((a, b) =>
+      (a.time || "").localeCompare(b.time || "")
     );
 
-  if(!dayEvents.length){
-    const p=document.createElement("p");
-    p.textContent="Inget planerat den här dagen.";
+  if (!dayEvents.length) {
+    const p = document.createElement("p");
+    p.textContent = "Inget planerat den här dagen.";
     list.append(p);
   }
 
-  dayEvents.forEach(e=>{
-    const a=document.createElement("article");
-    a.className=category(e.type);
+  dayEvents.forEach(e => {
+    const a = document.createElement("article");
+    a.className = category(e.type);
 
-    const top=document.createElement("small");
-    const times=e.endTime
-      ? e.time+"–"+e.endTime
-      : e.time;
+    const head = document.createElement("div");
+    head.className = "event-head";
 
-    top.textContent=times+" · "+e.type;
+    const type = document.createElement("span");
+    type.className = "event-type";
+    type.textContent = e.type || "Aktivitet";
 
-    const h=document.createElement("h3");
-    h.textContent=e.title;
+    const times = document.createElement("div");
+    times.className = "times";
 
-    const p=document.createElement("p");
-    p.textContent=e.place||"";
+    [
+      ["Start", e.time || "–"],
+      ["Slut", e.endTime || "–"]
+    ].forEach(([label, value]) => {
+      const box = document.createElement("div");
+      box.className = "time-box";
 
-    a.append(top,h,p);
+      const sm = document.createElement("small");
+      sm.textContent = label;
 
-    if(e.notes){
-      const n=document.createElement("p");
-      n.textContent=e.notes;
+      const strong = document.createElement("strong");
+      strong.textContent = value;
+
+      box.append(sm, strong);
+      times.append(box);
+    });
+
+    head.append(type, times);
+
+    const h = document.createElement("h3");
+    h.textContent = e.title;
+
+    const p = document.createElement("p");
+    p.textContent = e.place
+      ? "📍 " + e.place
+      : "";
+
+    a.append(head, h, p);
+
+    if (e.notes) {
+      const n = document.createElement("p");
+      n.textContent = e.notes;
       a.append(n);
     }
 
-    if(e.link&&/^https?:\/\//i.test(e.link)){
-      const link=document.createElement("a");
-      link.href=e.link;
-      link.target="_blank";
-      link.rel="noopener noreferrer";
-      link.textContent="Öppna dokument";
+    if (e.link && /^https?:\/\//i.test(e.link)) {
+      const link = document.createElement("a");
+
+      link.href = e.link;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "Öppna dokument";
+
       a.append(link);
     }
 
-    a.onclick=ev=>{
-      if(ev.target.tagName!=="A"){
+    a.onclick = ev => {
+      if (ev.target.tagName !== "A") {
         openForm(e.id);
       }
     };
@@ -278,83 +1061,82 @@ function render(){
   });
 }
 
-function openForm(id){
-  const e=events.find(x=>x.id===id);
-  editing=e?.id||null;
+/* SKAPA OCH REDIGERA */
+
+function openForm(id) {
+  const e = events.find(x => x.id === id);
+  editing = e?.id || null;
 
   $("form").reset();
 
-  ["title","date","time","type","place","notes","link"]
-    .forEach(k=>$(k).value=e?.[k]||"");
+  [
+    "title", "date", "time", "type",
+    "place", "notes", "link"
+  ].forEach(k => {
+    $(k).value = e?.[k] || "";
+  });
 
-  if(e){
-    // Gamla aktiviteter saknar sluttid.
-    // De får ett förslag som kan ändras vid redigering.
-    $("endTime").value=e.endTime||
-      suggestEnd(e.time||"16:30");
-  }else{
-    $("date").value=selected;
-    $("time").value="16:30";
-    $("endTime").value="18:00";
+  if (e) {
+    $("endTime").value =
+      e.endTime || suggestEnd(e.time || "16:30");
+  } else {
+    $("date").value = selected;
+    $("time").value = "16:30";
+    $("endTime").value = "18:00";
   }
 
-  $("formTitle").textContent=
-    e?"Redigera aktivitet":"Ny aktivitet";
+  $("formTitle").textContent =
+    e ? "Redigera aktivitet" : "Ny aktivitet";
 
-  $("delete").style.display=e?"block":"none";
+  $("delete").style.display =
+    e ? "block" : "none";
+
   $("modal").classList.add("open");
 }
 
-function suggestEnd(start){
-  const parts=start.split(":").map(Number);
-  if(parts.length!==2||parts.some(Number.isNaN)){
-    return "18:00";
-  }
-  const total=parts[0]*60+parts[1]+90;
-  return String(Math.floor(total/60)%24).padStart(2,"0")+
-    ":"+String(total%60).padStart(2,"0");
-}
-
-function closeForm(){
+function closeForm() {
   $("modal").classList.remove("open");
 }
 
-$("form").onsubmit=ev=>{
+$("form").onsubmit = ev => {
   ev.preventDefault();
 
-  if($("endTime").value<=$("time").value){
+  if ($("endTime").value <= $("time").value) {
     alert("Sluttiden måste vara senare än starttiden.");
     return;
   }
 
-  const e={
-    id:editing||String(Date.now())
+  const e = {
+    id: editing || String(Date.now())
   };
 
-  ["title","date","time","endTime","type",
-   "place","notes","link"]
-    .forEach(k=>e[k]=$(k).value);
+  [
+    "title", "date", "time", "endTime",
+    "type", "place", "notes", "link"
+  ].forEach(k => {
+    e[k] = $(k).value;
+  });
 
-  events=events.filter(x=>x.id!==e.id);
+  events = events.filter(x => x.id !== e.id);
   events.push(e);
 
-  selected=e.date;
-  view=new Date(e.date+"T12:00:00");
+  selected = e.date;
+  view = dateFrom(e.date);
 
   save();
   closeForm();
 };
 
-function removeActivity(){
-  if(editing&&confirm("Radera aktiviteten?")){
-    events=events.filter(e=>e.id!==editing);
+function removeActivity() {
+  if (editing && confirm("Radera aktiviteten?")) {
+    events = events.filter(e => e.id !== editing);
     save();
     closeForm();
   }
 }
 
 render();
+
 </script>
 </body>
 </html>
-
