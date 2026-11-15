@@ -215,7 +215,18 @@ details summary{cursor:pointer;font-weight:700}
       <button type="button" id="closeX" class="close-x" aria-label="Stäng">×</button>
     </div>
 
-    <label for="title">Rubrik</label>
+    <label for="type">Typ av aktivitet</label>
+    <select id="type">
+      <option>Träning</option>
+      <option>Match</option>
+      <option>Matchanalys</option>
+      <option>Motståndaranalys</option>
+      <option>Träningsanalys</option>
+      <option>Möte</option>
+      <option>Övrigt</option>
+    </select>
+
+    <label for="title">Rubrik (fylls i automatiskt)</label>
     <input id="title" required>
 
     <label for="date">Datum</label>
@@ -231,17 +242,6 @@ details summary{cursor:pointer;font-weight:700}
         <input id="endTime" type="time" required>
       </div>
     </div>
-
-    <label for="type">Typ</label>
-    <select id="type">
-      <option>Träning</option>
-      <option>Match</option>
-      <option>Matchanalys</option>
-      <option>Motståndaranalys</option>
-      <option>Träningsanalys</option>
-      <option>Möte</option>
-      <option>Övrigt</option>
-    </select>
 
     <label for="place">Plats</label>
     <input id="place">
@@ -676,6 +676,11 @@ $("savePassword").addEventListener("click",async()=>{
   $("passwordStatus").textContent="Lösenordet är uppdaterat.";
 });
 
+// NY FUNKTION: aktivitetstypen fyller i rubriken automatiskt.
+$("type").addEventListener("change",function(){
+  $("title").value=this.value;
+});
+
 // Dokumenthantering
 function updateDocumentButton(){
   const input=$("link").value.trim();
@@ -707,6 +712,13 @@ function openForm(id){
   ["title","date","time","type","place","notes","link"].forEach(k=>{
     $(k).value=e?.[k]||"";
   });
+
+  // NYTT: Träning blir standardrubrik vid ny aktivitet.
+  if(!e){
+    $("type").value="Träning";
+    $("title").value="Träning";
+  }
+
   $("date").value=e?.date||selected;
   $("time").value=e?.time||"16:30";
   $("endTime").value=e?end(e):"18:00";
@@ -727,7 +739,6 @@ function closeForm(){
 $("newEvent").addEventListener("click",()=>openForm());
 $("bottomAdd").addEventListener("click",()=>openForm());
 
-// Tre sätt att stänga utan att spara
 $("cancel").addEventListener("click",function(event){
   event.preventDefault();
   event.stopPropagation();
@@ -747,7 +758,6 @@ document.addEventListener("keydown",function(event){
   }
 });
 
-// Öppna dokumentlänken i ny flik
 $("openDocument").addEventListener("click",function(event){
   const href=this.getAttribute("href");
   if(!href||href==="#"){
