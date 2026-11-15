@@ -1091,5 +1091,163 @@ render();
   );
 })();
 </script>
+  
+<script>
+(() => {
+  const section = document.createElement("section");
+  section.className = "panel";
+  section.id = "notificationPanel";
+  section.hidden = true;
+
+  section.innerHTML = `
+    <details id="notificationDetails">
+      <summary style="font-size:17px;font-weight:700">
+        🔔 Notiser <span id="notificationCount"></span>
+      </summary>
+      <p class="status">
+        Nya aktiviteter och ändringar i tränarkalendern.
+      </p>
+      <button type="button" id="readNotifications"
+        class="btn light">
+        Markera alla som lästa
+      </button>
+      <div id="notificationList"
+        style="margin-top:14px"></div>
+    </details>
+  `;
+
+  const app = document.getElementById("mainApp");
+  const topbar = app.querySelector(".topbar");
+  topbar.insertAdjacentElement("afterend", section);
+
+  const $n = id => document.getElementById(id);
+  let notifications = [];
+  let currentUserId = null;
+
+  function storageKey() {
+    return "coachhub-notifications-read-" + user.id;
+  }
+
+  function lastRead() {
+    let value = localStorage.getItem(storageKey());
+    if (!value) {
+      value = new Date().toISOString();
+      localStorage.setItem(storageKey(), value);
+    }
+    return value;
+  }
+
+  function drawNotifications() {
+    if (!user) return;
+
+    const seen = lastRead();
+    const unread = notifications.filter(
+      n => n.created_at > seen
+    ).length;
+
+    $n("notificationCount").textContent =
+      unread ? "(" + unread + " nya)" : "";
+
+    const list = $n("notificationList");
+    list.replaceChildren();
+
+    if (!notifications.length) {
+      list.textContent = "Inga notiser ännu.";
+      return;
+    }
+
+    notifications.forEach(n => {
+      const item = document.createElement("div");
+      item.style.cssText =
+        "padding:12px 4px;border-bottom:1px solid #ddd";
+
+      const heading = document.createElement("strong");
+      heading.textContent =
+        (n.kind === "created"
+          ? "Ny aktivitet: "
+          : "Ändrad aktivitet: ") + n.title;
+
+      const info = document.createElement("div");
+      info.style.marginTop = "5px";
+      info.textContent =
+        [n.event_date, n.event_time]
+          .filter(Boolean).join(" · ");
+
+      const timestamp = document.createElement("small");
+      timestamp.style.opacity = ".7";
+      timestamp.textContent =
+        new Date(n.created_at).toLocaleString("sv-SE");
+
+      if (n.created_at > seen) {
+        item.style.fontWeight = "600";
+      }
+
+      item.append(heading, info, timestamp);
+      list.append(item);
+    });
+  }
+
+  async function loadNotifications() {
+    if (!user || !db) return;
+
+    if (currentUserId !== user.id) {
+      currentUserId = user.id;
+      notifications = [];
+    }
+
+    section.hidden = false;
+
+    const { data, error } = await db
+      .from("coachhub_notifications")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (error) {
+      $n("notificationList").textContent =
+        "Kunde inte hämta notiser: " + error.message;
+      return;
+    }
+
+    notifications = data || [];
+    drawNotifications();
+  }
+
+  $n("readNotifications").onclick = () => {
+    if (!user) return;
+    localStorage.setItem(
+      storageKey(),
+      new Date().toISOString()
+    );
+    drawNotifications();
+  };
+
+  new MutationObserver(() => {
+    if (!app.hidden && user) {
+      loadNotifications();
+    } else {
+      section.hidden = true;
+      currentUserId = null;
+    }
+  }).observe(app, {
+    attributes: true,
+    attributeFilter: ["hidden"]
+  });
+
+  if (!app.hidden && user) loadNotifications();
+
+  setInterval(() => {
+    if (!app.hidden && user && !document.hidden) {
+      loadNotifications();
+    }
+  }, 20000);
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && user && !app.hidden) {
+      loadNotifications();
+    }
+  });
+})();
+</script>
 </body>
 </html>
