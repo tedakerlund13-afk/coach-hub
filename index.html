@@ -891,5 +891,205 @@ setInterval(()=>{
 
 render();
 </script>
+  
+<script>
+(() => {
+  const ADMIN_ID = "2f345f67-3a30-4a40-a50c-d74f0c4f6099";
+
+  const panel = document.createElement("section");
+  panel.id = "trainerAdmin";
+  panel.className = "panel";
+  panel.hidden = true;
+
+  panel.innerHTML = `
+    <details>
+      <summary style="font-size:17px;font-weight:700">
+        👥 Hantera tränare
+      </summary>
+
+      <p>Här kan du bjuda in kollegor till Coach Hub.</p>
+
+      <label for="trainerEmail">Kollegans e-postadress</label>
+      <input
+        id="trainerEmail"
+        type="email"
+        placeholder="namn@klubb.se"
+      >
+
+      <button
+        id="inviteTrainer"
+        type="button"
+        class="btn"
+        style="margin-top:12px"
+      >
+        Skicka inbjudan
+      </button>
+
+      <p id="trainerMessage" role="status"></p>
+
+      <h3>Tränare med åtkomst</h3>
+      <div id="trainerList"></div>
+
+      <button
+        id="refreshTrainers"
+        type="button"
+        class="btn light"
+        style="margin-top:12px"
+      >
+        Uppdatera listan
+      </button>
+    </details>
+  `;
+
+  document.getElementById("mainApp").append(panel);
+
+  const el = id => document.getElementById(id);
+
+  async function request(body) {
+    const { data, error } = await db.functions.invoke(
+      "coachhub-manage-trainers",
+      { body }
+    );
+
+    if (error) {
+      let message = error.message;
+      if (error.context?.json) {
+        try {
+          const details = await error.context.json();
+          message = details.error || message;
+        } catch {}
+      }
+      throw new Error(message);
+    }
+
+    if (data?.error) throw new Error(data.error);
+    return data;
+  }
+
+  function updateAdminVisibility() {
+    panel.hidden = !user || user.id !== ADMIN_ID;
+  }
+
+  const app = el("mainApp");
+  new MutationObserver(updateAdminVisibility)
+    .observe(app, {
+      attributes: true,
+      attributeFilter: ["hidden"]
+    });
+
+  updateAdminVisibility();
+
+  async function loadTrainers() {
+    const list = el("trainerList");
+    list.textContent = "Hämtar tränare...";
+
+    try {
+      const data = await request({ action: "list" });
+      list.replaceChildren();
+
+      for (const trainer of data.members || []) {
+        const row = document.createElement("div");
+        row.style.cssText =
+          "display:flex;align-items:center;" +
+          "justify-content:space-between;gap:10px;" +
+          "padding:12px 0;border-bottom:1px solid #ddd";
+
+        const name = document.createElement("span");
+        name.textContent = trainer.email;
+        name.style.overflowWrap = "anywhere";
+        row.append(name);
+
+        if (trainer.id === ADMIN_ID) {
+          const admin = document.createElement("small");
+          admin.textContent = "Admin";
+          row.append(admin);
+        } else {
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "btn danger";
+          remove.textContent = "Ta bort";
+
+          remove.onclick = async () => {
+            if (!confirm(
+              "Ta bort åtkomsten för " + trainer.email + "?"
+            )) return;
+
+            remove.disabled = true;
+
+            try {
+              await request({
+                action: "remove",
+                user_id: trainer.id
+              });
+
+              el("trainerMessage").textContent =
+                "Tränarens åtkomst har tagits bort.";
+
+              await loadTrainers();
+            } catch (err) {
+              el("trainerMessage").textContent = err.message;
+              remove.disabled = false;
+            }
+          };
+
+          row.append(remove);
+        }
+
+        list.append(row);
+      }
+
+      if (!data.members?.length) {
+        list.textContent = "Inga tränare hittades.";
+      }
+    } catch (err) {
+      list.textContent = "Fel: " + err.message;
+    }
+  }
+
+  el("inviteTrainer").onclick = async () => {
+    const input = el("trainerEmail");
+    const email = input.value.trim();
+
+    if (!input.reportValidity() || !email) {
+      el("trainerMessage").textContent =
+        "Ange en giltig e-postadress.";
+      return;
+    }
+
+    const button = el("inviteTrainer");
+    button.disabled = true;
+    el("trainerMessage").textContent =
+      "Skickar inbjudan...";
+
+    try {
+      const result = await request({
+        action: "invite",
+        email
+      });
+
+      el("trainerMessage").textContent =
+        result.message || "Inbjudan skickad!";
+
+      input.value = "";
+      await loadTrainers();
+
+    } catch (err) {
+      el("trainerMessage").textContent =
+        "Fel: " + err.message;
+    } finally {
+      button.disabled = false;
+    }
+  };
+
+  el("refreshTrainers").onclick = loadTrainers;
+
+  panel.querySelector("details").addEventListener(
+    "toggle",
+    event => {
+      if (event.target.open) loadTrainers();
+    }
+  );
+})();
+</script>
 </body>
 </html>
